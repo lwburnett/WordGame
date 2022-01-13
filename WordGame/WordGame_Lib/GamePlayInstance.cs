@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using WordGame_Lib.Ui;
 
@@ -43,6 +44,9 @@ namespace WordGame_Lib
             _keyboard.Update(iGameTime);
             _letterGrid.Update(iGameTime);
             _notification?.Update(iGameTime);
+
+            if (_playSessionHasFinished)
+                _onGamePlaySessionFinishedCallback();
         }
 
         public void Draw()
@@ -82,43 +86,46 @@ namespace WordGame_Lib
             }
 
             //TODO Check if it is a word
+            
 
-            var dispositionList = new List<bool?>();
-            for (int ii = 0; ii < 5; ii++)
+
+            var dispositionList = new bool?[5];
+            for (var ii = 0; ii < 5; ii++)
             {
-                var thisGuessLetter = currentWord[ii];
+                var thisSecretLetter = _secretWord[ii];
 
-                // Null is no match, false is match but misplaced, true is match and properly placed
-                bool? thisGuessLetterDisposition = null;
-
-                for (int jj = 0; jj < 5; jj++)
+                if (thisSecretLetter == currentWord[ii])
                 {
-                    var thisSecretLetter = _secretWord[jj];
-
-                    if (thisGuessLetter == thisSecretLetter)
+                    dispositionList[ii] = true;
+                }
+                else
+                {
+                    for (int jj = 0; jj < 5; jj++)
                     {
-                        if (ii == jj)
+                        var thisGuessLetter = currentWord[jj];
+                        if (thisSecretLetter == thisGuessLetter)
                         {
-                            thisGuessLetterDisposition = true;
-                            break;
+                            if (dispositionList[jj] == null)
+                            {
+                                dispositionList[jj] = false;
+                                break;
+                            }
                         }
-                        else
-                            thisGuessLetterDisposition = false;
                     }
                 }
-
-                dispositionList.Add(thisGuessLetterDisposition);
             }
 
-            _letterGrid.OnGuessEntered(dispositionList);
+            _letterGrid.OnGuessEntered(dispositionList.ToList());
 
             if (currentWord == _secretWord)
             {
                 SetNotification("Correct!!");
+                _playSessionHasFinished = true;
             }
             else if (_letterGrid.IsFinished())
             {
                 SetNotification($"Incorrect. The word was {_secretWord}");
+                _playSessionHasFinished = true;
             }
         }
 
