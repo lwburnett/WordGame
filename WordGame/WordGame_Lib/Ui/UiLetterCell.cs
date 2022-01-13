@@ -83,6 +83,11 @@ namespace WordGame_Lib.Ui
                 Color.White);
         }
 
+        public void SetText(string iKeyString)
+        {
+            _text = iKeyString;
+        }
+
         private enum Disposition
         {
             Undecided,

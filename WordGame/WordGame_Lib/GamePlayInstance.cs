@@ -54,12 +54,12 @@ namespace WordGame_Lib
 
         private void OnLetterPressed(string iKeyString)
         {
-
+            _letterGrid.LetterPressed(iKeyString);
         }
 
         private void OnDelete()
         {
-
+            //_letterGrid.Delete();
         }
 
         private void OnEnter()
