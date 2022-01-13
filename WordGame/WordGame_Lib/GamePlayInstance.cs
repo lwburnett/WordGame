@@ -59,7 +59,7 @@ namespace WordGame_Lib
 
         private void OnDelete()
         {
-            //_letterGrid.Delete();
+            _letterGrid.Delete();
         }
 
         private void OnEnter()

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib.Ui
@@ -31,11 +30,20 @@ namespace WordGame_Lib.Ui
 
         public void LetterPressed(string iKeyString)
         {
-            if (_cursorLocation >= (_currentRow + 1) * 5)
+            if (_cursorLocation >= (_currentRow + 1) * CNumCols)
                 return;
 
             _cells[_cursorLocation].SetText(iKeyString);
             _cursorLocation++;
+        }
+
+        public void Delete()
+        {
+            if (_cursorLocation - 1 < _currentRow * CNumCols)
+                return;
+
+            _cells[_cursorLocation - 1].SetText(string.Empty);
+            _cursorLocation--;
         }
 
         private readonly List<UiLetterCell> _cells;
