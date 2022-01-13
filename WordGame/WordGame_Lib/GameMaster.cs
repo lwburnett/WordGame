@@ -6,7 +6,7 @@ namespace WordGame_Lib
 {
     public class GameMaster : Game
     {
-        private GraphicsDeviceManager _graphics;
+        private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
         public GameMaster()
@@ -18,7 +18,10 @@ namespace WordGame_Lib
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            _graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            _graphics.PreferredBackBufferWidth = (int)(GraphicsDevice.DisplayMode.Height / SettingsManager.GameMasterSettings.TargetScreenAspectRatio);
+            _graphics.IsFullScreen = false;
+            _graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -27,7 +30,20 @@ namespace WordGame_Lib
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            var windowHeight = Window.ClientBounds.Height;
+            var windowWidth = Window.ClientBounds.Width;
+
+            var chosenWidth = (int)(windowHeight / SettingsManager.GameMasterSettings.TargetScreenAspectRatio);
+            var chosenHeight = windowHeight;
+
+            var topLeftGamePlayAreaX = (int)((windowWidth / 2.0f) - (chosenWidth / 2.0f));
+            var topLeftGamePlayAreaY = 0;
+            var gamePlayArea = new Rectangle(topLeftGamePlayAreaX, topLeftGamePlayAreaY, chosenWidth, chosenHeight);
+
+            GraphicsHelper.RegisterContentManager(Content);
+            GraphicsHelper.RegisterGraphicsDevice(GraphicsDevice);
+            GraphicsHelper.RegisterSpriteBatch(_spriteBatch);
+            GraphicsHelper.RegisterGamePlayArea(gamePlayArea);
         }
 
         protected override void Update(GameTime gameTime)
