@@ -2,7 +2,7 @@
 
 namespace WordGame_Lib.Ui
 {
-    interface IUiElement
+    public interface IUiElement
     {
         void Update(GameTime iGameTime);
         void Draw();

@@ -55,19 +55,19 @@ namespace WordGame_Lib.Ui
             switch (_disposition)
             {
                 case Disposition.Undecided:
-                    GraphicsHelper.DrawTexture(_emptyTexture, new Vector2(_bounds.Top, _bounds.Left));
+                    GraphicsHelper.DrawTexture(_emptyTexture, new Vector2(_bounds.Left, _bounds.Top));
                     break;
                 case Disposition.Incorrect:
-                    GraphicsHelper.DrawTexture(_incorrectTexture, new Vector2(_bounds.Top, _bounds.Left));
+                    GraphicsHelper.DrawTexture(_incorrectTexture, new Vector2(_bounds.Left, _bounds.Top));
                     break;
                 case Disposition.Misplaced:
-                    GraphicsHelper.DrawTexture(_misplacedTexture, new Vector2(_bounds.Top, _bounds.Left));
+                    GraphicsHelper.DrawTexture(_misplacedTexture, new Vector2(_bounds.Left, _bounds.Top));
                     break;
                 case Disposition.Correct:
-                    GraphicsHelper.DrawTexture(_correctTexture, new Vector2(_bounds.Top, _bounds.Left));
+                    GraphicsHelper.DrawTexture(_correctTexture, new Vector2(_bounds.Left, _bounds.Top));
                     break;
                 default:
-                    GraphicsHelper.DrawTexture(_emptyTexture, new Vector2(_bounds.Top, _bounds.Left));
+                    GraphicsHelper.DrawTexture(_emptyTexture, new Vector2(_bounds.Left, _bounds.Top));
                     Debug.Fail($"Unknown value of enum {nameof(Disposition)}: {_disposition}");
                     break;
             }
@@ -86,6 +86,23 @@ namespace WordGame_Lib.Ui
         public void SetText(string iKeyString)
         {
             _text = iKeyString;
+        }
+
+        public string GetText()
+        {
+            return _text;
+        }
+
+        public void SetDisposition(bool? iDisposition)
+        {
+            if (iDisposition.HasValue)
+            {
+                _disposition = iDisposition.Value ? Disposition.Correct : Disposition.Misplaced;
+            }
+            else
+            {
+                _disposition = Disposition.Incorrect;
+            }
         }
 
         private enum Disposition

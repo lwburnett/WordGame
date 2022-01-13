@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib.Ui
@@ -46,6 +48,18 @@ namespace WordGame_Lib.Ui
             _cursorLocation--;
         }
 
+        public string GetCurrentWord()
+        {
+            var word = string.Empty;
+
+            for (var ii = _currentRow * CNumCols; ii < (_currentRow + 1) * CNumCols; ii++)
+            {
+                word += _cells[ii].GetText().Trim();
+            }
+
+            return word;
+        }
+
         private readonly List<UiLetterCell> _cells;
         private int _cursorLocation;
         private int _currentRow;
@@ -56,8 +70,8 @@ namespace WordGame_Lib.Ui
         {
             var cells = new List<UiLetterCell>();
 
-            for (int ii = 0; ii < CNumCols; ii++)
-            for (int jj = 0; jj < CNumRows; jj++)
+            for (int ii = 0; ii < CNumRows; ii++)
+            for (int jj = 0; jj < CNumCols; jj++)
             {
                 var thisCellRectangle = new Rectangle(
                     (int)(iGridMargin + iCellMargin + (jj * (iCellMargin + iCellWidth + iCellMargin))),
@@ -65,10 +79,30 @@ namespace WordGame_Lib.Ui
                     (int)iCellWidth,
                     (int)iCellHeight);
 
-                cells.Add(new UiLetterCell(thisCellRectangle));
+                var thisCell = new UiLetterCell(thisCellRectangle);
+                thisCell.SetText($"{ii},{jj}");
+                cells.Add(thisCell);
             }
 
             return cells;
+        }
+
+        public void OnGuessEntered(List<bool?> iDispositions)
+        {
+            for (var ii = 0; ii < 5; ii++)
+            {
+                var thisIndex = _currentRow * CNumCols + ii;
+                var thisCell = _cells[thisIndex];
+
+                thisCell.SetDisposition(iDispositions[ii]);
+            }
+
+            _currentRow++;
+        }
+
+        public bool IsFinished()
+        {
+            return _currentRow >= CNumRows;
         }
     }
 }
