@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using WordGame_Lib.Ui;
 
 namespace WordGame_Lib
 {
@@ -17,17 +18,29 @@ namespace WordGame_Lib
         public void LoadLevel()
         {
             // TODO construct initial UI
+            var keyboardHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.KeyboardHeightAsPercentage);
+            var keyboardYPosition = GraphicsHelper.GamePlayArea.Height - keyboardHeight;
+
+            const int keyboardXPosition = 0;
+            var keyboardWidth = GraphicsHelper.GamePlayArea.Width;
+
+            var keyboardRectangle = new Rectangle(keyboardXPosition, keyboardYPosition, keyboardWidth, keyboardHeight);
+            _keyboard = new KeyboardControl(keyboardRectangle);
         }
 
         public void Update(GameTime iGameTime)
         {
             if (_playSessionHasFinished)
                 return;
+
+            _keyboard.Update(iGameTime);
         }
 
         public void Draw()
         {
-            // TODO draw UI
+            _keyboard.Draw();
         }
+
+        private KeyboardControl _keyboard;
     }
 }

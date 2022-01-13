@@ -31,8 +31,9 @@ namespace WordGame_Lib
 
         protected override void Initialize()
         {
-            _graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            _graphics.PreferredBackBufferWidth = (int)(GraphicsDevice.DisplayMode.Height / SettingsManager.GameMasterSettings.TargetScreenAspectRatio);
+            var height = GraphicsDevice.DisplayMode.Height * .95f;
+            _graphics.PreferredBackBufferHeight = (int)height;
+            _graphics.PreferredBackBufferWidth = (int)(height / SettingsManager.GameMasterSettings.TargetScreenAspectRatio);
             _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
 
