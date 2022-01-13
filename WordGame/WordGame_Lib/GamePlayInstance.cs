@@ -12,9 +12,6 @@ namespace WordGame_Lib
             _onGamePlaySessionFinishedCallback = iOnGamePlaySessionFinishedCallback;
         }
 
-        private bool _playSessionHasFinished;
-        private readonly Action _onGamePlaySessionFinishedCallback;
-
         public void LoadLevel()
         {
             // TODO construct initial UI
@@ -25,7 +22,13 @@ namespace WordGame_Lib
             var keyboardWidth = GraphicsHelper.GamePlayArea.Width;
 
             var keyboardRectangle = new Rectangle(keyboardXPosition, keyboardYPosition, keyboardWidth, keyboardHeight);
-            _keyboard = new KeyboardControl(keyboardRectangle);
+            _keyboard = new KeyboardControl(keyboardRectangle, OnLetterPressed, OnDelete, OnEnter);
+
+            var gridHeight = (int)(GraphicsHelper.GamePlayArea.Height - keyboardHeight);
+            var gridWidth = GraphicsHelper.GamePlayArea.Width;
+            var gridRectangle = new Rectangle(0, 0, gridWidth, gridHeight);
+
+            _letterGrid = new LetterGridControl(gridRectangle);
         }
 
         public void Update(GameTime iGameTime)
@@ -34,13 +37,34 @@ namespace WordGame_Lib
                 return;
 
             _keyboard.Update(iGameTime);
+            _letterGrid.Update(iGameTime);
         }
 
         public void Draw()
         {
             _keyboard.Draw();
+            _letterGrid.Draw();
         }
 
         private KeyboardControl _keyboard;
+        private LetterGridControl _letterGrid;
+
+        private bool _playSessionHasFinished;
+        private readonly Action _onGamePlaySessionFinishedCallback;
+
+        private void OnLetterPressed(string iKeyString)
+        {
+
+        }
+
+        private void OnDelete()
+        {
+
+        }
+
+        private void OnEnter()
+        {
+
+        }
     }
 }

@@ -23,5 +23,11 @@
             public const float KeyboardMarginAsPercentage = .01f;
             public const float KeyMarginAsPercentage = .005f;
         }
+
+        public static class GridSettings
+        {
+            public const float GridMarginAsPercentage = .1f;
+            public const float CellMarginAsPercentage = .01f;
+        }
     }
 }

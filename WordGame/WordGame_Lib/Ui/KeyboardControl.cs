@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib.Ui
 {
     public class KeyboardControl : IUiElement
     {
-        public KeyboardControl(Rectangle iBounds)
+        public KeyboardControl(Rectangle iBounds, Action<string> iOnLetterClickedCallback, Action iOnDeleteAction, Action iOnEnterCallback)
         {
             _bounds = iBounds;
+            _onLetterClickedCallback = iOnLetterClickedCallback;
+            _onDeleteAction = iOnDeleteAction;
+            _onEnterCallback = iOnEnterCallback;
 
             var keyboardMargin = SettingsManager.KeyboardSettings.KeyboardMarginAsPercentage * _bounds.Width;
             var keyMargin = SettingsManager.KeyboardSettings.KeyMarginAsPercentage * _bounds.Width;
@@ -37,6 +41,9 @@ namespace WordGame_Lib.Ui
         private readonly Rectangle _bounds;
 
         private readonly List<UiTextButton> _buttons;
+        private readonly Action<string> _onLetterClickedCallback;
+        private readonly Action _onDeleteAction;
+        private readonly Action _onEnterCallback;
 
         private List<UiTextButton> CreateTopRow(float iKeyboardMargin, float iKeyMargin, float iKeyWidth, float iKeyHeight)
         {
@@ -121,7 +128,12 @@ namespace WordGame_Lib.Ui
 
         private void OnKeyPressed(string iKeyString)
         {
-
+            if (iKeyString == "DEL")
+                _onDeleteAction();
+            else if (iKeyString == "EN")
+                _onEnterCallback();
+            else
+                _onLetterClickedCallback(iKeyString);
         }
     }
 }
