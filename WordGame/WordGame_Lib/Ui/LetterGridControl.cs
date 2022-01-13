@@ -79,9 +79,7 @@ namespace WordGame_Lib.Ui
                     (int)iCellWidth,
                     (int)iCellHeight);
 
-                var thisCell = new UiLetterCell(thisCellRectangle);
-                thisCell.SetText($"{ii},{jj}");
-                cells.Add(thisCell);
+                cells.Add(new UiLetterCell(thisCellRectangle));
             }
 
             return cells;

@@ -98,7 +98,10 @@ namespace WordGame_Lib
                     if (thisGuessLetter == thisSecretLetter)
                     {
                         if (ii == jj)
+                        {
                             thisGuessLetterDisposition = true;
+                            break;
+                        }
                         else
                             thisGuessLetterDisposition = false;
                     }
@@ -109,16 +112,13 @@ namespace WordGame_Lib
 
             _letterGrid.OnGuessEntered(dispositionList);
 
-            if (_letterGrid.IsFinished())
+            if (currentWord == _secretWord)
             {
-                if (currentWord == _secretWord)
-                {
-                    SetNotification("Correct!!");
-                }
-                else
-                {
-                    SetNotification($"Incorrect. The word was {_secretWord}");
-                }
+                SetNotification("Correct!!");
+            }
+            else if (_letterGrid.IsFinished())
+            {
+                SetNotification($"Incorrect. The word was {_secretWord}");
             }
         }
 
