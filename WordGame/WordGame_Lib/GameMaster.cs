@@ -97,11 +97,9 @@ namespace WordGame_Lib
 
         private void OnPlayGame()
         {
-            // var gameStart = _gameTime.TotalGameTime;
-            //
-            // _currentScreenId = ScreenId.GamePlay;
-            // _idToScreenDictionary[_currentScreenId] = new GamePlayScreen(gameStart, OnPlayGame, OnMainMenu, OnExitGame);
-            // _idToScreenDictionary[_currentScreenId].OnNavigateTo();
+            _currentScreenId = ScreenId.GamePlay;
+            _idToScreenDictionary[_currentScreenId] = new GamePlayScreen(OnPlayGame, OnMainMenu, OnExitGame);
+            _idToScreenDictionary[_currentScreenId].OnNavigateTo();
         }
 
         private void OnExitGame()

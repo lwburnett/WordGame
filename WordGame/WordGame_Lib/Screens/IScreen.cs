@@ -2,7 +2,7 @@
 
 namespace WordGame_Lib.Screens
 {
-    interface IScreen
+    public interface IScreen
     {
         void OnNavigateTo();
 
