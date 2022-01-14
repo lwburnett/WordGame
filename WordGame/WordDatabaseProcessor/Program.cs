@@ -7,7 +7,7 @@ namespace WordDatabaseProcessor
     {
         static void Main()
         {
-            var lines = File.ReadAllLines("C:\\Users\\Luke\\Desktop\\Dev\\WordDatabase.txt");
+            var lines = File.ReadAllLines("C:\\Users\\Luke\\Desktop\\Dev\\WordDatabase2.txt");
 
             var chosenWords = new List<string>();
             foreach (var line in lines)
@@ -16,7 +16,7 @@ namespace WordDatabaseProcessor
                     chosenWords.Add(line);
             }
 
-            File.WriteAllLines("C:\\Users\\Luke\\Desktop\\Dev\\WordDatabase_Slimmed.txt", chosenWords);
+            File.WriteAllLines("C:\\Users\\Luke\\Desktop\\Dev\\WordDatabase_Slimmed2.txt", chosenWords);
         }
     }
 }

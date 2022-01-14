@@ -8,15 +8,16 @@ namespace WordGame_Lib
 {
     public class GamePlayInstance
     {
-        public GamePlayInstance(Action iOnGamePlaySessionFinishedCallback)
+        public GamePlayInstance(OrderedUniqueList<string> iWordDatabase, Action iOnGamePlaySessionFinishedCallback)
         {
+            _wordDatabase = iWordDatabase;
             _playSessionHasFinished = false;
             _onGamePlaySessionFinishedCallback = iOnGamePlaySessionFinishedCallback;
+            _rng = new Random();
         }
 
         public void LoadLevel()
         {
-            // TODO construct initial UI
             var keyboardHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.KeyboardHeightAsPercentage);
             var keyboardYPosition = GraphicsHelper.GamePlayArea.Height - keyboardHeight;
 
@@ -33,7 +34,7 @@ namespace WordGame_Lib
             _letterGrid = new LetterGridControl(gridRectangle);
 
             _notification = null;
-            _secretWord = "APPLE";
+            _secretWord = _wordDatabase[_rng.Next(_wordDatabase.Count)];
         }
 
         public void Update(GameTime iGameTime)
@@ -56,6 +57,8 @@ namespace WordGame_Lib
             _notification?.Draw();
         }
 
+        private readonly Random _rng;
+        private readonly OrderedUniqueList<string> _wordDatabase;
         private KeyboardControl _keyboard;
         private LetterGridControl _letterGrid;
         private UiFloatingText _notification;
@@ -84,10 +87,12 @@ namespace WordGame_Lib
                 SetNotification("Not Enough Letters");
                 return;
             }
-
-            //TODO Check if it is a word
             
-
+            if (!_wordDatabase.Contains(currentWord))
+            {
+                SetNotification("Not a Word");
+                return;
+            }
 
             var dispositionList = new List<Disposition>
             {

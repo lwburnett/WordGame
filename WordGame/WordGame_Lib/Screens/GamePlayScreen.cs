@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -7,9 +8,9 @@ namespace WordGame_Lib.Screens
 {
     public class GamePlayScreen : IScreen
     {
-        public GamePlayScreen(Action iOnPlayAgainCallback, Action iOnMainMenuCallback, Action iOnExitCallback)
+        public GamePlayScreen(OrderedUniqueList<string> iWordDatabase, Action iOnPlayAgainCallback, Action iOnMainMenuCallback, Action iOnExitCallback)
         {
-            _gamePlayInstance = new GamePlayInstance(OnGamePlaySessionFinished);
+            _gamePlayInstance = new GamePlayInstance(iWordDatabase, OnGamePlaySessionFinished);
             _onExitCallback = iOnExitCallback;
             _onPlayAgainCallback = iOnPlayAgainCallback;
             _onMainMenuCallback = iOnMainMenuCallback;

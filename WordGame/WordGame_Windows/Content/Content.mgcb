@@ -20,3 +20,6 @@
 /processorParam:TextureFormat=Compressed
 /build:PrototypeFont.spritefont
 
+#begin WordDatabase.txt
+/copy:WordDatabase.txt
+
