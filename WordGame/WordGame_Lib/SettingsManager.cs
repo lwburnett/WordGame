@@ -62,6 +62,8 @@ namespace WordGame_Lib
             public const float HeaderHeightAsPercentage = .1f;
             public const float SubHeaderHeightAsPercentage = .1f;
             public static float DefinitionHeightAsPercentage = .4f;
+            public static float MainMenuButtonHeightAsPercentage = .1f;
+            public static float PlayAgainButtonHeightAsPercentage = .1f;
         }
     }
 }

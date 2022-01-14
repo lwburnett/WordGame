@@ -69,7 +69,7 @@ namespace WordGame_Lib.Screens
             var bounds = GraphicsHelper.GamePlayArea;
 
             _subScreen = SubScreen.PostSessionStats;
-            _postSessionStatsScreen = new PostSessionStatsScreen(bounds, iStats, OnPlayAgain, OnMainMenu);
+            _postSessionStatsScreen = new PostSessionStatsScreen(bounds, iStats, OnMainMenu, OnPlayAgain);
             _postSessionStatsScreen.OnNavigateTo();
         }
 

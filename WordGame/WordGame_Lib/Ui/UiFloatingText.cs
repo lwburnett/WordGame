@@ -47,8 +47,8 @@ namespace WordGame_Lib.Ui
                 }
             }
 
-            if (singleLines.Count == 0)
-                singleLines.Add(iText);
+            if (singleLineBuffer.Length > 0)
+                singleLines.Add(singleLineBuffer);
 
             _text = string.Join("\n", singleLines.Select(l => l.Trim()));
 

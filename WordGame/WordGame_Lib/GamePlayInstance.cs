@@ -34,7 +34,8 @@ namespace WordGame_Lib
             _letterGrid = new LetterGridControl(gridRectangle);
 
             _notification = null;
-            _secretWord = _wordDatabase.Keys[_rng.Next(_wordDatabase.Count)];
+            //_secretWord = _wordDatabase.Keys[_rng.Next(_wordDatabase.Count)];
+            _secretWord = _wordDatabase.Keys[1202];
             _numGuesses = 0;
             _isSuccess = false;
         }

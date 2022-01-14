@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using WordGame_Lib.Ui;
 
 namespace WordGame_Lib.Screens
@@ -13,8 +12,6 @@ namespace WordGame_Lib.Screens
             _stats = iStats;
             _onMainMenuCallback = iOnMainMenuCallback;
             _onPlayAgainCallback = iOnPlayAgainCallback;
-            
-            _textFont = GraphicsHelper.LoadContent<SpriteFont>("PrototypeFont");
         }
 
         public void OnNavigateTo()
@@ -55,6 +52,24 @@ namespace WordGame_Lib.Screens
                 new Rectangle(defX, defY, defWidth, defHeight),
                 $"{_stats.SecretWord}: {_stats.SecretWordDefinition}",
                 Color.White);
+
+            var mainMenuY = defY + defHeight + smallMarginY;
+            var mainMenuX = headerXLocation;
+            var mainMenuHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.MainMenuButtonHeightAsPercentage);
+            var mainMenuWidth = headerWidth;
+            _mainMenuButton = new UiTextButton(
+                new Rectangle(mainMenuX, mainMenuY, mainMenuWidth, mainMenuHeight),
+                "Main Menu",
+                _onMainMenuCallback);
+
+            var playAgainY = mainMenuY + mainMenuHeight + smallMarginY;
+            var playAgainX = headerXLocation;
+            var playAgainHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.PlayAgainButtonHeightAsPercentage);
+            var playAgainWidth = headerWidth;
+            _playAgainButton = new UiTextButton(
+                new Rectangle(playAgainX, playAgainY, playAgainWidth, playAgainHeight),
+                "Play Again",
+                _onPlayAgainCallback);
         }
 
         public void Update(GameTime iGameTime)
@@ -62,6 +77,8 @@ namespace WordGame_Lib.Screens
             _header.Update(iGameTime);
             _subHeader.Update(iGameTime);
             _definition.Update(iGameTime);
+            _mainMenuButton.Update(iGameTime);
+            _playAgainButton.Update(iGameTime);
         }
 
         public void Draw()
@@ -69,16 +86,19 @@ namespace WordGame_Lib.Screens
             _header.Draw();
             _subHeader.Draw();
             _definition.Draw();
+            _mainMenuButton.Draw();
+            _playAgainButton.Draw();
         }
 
         private readonly Rectangle _bounds;
         private readonly SessionStats _stats;
         private readonly Action _onMainMenuCallback;
         private readonly Action _onPlayAgainCallback;
-        private readonly SpriteFont _textFont;
 
         private UiFloatingText _header;
         private UiFloatingText _subHeader;
         private UiFloatingText _definition;
+        private UiTextButton _mainMenuButton;
+        private UiTextButton _playAgainButton;
     }
 }
