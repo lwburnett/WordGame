@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.32002.261
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordGame_Lib", "WordGame_Lib\WordGame_Lib.csproj", "{E886566D-48AF-4197-933E-B313EFF5D248}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordGame_Windows", "WordGame_Windows\WordGame_Windows.csproj", "{1B896B20-C379-4CEB-BF8B-DF956EBCBEC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordGame_Windows", "WordGame_Windows\WordGame_Windows.csproj", "{1B896B20-C379-4CEB-BF8B-DF956EBCBEC4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordDatabaseProcessor", "WordDatabaseProcessor\WordDatabaseProcessor.csproj", "{592AECCD-76AE-4FB8-9264-BED45FBA2F4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{1B896B20-C379-4CEB-BF8B-DF956EBCBEC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B896B20-C379-4CEB-BF8B-DF956EBCBEC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B896B20-C379-4CEB-BF8B-DF956EBCBEC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{592AECCD-76AE-4FB8-9264-BED45FBA2F4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{592AECCD-76AE-4FB8-9264-BED45FBA2F4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{592AECCD-76AE-4FB8-9264-BED45FBA2F4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{592AECCD-76AE-4FB8-9264-BED45FBA2F4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
