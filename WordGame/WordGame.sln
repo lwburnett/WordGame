@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordGame_Windows", "WordGam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordDatabaseProcessor", "WordDatabaseProcessor\WordDatabaseProcessor.csproj", "{592AECCD-76AE-4FB8-9264-BED45FBA2F4A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordGame_Android", "WordGame_Android\WordGame_Android.csproj", "{F58D7165-0D8D-4B11-A3D7-8442FC5B0EE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,12 @@ Global
 		{592AECCD-76AE-4FB8-9264-BED45FBA2F4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{592AECCD-76AE-4FB8-9264-BED45FBA2F4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{592AECCD-76AE-4FB8-9264-BED45FBA2F4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F58D7165-0D8D-4B11-A3D7-8442FC5B0EE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F58D7165-0D8D-4B11-A3D7-8442FC5B0EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F58D7165-0D8D-4B11-A3D7-8442FC5B0EE4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F58D7165-0D8D-4B11-A3D7-8442FC5B0EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F58D7165-0D8D-4B11-A3D7-8442FC5B0EE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F58D7165-0D8D-4B11-A3D7-8442FC5B0EE4}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

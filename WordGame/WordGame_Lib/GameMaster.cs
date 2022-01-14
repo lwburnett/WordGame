@@ -19,11 +19,11 @@ namespace WordGame_Lib
         private readonly Dictionary<ScreenId, IScreen> _idToScreenDictionary;
         private readonly SortedList<string, string> _wordDatabase;
 
-        public GameMaster()
+        public GameMaster(bool iShowMouse)
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = iShowMouse;
 
             _idToScreenDictionary = new Dictionary<ScreenId, IScreen>();
             foreach (var enumValue in Enum.GetValues(typeof(ScreenId)).Cast<ScreenId>())

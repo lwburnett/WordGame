@@ -8,7 +8,7 @@ namespace WordGame_Windows
         [STAThread]
         static void Main()
         {
-            using var game = new GameMaster();
+            using var game = new GameMaster(true);
             game.Run();
         }
     }
