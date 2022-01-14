@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace WordGame_Lib.Ui
@@ -19,15 +21,38 @@ namespace WordGame_Lib.Ui
             _textFont = GraphicsHelper.LoadContent<SpriteFont>("PrototypeFont");
         }
 
-        public UiFloatingText(Rectangle iBounds, string iText, Color iTextColor)
+        public UiFloatingText(Rectangle iBounds, string iText, Color iTextColor, float iScaling = 1.0f)
         {
-            _text = iText;
             _textColor = iTextColor;
 
             _textFont = GraphicsHelper.LoadContent<SpriteFont>("PrototypeFont");
+            _scaling = iScaling;
 
-            const float scaling = 1.0f;
-            var stringDimensions = _textFont.MeasureString(_text) * scaling;
+            var words = iText.Split(' ');
+
+            var singleLines = new List<string>();
+            var singleLineBuffer = string.Empty;
+            for (var ii = 0; ii < words.Length; ii++)
+            {
+                var thisWord = words[ii];
+                var thisLine = singleLineBuffer + thisWord;
+
+                var thisStringDimension = _textFont.MeasureString(thisLine) * _scaling;
+                if (thisStringDimension.X <= iBounds.Width) 
+                    singleLineBuffer = $"{thisLine} ";
+                else
+                {
+                    singleLines.Add(singleLineBuffer);
+                    singleLineBuffer = $"{thisWord} ";
+                }
+            }
+
+            if (singleLines.Count == 0)
+                singleLines.Add(iText);
+
+            _text = string.Join("\n", singleLines.Select(l => l.Trim()));
+
+            var stringDimensions = _textFont.MeasureString(_text) * _scaling;
 
             var left = iBounds.Left + (iBounds.Width / 2) - ((int)stringDimensions.X / 2);
             var top = iBounds.Top + (iBounds.Height / 2) - ((int)stringDimensions.Y / 2);
@@ -41,12 +66,13 @@ namespace WordGame_Lib.Ui
 
         public void Draw()
         {
-            GraphicsHelper.DrawString(_textFont, _text, _topLeft.ToVector2(), _textColor);
+            GraphicsHelper.DrawString(_textFont, _text, _topLeft.ToVector2(), _textColor, _scaling);
         }
 
         private Point _topLeft;
         private readonly string _text;
         private readonly SpriteFont _textFont;
         private readonly Color _textColor;
+        private readonly float _scaling;
     }
 }

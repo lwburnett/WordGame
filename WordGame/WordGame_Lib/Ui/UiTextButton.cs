@@ -8,11 +8,11 @@ namespace WordGame_Lib.Ui
 {
     public class UiTextButton : IUiElement
     {
-        public UiTextButton(Point iTopLeft, int iWidth, int iHeight, string iText, Action iOnClickedCallback)
+        public UiTextButton(Rectangle iBounds, string iText, Action iOnClickedCallback)
         {
-            _topLeft = iTopLeft;
-            _width = iWidth;
-            _height = iHeight;
+            _topLeft = new Point(iBounds.X, iBounds.Y);
+            _width = iBounds.Width;
+            _height = iBounds.Height;
             _text = iText;
             _disposition = Disposition.Undecided;
             _onClickedCallback = iOnClickedCallback;
@@ -68,6 +68,11 @@ namespace WordGame_Lib.Ui
             _textFont = GraphicsHelper.LoadContent<SpriteFont>("PrototypeFont");
 
             Reset();
+        }
+
+        public UiTextButton(Point iTopLeft, int iWidth, int iHeight, string iText, Action iOnClickedCallback) : 
+            this(new Rectangle(iTopLeft.X, iTopLeft.Y, iWidth, iHeight), iText, iOnClickedCallback)
+        {
         }
 
         public void Update(GameTime iGameTime)

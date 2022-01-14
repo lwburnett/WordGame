@@ -8,7 +8,7 @@ namespace WordGame_Lib
 {
     public class GamePlayInstance
     {
-        public GamePlayInstance(SortedList<string, string> iWordDatabase, Action iOnGamePlaySessionFinishedCallback)
+        public GamePlayInstance(SortedList<string, string> iWordDatabase, Action<SessionStats> iOnGamePlaySessionFinishedCallback)
         {
             _wordDatabase = iWordDatabase;
             _playSessionHasFinished = false;
@@ -35,19 +35,21 @@ namespace WordGame_Lib
 
             _notification = null;
             _secretWord = _wordDatabase.Keys[_rng.Next(_wordDatabase.Count)];
+            _numGuesses = 0;
+            _isSuccess = false;
         }
 
         public void Update(GameTime iGameTime)
         {
             if (_playSessionHasFinished)
+            {
+                _onGamePlaySessionFinishedCallback(new SessionStats(_isSuccess, _numGuesses, _secretWord, _wordDatabase[_secretWord]));
                 return;
+            }
 
             _keyboard.Update(iGameTime);
             _letterGrid.Update(iGameTime);
             _notification?.Update(iGameTime);
-
-            if (_playSessionHasFinished)
-                _onGamePlaySessionFinishedCallback();
         }
 
         public void Draw()
@@ -62,9 +64,11 @@ namespace WordGame_Lib
         private KeyboardControl _keyboard;
         private LetterGridControl _letterGrid;
         private UiFloatingText _notification;
+        private int _numGuesses;
+        private bool _isSuccess;
 
         private bool _playSessionHasFinished;
-        private readonly Action _onGamePlaySessionFinishedCallback;
+        private readonly Action<SessionStats> _onGamePlaySessionFinishedCallback;
 
         private string _secretWord;
 
@@ -127,17 +131,20 @@ namespace WordGame_Lib
                 }
             }
 
+            _numGuesses++;
             _letterGrid.OnGuessEntered(dispositionList.ToList());
             _keyboard.OnGuessEntered(currentWord, dispositionList.ToList());
 
             if (currentWord == _secretWord)
             {
                 SetNotification("Correct!!");
+                _isSuccess = true;
                 _playSessionHasFinished = true;
             }
             else if (_letterGrid.IsFinished())
             {
                 SetNotification($"Incorrect. The word was {_secretWord}");
+                _isSuccess = false;
                 _playSessionHasFinished = true;
             }
         }

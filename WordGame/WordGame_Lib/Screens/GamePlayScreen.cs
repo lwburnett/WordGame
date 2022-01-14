@@ -43,11 +43,10 @@ namespace WordGame_Lib.Screens
 
         public void Draw()
         {
-            _gamePlayInstance.Draw();
-
             switch (_subScreen)
             {
                 case SubScreen.GamePlay:
+                    _gamePlayInstance.Draw();
                     break;
                 case SubScreen.PostSessionStats:
                     _postSessionStatsScreen.Draw();
@@ -65,12 +64,13 @@ namespace WordGame_Lib.Screens
         private SubScreen _subScreen;
         private IScreen _postSessionStatsScreen;
 
-        private void OnGamePlaySessionFinished()
+        private void OnGamePlaySessionFinished(SessionStats iStats)
         {
-            // TODO Work on Post Session stats screen
-            // _subScreen = SubScreen.PostSessionStats;
-            // _postSessionStatsScreen = new PostSessionStatsScreen(OnPlayAgain, OnMainMenu);
-            // _postSessionStatsScreen.OnNavigateTo();
+            var bounds = GraphicsHelper.GamePlayArea;
+
+            _subScreen = SubScreen.PostSessionStats;
+            _postSessionStatsScreen = new PostSessionStatsScreen(bounds, iStats, OnPlayAgain, OnMainMenu);
+            _postSessionStatsScreen.OnNavigateTo();
         }
 
         private void OnMainMenu()

@@ -52,5 +52,16 @@ namespace WordGame_Lib
             public static Color CorrectHoverColor = new Color(43, 163, 8);
             public static Color CorrectPressedColor = new Color(43, 163, 8);
         }
+
+        public static class PostSessionStatsSettings
+        {
+            public const float BigMarginAsPercentage = .05f;
+            public const float MediumMarginAsPercentage = .025f;
+            public const float SmallMarginAsPercentage = .01f;
+
+            public const float HeaderHeightAsPercentage = .1f;
+            public const float SubHeaderHeightAsPercentage = .1f;
+            public static float DefinitionHeightAsPercentage = .4f;
+        }
     }
 }
