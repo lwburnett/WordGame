@@ -12,7 +12,9 @@ namespace WordDatabaseProcessor
             var chosenWords = new List<string>();
             foreach (var line in lines)
             {
-                if (line.Trim().Length == 5)
+                var pieces = line.Split('\t');
+
+                if (pieces[0].Trim().Length == 5)
                     chosenWords.Add(line.Trim());
             }
 

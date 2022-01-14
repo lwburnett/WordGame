@@ -17,7 +17,7 @@ namespace WordGame_Lib
 
         private ScreenId _currentScreenId;
         private readonly Dictionary<ScreenId, IScreen> _idToScreenDictionary;
-        private readonly OrderedUniqueList<string> _wordDatabase;
+        private readonly SortedList<string, string> _wordDatabase;
 
         public GameMaster()
         {
@@ -31,7 +31,7 @@ namespace WordGame_Lib
                 _idToScreenDictionary.Add(enumValue, null);
             }
 
-            _wordDatabase = new OrderedUniqueList<string>();
+            _wordDatabase = new SortedList<string, string>();
         }
 
         protected override void Initialize()
@@ -64,10 +64,19 @@ namespace WordGame_Lib
             GraphicsHelper.RegisterSpriteBatch(_spriteBatch);
             GraphicsHelper.RegisterGamePlayArea(gamePlayArea);
 
-            var words = File.ReadAllLines(Path.Combine(Content.RootDirectory, "WordDatabase.txt"));
-            foreach (var word in words)
+            var entries = File.ReadAllLines(Path.Combine(Content.RootDirectory, "WordDatabase.txt"));
+            foreach (var entry in entries)
             {
-                _wordDatabase.Add(word.ToUpperInvariant());
+                var pieces = entry.Split('\t');
+
+                if (pieces.Length == 2)
+                {
+                    _wordDatabase.Add(pieces[0].Trim().ToUpperInvariant(), pieces[1].Trim());
+                }
+                else
+                {
+                    Debug.Fail($"Line of dictionary breaks format: {entry}");
+                }
             }
 
             OnMainMenu();
