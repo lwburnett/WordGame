@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace WordGame_Lib
@@ -32,13 +33,12 @@ namespace WordGame_Lib
                 _elements.Add(item);
                 return;
             }
-
+            
             var lower = 0;
-            var upper = _elements.Count;
-            var ii = 0;
-            while (lower < upper)
+            var upper = _elements.Count - 1;
+            do
             {
-                ii = (int)Math.Floor((lower + upper) / 2.0f);
+                var ii = (int)Math.Floor((lower + upper) / 2.0f);
                 var thisIterationElement = _elements[ii];
                 var compareResult = item.CompareTo(thisIterationElement);
                 if (compareResult < 0)
@@ -47,17 +47,18 @@ namespace WordGame_Lib
                     lower = ii + 1;
                 else
                     throw new InvalidOperationException($"Duplicate element {item}.");
-            }
+            } while (upper > lower);
 
-            var lastIterationElement = _elements[ii];
+            lower = Math.Min(lower, upper);
+            var lastIterationElement = _elements[lower];
             var lastCompareResult = item.CompareTo(lastIterationElement);
             if (lastCompareResult < 0)
-                _elements.Insert(ii, item);
+                _elements.Insert(lower, item);
             else
             {
-                var desiredIndex = ii + 1;
+                var desiredIndex = lower + 1;
                 if (desiredIndex <= _elements.Count - 1)
-                    _elements.Insert(ii + 1, item);
+                    _elements.Insert(lower + 1, item);
                 else
                     _elements.Add(item);
             }
@@ -80,7 +81,7 @@ namespace WordGame_Lib
 
             var lower = 0;
             var upper = _elements.Count;
-            while (lower < upper)
+            while (lower <= upper)
             {
                 var ii = (int)Math.Floor((lower + upper) / 2.0f);
                 var thisIterationElement = _elements[ii];
@@ -121,7 +122,7 @@ namespace WordGame_Lib
 
             var lower = 0;
             var upper = _elements.Count;
-            while (lower < upper)
+            while (lower <= upper)
             {
                 var ii = (int)Math.Floor((lower + upper) / 2.0f);
                 var thisIterationElement = _elements[ii];
@@ -154,7 +155,7 @@ namespace WordGame_Lib
 
             var lower = 0;
             var upper = _elements.Count;
-            while (lower < upper)
+            while (lower <= upper)
             {
                 var ii = (int)Math.Floor((lower + upper) / 2.0f);
                 var thisIterationElement = _elements[ii];

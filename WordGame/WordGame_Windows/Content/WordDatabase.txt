@@ -8267,9 +8267,9 @@ lygus
 lying
 liked
 liken
+likes
 lyken
 liker
-likes
 likin
 lilac
 lilas
