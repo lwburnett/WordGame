@@ -172,6 +172,11 @@ namespace WordGame_Lib.Ui
             return _text;
         }
 
+        public Disposition GetDisposition()
+        {
+            return _disposition;
+        }
+
         public void SetDisposition(Disposition iDisposition)
         {
             _disposition = iDisposition;

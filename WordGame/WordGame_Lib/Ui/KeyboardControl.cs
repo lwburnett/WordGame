@@ -51,7 +51,17 @@ namespace WordGame_Lib.Ui
 
                 var matchingButton = _buttons.FirstOrDefault(b => b.GetText() == thisGuessChar);
                 Debug.Assert(matchingButton != null);
-                matchingButton.SetDisposition(thisDisposition);
+                var currentDisposition = matchingButton.GetDisposition();
+                if (currentDisposition == Disposition.Undecided ||
+                    currentDisposition == Disposition.Incorrect)
+                {
+                    matchingButton.SetDisposition(thisDisposition);
+                }
+                else if (currentDisposition == Disposition.Misplaced)
+                {
+                    if (thisDisposition == Disposition.Correct)
+                        matchingButton.SetDisposition(thisDisposition);
+                }
             }
         }
 
