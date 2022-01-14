@@ -7,16 +7,16 @@ namespace WordDatabaseProcessor
     {
         static void Main()
         {
-            var lines = File.ReadAllLines("C:\\Users\\Luke\\Desktop\\Dev\\WordDatabase2.txt");
+            var lines = File.ReadAllLines("C:\\Users\\Luke\\Desktop\\Dev\\WordDatabase.txt");
 
             var chosenWords = new List<string>();
             foreach (var line in lines)
             {
                 if (line.Trim().Length == 5)
-                    chosenWords.Add(line);
+                    chosenWords.Add(line.Trim());
             }
 
-            File.WriteAllLines("C:\\Users\\Luke\\Desktop\\Dev\\WordDatabase_Slimmed2.txt", chosenWords);
+            File.WriteAllLines("C:\\Users\\Luke\\Desktop\\Dev\\WordDatabase_Slimmed.txt", chosenWords);
         }
     }
 }
