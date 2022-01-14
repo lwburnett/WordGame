@@ -93,24 +93,9 @@ namespace WordGame_Lib.Ui
             return _text;
         }
 
-        public void SetDisposition(bool? iDisposition)
+        public void SetDisposition(Disposition iDisposition)
         {
-            if (iDisposition.HasValue)
-            {
-                _disposition = iDisposition.Value ? Disposition.Correct : Disposition.Misplaced;
-            }
-            else
-            {
-                _disposition = Disposition.Incorrect;
-            }
-        }
-
-        private enum Disposition
-        {
-            Undecided,
-            Incorrect,
-            Misplaced,
-            Correct
+            _disposition = iDisposition;
         }
 
         private readonly Rectangle _bounds;

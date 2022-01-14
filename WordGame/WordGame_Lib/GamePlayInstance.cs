@@ -89,14 +89,21 @@ namespace WordGame_Lib
             
 
 
-            var dispositionList = new bool?[5];
+            var dispositionList = new List<Disposition>
+            {
+                Disposition.Incorrect,
+                Disposition.Incorrect,
+                Disposition.Incorrect,
+                Disposition.Incorrect,
+                Disposition.Incorrect
+            };
             for (var ii = 0; ii < 5; ii++)
             {
                 var thisSecretLetter = _secretWord[ii];
 
                 if (thisSecretLetter == currentWord[ii])
                 {
-                    dispositionList[ii] = true;
+                    dispositionList[ii] = Disposition.Correct;
                 }
                 else
                 {
@@ -105,9 +112,9 @@ namespace WordGame_Lib
                         var thisGuessLetter = currentWord[jj];
                         if (thisSecretLetter == thisGuessLetter)
                         {
-                            if (dispositionList[jj] == null)
+                            if (dispositionList[jj] == Disposition.Incorrect)
                             {
-                                dispositionList[jj] = false;
+                                dispositionList[jj] = Disposition.Misplaced;
                                 break;
                             }
                         }
@@ -116,6 +123,7 @@ namespace WordGame_Lib
             }
 
             _letterGrid.OnGuessEntered(dispositionList.ToList());
+            _keyboard.OnGuessEntered(currentWord, dispositionList.ToList());
 
             if (currentWord == _secretWord)
             {

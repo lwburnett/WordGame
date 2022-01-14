@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib.Ui
@@ -36,6 +38,21 @@ namespace WordGame_Lib.Ui
         public void Draw()
         {
             _buttons.ForEach(b => b.Draw());
+        }
+
+        public void OnGuessEntered(string iCurrentWord, List<Disposition> iDispositions)
+        {
+            Debug.Assert(iCurrentWord.Length == iDispositions.Count);
+
+            for (var ii = 0; ii < iCurrentWord.Length; ii++)
+            {
+                var thisGuessChar = iCurrentWord[ii].ToString();
+                var thisDisposition = iDispositions[ii];
+
+                var matchingButton = _buttons.FirstOrDefault(b => b.GetText() == thisGuessChar);
+                Debug.Assert(matchingButton != null);
+                matchingButton.SetDisposition(thisDisposition);
+            }
         }
 
         private readonly Rectangle _bounds;

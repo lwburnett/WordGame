@@ -85,7 +85,7 @@ namespace WordGame_Lib.Ui
             return cells;
         }
 
-        public void OnGuessEntered(List<bool?> iDispositions)
+        public void OnGuessEntered(List<Disposition> iDispositions)
         {
             for (var ii = 0; ii < 5; ii++)
             {
