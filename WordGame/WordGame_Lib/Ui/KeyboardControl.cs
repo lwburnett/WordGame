@@ -50,17 +50,24 @@ namespace WordGame_Lib.Ui
                 var thisDisposition = iDispositions[ii];
 
                 var matchingButton = _buttons.FirstOrDefault(b => b.GetText() == thisGuessChar);
-                Debug.Assert(matchingButton != null);
-                var currentDisposition = matchingButton.GetDisposition();
-                if (currentDisposition == Disposition.Undecided ||
-                    currentDisposition == Disposition.Incorrect)
+
+                if (matchingButton != null)
                 {
-                    matchingButton.SetDisposition(thisDisposition);
-                }
-                else if (currentDisposition == Disposition.Misplaced)
-                {
-                    if (thisDisposition == Disposition.Correct)
+                    var currentDisposition = matchingButton.GetDisposition();
+                    if (currentDisposition == Disposition.Undecided ||
+                        currentDisposition == Disposition.Incorrect)
+                    {
                         matchingButton.SetDisposition(thisDisposition);
+                    }
+                    else if (currentDisposition == Disposition.Misplaced)
+                    {
+                        if (thisDisposition == Disposition.Correct)
+                            matchingButton.SetDisposition(thisDisposition);
+                    }
+                }
+                else
+                {
+                    Debug.Fail($"Couldn't find matching key for char {thisGuessChar}");
                 }
             }
         }
