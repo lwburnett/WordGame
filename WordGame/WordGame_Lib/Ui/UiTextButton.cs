@@ -32,21 +32,21 @@ namespace WordGame_Lib.Ui
             var colorData12 = new Color[dataSize];
             for (var ii = 0; ii < dataSize; ii++)
             {
-                colorData1[ii] = Color.LightGray;
-                colorData2[ii] = Color.DarkGray;
-                colorData3[ii] = Color.Gray;
+                colorData1[ii] = SettingsManager.ColorSettings.UndecidedDefaultColor;
+                colorData2[ii] = SettingsManager.ColorSettings.UndecidedHoverColor;
+                colorData3[ii] = SettingsManager.ColorSettings.UndecidedPressedColor;
 
-                colorData4[ii] = Color.Gray;
-                colorData5[ii] = new Color(115, 115, 115);
-                colorData6[ii] = new Color(99, 99, 99);
+                colorData4[ii] = SettingsManager.ColorSettings.IncorrectDefaultColor;
+                colorData5[ii] = SettingsManager.ColorSettings.IncorrectHoverColor;
+                colorData6[ii] = SettingsManager.ColorSettings.IncorrectPressedColor;
 
-                colorData7[ii] = new Color(226, 214, 67);
-                colorData8[ii] = new Color(204, 194, 71);
-                colorData9[ii] = new Color(168, 159, 48);
+                colorData7[ii] = SettingsManager.ColorSettings.MisplacedDefaultColor;
+                colorData8[ii] = SettingsManager.ColorSettings.MisplacedHoverColor;
+                colorData9[ii] = SettingsManager.ColorSettings.MisplacedPressedColor;
 
-                colorData10[ii] = new Color(48, 185, 8);
-                colorData11[ii] = new Color(43, 163, 8);
-                colorData12[ii] = new Color(38, 140, 8);
+                colorData10[ii] = SettingsManager.ColorSettings.CorrectDefaultColor;
+                colorData11[ii] = SettingsManager.ColorSettings.CorrectHoverColor;
+                colorData12[ii] = SettingsManager.ColorSettings.CorrectPressedColor;
             }
 
             _undecidedDefaultTexture = GraphicsHelper.CreateTexture(colorData1, _width, _height);
