@@ -33,9 +33,9 @@ namespace WordGame_Lib.Ui
             var colorData4 = new Color[dataSize];
             for (var ii = 0; ii < dataSize; ii++)
             {
-                colorData2[ii] = Color.Gray;
-                colorData3[ii] = Color.LightGoldenrodYellow;
-                colorData4[ii] = Color.ForestGreen;
+                colorData2[ii] = SettingsManager.ColorSettings.IncorrectDefaultColor;
+                colorData3[ii] = SettingsManager.ColorSettings.MisplacedDefaultColor;
+                colorData4[ii] = SettingsManager.ColorSettings.CorrectDefaultColor;
             }
 
             _emptyTexture = GraphicsHelper.CreateTexture(colorData1, _bounds.Width, _bounds.Height);
