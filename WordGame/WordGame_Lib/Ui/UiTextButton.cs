@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace WordGame_Lib.Ui
 {
@@ -77,24 +79,46 @@ namespace WordGame_Lib.Ui
 
         public void Update(GameTime iGameTime)
         {
-            if (IsOverlappingWithMouse(Mouse.GetState().Position))
+            if (PlatformUtilsHelper.GetIsMouseInput())
             {
-                OnOverlap();
+                if (IsOverlappingWithMouse(Mouse.GetState().Position))
+                {
+                    OnOverlap();
 
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                    OnPressed();
-                else if (Mouse.GetState().LeftButton == ButtonState.Released)
-                    OnReleased();
+                    if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                        OnPressed();
+                    else if (Mouse.GetState().LeftButton == ButtonState.Released)
+                        OnReleased();
+                }
+                else
+                {
+                    if (Mouse.GetState().LeftButton == ButtonState.Released)
+                    {
+                        Reset();
+                    }
+                    else if (Mouse.GetState().LeftButton == ButtonState.Released)
+                    {
+                        OnNotOverlap();
+                    }
+                }
             }
             else
             {
-                if (Mouse.GetState().LeftButton == ButtonState.Released)
+                var touchState = TouchPanel.GetState();
+                if (!touchState.Any())
                 {
-                    Reset();
+                    OnNoTouch();
+                    return;
                 }
-                else if (Mouse.GetState().LeftButton == ButtonState.Released)
+
+                var firstTouch = touchState[0];
+                if (IsOverlappingWithMouse(firstTouch.Position.ToPoint()))
                 {
-                    OnNotOverlap();
+                    OnOverlappingTouch();
+                }
+                else
+                {
+                    OnNotOverlappingTouch();
                 }
             }
         }
@@ -208,7 +232,6 @@ namespace WordGame_Lib.Ui
 
         private bool _isPressed;
         private bool _isOverlapped;
-
         private readonly Action _onClickedCallback;
 
         private bool IsOverlappingWithMouse(Point iPosition)
@@ -246,6 +269,25 @@ namespace WordGame_Lib.Ui
         private void OnNotOverlap()
         {
             _isOverlapped = false;
+        }
+
+        private void OnNoTouch()
+        {
+            if (_isPressed && _isOverlapped)
+                _onClickedCallback();
+
+            Reset();
+        }
+
+        private void OnOverlappingTouch()
+        {
+            _isOverlapped = true;
+            _isPressed = true;
+        }
+
+        private void OnNotOverlappingTouch()
+        {
+            Reset();
         }
     }
 }

@@ -25,7 +25,8 @@ namespace WordGame_Android
         {
             base.OnCreate(bundle);
 
-            _game = new GameMaster(false);
+            PlatformUtilsHelper.SetIsMouseInput(false);
+            _game = new GameMaster();
             _view = _game.Services.GetService(typeof(View)) as View;
 
             SetContentView(_view);

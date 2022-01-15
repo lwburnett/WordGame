@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -19,11 +20,11 @@ namespace WordGame_Lib
         private readonly Dictionary<ScreenId, IScreen> _idToScreenDictionary;
         private readonly SortedList<string, string> _wordDatabase;
 
-        public GameMaster(bool iShowMouse)
+        public GameMaster()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = iShowMouse;
+            IsMouseVisible = PlatformUtilsHelper.GetIsMouseInput();
 
             _idToScreenDictionary = new Dictionary<ScreenId, IScreen>();
             foreach (var enumValue in Enum.GetValues(typeof(ScreenId)).Cast<ScreenId>())
@@ -64,7 +65,15 @@ namespace WordGame_Lib
             GraphicsHelper.RegisterSpriteBatch(_spriteBatch);
             GraphicsHelper.RegisterGamePlayArea(gamePlayArea);
 
-            var entries = File.ReadAllLines(Path.Combine(Content.RootDirectory, "WordDatabase.txt"));
+            var entries = new List<string>();
+            using (var stream = TitleContainer.OpenStream(Path.Combine(Content.RootDirectory, "WordDatabase.txt")))
+            using (var reader = new StreamReader(stream, Encoding.ASCII))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                    entries.Add(line);
+            }
+
             foreach (var entry in entries)
             {
                 var pieces = entry.Split('\t');

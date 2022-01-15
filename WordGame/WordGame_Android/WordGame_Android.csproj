@@ -63,6 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Content.mgcb" />
+    <AndroidAsset Include="Content\PrototypeFont.spritefont">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +80,11 @@
       <Project>{E886566D-48AF-4197-933E-B313EFF5D248}</Project>
       <Name>WordGame_Lib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Content\WordDatabase.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

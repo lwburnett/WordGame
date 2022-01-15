@@ -8,7 +8,9 @@ namespace WordGame_Windows
         [STAThread]
         static void Main()
         {
-            using var game = new GameMaster(true);
+            PlatformUtilsHelper.SetIsMouseInput(true);
+
+            using var game = new GameMaster();
             game.Run();
         }
     }
