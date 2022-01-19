@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace WordDatabaseProcessor
 {
@@ -9,16 +11,31 @@ namespace WordDatabaseProcessor
         {
             var lines = File.ReadAllLines("C:\\Users\\Luke\\Desktop\\Dev\\WordDatabase.txt");
 
-            var chosenWords = new List<string>();
-            foreach (var line in lines)
+            var chosenLines = new List<string>();
+            foreach (var line in lines.Skip(3697))
             {
-                var pieces = line.Split('\t');
+                Console.WriteLine(line);
+                var character = Console.ReadKey();
 
-                if (pieces[0].Trim().Length == 5)
-                    chosenWords.Add(line.Trim());
+                if (ConsoleKey.Y == character.Key)
+                    chosenLines.Add(line);
+                else if (ConsoleKey.Q == character.Key)
+                {
+                    AppendToSecretWordList(chosenLines);
+                    return;
+                }
+
+                Console.Clear();
             }
 
-            File.WriteAllLines("C:\\Users\\Luke\\Desktop\\Dev\\WordDatabase_Slimmed.txt", chosenWords);
+            AppendToSecretWordList(chosenLines);
+        }
+
+        static void AppendToSecretWordList(IEnumerable<string> iLines)
+        {
+            var words = iLines.Select(l => l.Split('\t')[0].Trim());
+
+            File.AppendAllLines("C:\\Users\\Luke\\Desktop\\Dev\\SecretWordDatabase.txt", words);
         }
     }
 }
