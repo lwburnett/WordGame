@@ -12,12 +12,12 @@ namespace WordDatabaseProcessor
             var lines = File.ReadAllLines("C:\\Users\\Luke\\Desktop\\Dev\\WordDatabase.txt");
 
             var chosenLines = new List<string>();
-            foreach (var line in lines.Skip(5446))
+            foreach (var line in lines.Skip(7593))
             {
                 Console.WriteLine(line);
                 var character = Console.ReadKey();
 
-                if (ConsoleKey.Y == character.Key)
+                if (ConsoleKey.LeftArrow == character.Key)
                     chosenLines.Add(line);
                 else if (ConsoleKey.Q == character.Key)
                 {
