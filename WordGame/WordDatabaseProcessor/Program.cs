@@ -9,33 +9,14 @@ namespace WordDatabaseProcessor
     {
         static void Main()
         {
-            var lines = File.ReadAllLines("C:\\Users\\Luke\\Desktop\\Dev\\WordDatabase.txt");
-
-            var chosenLines = new List<string>();
-            foreach (var line in lines.Skip(12851))
+            var allWords = File.ReadAllLines("C:\\Users\\Luke\\Desktop\\Dev\\WordDatabase.txt").Select(w => w.ToUpperInvariant()).ToList();
+            var secretWords = File.ReadAllLines("C:\\Users\\Luke\\Desktop\\Dev\\SecretWordDatabase.txt").Select(w => w.ToUpperInvariant()).ToList();
+            
+            foreach (var secretWord in secretWords)
             {
-                Console.WriteLine(line);
-                var character = Console.ReadKey();
-
-                if (ConsoleKey.LeftArrow == character.Key)
-                    chosenLines.Add(line);
-                else if (ConsoleKey.Q == character.Key)
-                {
-                    AppendToSecretWordList(chosenLines);
-                    return;
-                }
-
-                Console.Clear();
+                if (!allWords.Contains(secretWord))
+                    Console.WriteLine(secretWord);
             }
-
-            AppendToSecretWordList(chosenLines);
-        }
-
-        static void AppendToSecretWordList(IEnumerable<string> iLines)
-        {
-            var words = iLines.Select(l => l.Split('\t')[0].Trim());
-
-            File.AppendAllLines("C:\\Users\\Luke\\Desktop\\Dev\\SecretWordDatabase.txt", words);
         }
     }
 }
