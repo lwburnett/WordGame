@@ -8,7 +8,6 @@ using WordGame_Lib;
 namespace WordGame_Android
 {
     [Activity(
-        Label = "@string/app_name",
         MainLauncher = true,
         Icon = "@drawable/icon",
         AlwaysRetainTaskState = true,
