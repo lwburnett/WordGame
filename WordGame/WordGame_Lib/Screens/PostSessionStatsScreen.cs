@@ -17,12 +17,12 @@ namespace WordGame_Lib.Screens
         public void OnNavigateTo()
         {
             var bigMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.BigMarginAsPercentage);
-            var mediumMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.MediumMarginAsPercentage);
+            //var mediumMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.MediumMarginAsPercentage);
             var smallMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.SmallMarginAsPercentage);
 
             var bigMarginX = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.PostSessionStatsSettings.BigMarginAsPercentage);
-            var mediumMarginX = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.PostSessionStatsSettings.MediumMarginAsPercentage);
-            var smallMarginX = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.PostSessionStatsSettings.SmallMarginAsPercentage);
+            //var mediumMarginX = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.PostSessionStatsSettings.MediumMarginAsPercentage);
+            //var smallMarginX = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.PostSessionStatsSettings.SmallMarginAsPercentage);
 
             var headerYLocation = _bounds.Y + bigMarginY;
             var headerXLocation = _bounds.X + bigMarginX;
@@ -45,13 +45,13 @@ namespace WordGame_Lib.Screens
                 1.5f);
 
             var defY = subHeaderY + subHeaderHeight + smallMarginY;
-            var defX = headerXLocation;
+            //var defX = headerXLocation;
             var defHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.DefinitionHeightAsPercentage);
-            var defWidth = headerWidth;
-            _definition = new UiFloatingText(
-                new Rectangle(defX, defY, defWidth, defHeight),
-                $"{_stats.SecretWord}: {_stats.SecretWordDefinition}",
-                Color.White);
+            //var defWidth = headerWidth;
+            // _definition = new UiFloatingText(
+            //     new Rectangle(defX, defY, defWidth, defHeight),
+            //     $"{_stats.SecretWord}: {_stats.SecretWordDefinition}",
+            //     Color.White);
 
             var mainMenuY = defY + defHeight + smallMarginY;
             var mainMenuX = headerXLocation;
@@ -76,7 +76,7 @@ namespace WordGame_Lib.Screens
         {
             _header.Update(iGameTime);
             _subHeader.Update(iGameTime);
-            _definition.Update(iGameTime);
+            //_definition.Update(iGameTime);
             _mainMenuButton.Update(iGameTime);
             _playAgainButton.Update(iGameTime);
         }
@@ -85,7 +85,7 @@ namespace WordGame_Lib.Screens
         {
             _header.Draw();
             _subHeader.Draw();
-            _definition.Draw();
+            //_definition.Draw();
             _mainMenuButton.Draw();
             _playAgainButton.Draw();
         }
@@ -97,7 +97,7 @@ namespace WordGame_Lib.Screens
 
         private UiFloatingText _header;
         private UiFloatingText _subHeader;
-        private UiFloatingText _definition;
+        //private UiFloatingText _definition;
         private UiTextButton _mainMenuButton;
         private UiTextButton _playAgainButton;
     }

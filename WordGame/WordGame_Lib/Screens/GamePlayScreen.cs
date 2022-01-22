@@ -8,7 +8,7 @@ namespace WordGame_Lib.Screens
 {
     public class GamePlayScreen : IScreen
     {
-        public GamePlayScreen(SortedList<string, string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action iOnPlayAgainCallback, Action iOnMainMenuCallback, Action iOnExitCallback)
+        public GamePlayScreen(OrderedUniqueList<string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action iOnPlayAgainCallback, Action iOnMainMenuCallback, Action iOnExitCallback)
         {
             _gamePlayInstance = new GamePlayInstance(iWordDatabase, iSecretWordDatabase, OnGamePlaySessionFinished);
             _onExitCallback = iOnExitCallback;

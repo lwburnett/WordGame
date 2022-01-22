@@ -8,7 +8,7 @@ namespace WordGame_Lib
 {
     public class GamePlayInstance
     {
-        public GamePlayInstance(SortedList<string, string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action<SessionStats> iOnGamePlaySessionFinishedCallback)
+        public GamePlayInstance(OrderedUniqueList<string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action<SessionStats> iOnGamePlaySessionFinishedCallback)
         {
             _wordDatabase = iWordDatabase;
             _secretWordDatabase = iSecretWordDatabase;
@@ -44,7 +44,7 @@ namespace WordGame_Lib
         {
             if (_playSessionHasFinished)
             {
-                _onGamePlaySessionFinishedCallback(new SessionStats(_isSuccess, _numGuesses, _secretWord, _wordDatabase[_secretWord]));
+                _onGamePlaySessionFinishedCallback(new SessionStats(_isSuccess, _numGuesses, _secretWord));
                 return;
             }
 
@@ -61,7 +61,7 @@ namespace WordGame_Lib
         }
 
         private readonly Random _rng;
-        private readonly SortedList<string, string> _wordDatabase;
+        private readonly OrderedUniqueList<string> _wordDatabase;
         private readonly OrderedUniqueList<string> _secretWordDatabase;
         private KeyboardControl _keyboard;
         private LetterGridControl _letterGrid;
@@ -98,7 +98,7 @@ namespace WordGame_Lib
                 return;
             }
             
-            if (!_wordDatabase.ContainsKey(currentWord))
+            if (!_wordDatabase.Contains(currentWord))
             {
                 SetNotification("Not a Word");
                 return;

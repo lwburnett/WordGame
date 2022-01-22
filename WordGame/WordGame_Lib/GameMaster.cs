@@ -18,8 +18,8 @@ namespace WordGame_Lib
 
         private ScreenId _currentScreenId;
         private readonly Dictionary<ScreenId, IScreen> _idToScreenDictionary;
-        private readonly SortedList<string, string> _wordDatabase;
-        private readonly OrderedUniqueList<string> _secretWordDatabase;
+        private OrderedUniqueList<string> _wordDatabase;
+        private OrderedUniqueList<string> _secretWordDatabase;
 
         public GameMaster()
         {
@@ -32,9 +32,6 @@ namespace WordGame_Lib
             {
                 _idToScreenDictionary.Add(enumValue, null);
             }
-
-            _wordDatabase = new SortedList<string, string>();
-            _secretWordDatabase = new OrderedUniqueList<string>();
         }
 
         protected override void Initialize()
@@ -67,41 +64,14 @@ namespace WordGame_Lib
             GraphicsHelper.RegisterSpriteBatch(_spriteBatch);
             GraphicsHelper.RegisterGamePlayArea(gamePlayArea);
 
-            var allWords = LoadDatabaseFromTxtFile("WordDatabase.txt");
+            _wordDatabase = LoadDatabaseFromTxtFile("WordDatabase.txt");
 
-            foreach (var entry in allWords)
-            {
-                var pieces = entry.Split('\t');
-
-                if (pieces.Length == 2)
-                {
-                    _wordDatabase.Add(pieces[0].Trim().ToUpperInvariant(), pieces[1].Trim());
-                }
-                else
-                {
-                    Debug.Fail($"Line of word database breaks format: {entry}");
-                }
-            }
-
-            var secretWords = LoadDatabaseFromTxtFile("SecretWordDatabase.txt");
-            foreach (var secretWord in secretWords)
-            {
-                var trimmedWord = secretWord.Trim();
-
-                if (trimmedWord.Length == 5)
-                {
-                    _secretWordDatabase.Add(trimmedWord);
-                }
-                else
-                {
-                    Debug.Fail($"Line of secret word database breaks format: {secretWord}");
-                }
-            }
+            _secretWordDatabase = LoadDatabaseFromTxtFile("SecretWordDatabase.txt");
 
             OnMainMenu();
         }
 
-        IEnumerable<string> LoadDatabaseFromTxtFile(string iFileName)
+        OrderedUniqueList<string> LoadDatabaseFromTxtFile(string iFileName)
         {
             var entries = new List<string>();
             using (var stream = TitleContainer.OpenStream(Path.Combine(Content.RootDirectory, iFileName)))
@@ -112,7 +82,20 @@ namespace WordGame_Lib
                     entries.Add(line);
             }
 
-            return entries;
+            var wordsToReturn = new OrderedUniqueList<string>();
+            foreach (var entry in entries)
+            {
+                if (entry.Trim().Length == 5)
+                {
+                    wordsToReturn.Add(entry.Trim().ToUpperInvariant());
+                }
+                else
+                {
+                    Debug.Fail($"Line of word database breaks format: {entry}");
+                }
+            }
+
+            return wordsToReturn;
         }
 
         protected override void Update(GameTime iGameTime)
