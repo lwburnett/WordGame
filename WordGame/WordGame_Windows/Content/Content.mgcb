@@ -20,6 +20,9 @@
 /processorParam:TextureFormat=Compressed
 /build:PrototypeFont.spritefont
 
+#begin SecretWordDatabase.txt
+/copy:SecretWordDatabase.txt
+
 #begin WordDatabase.txt
 /copy:WordDatabase.txt
 

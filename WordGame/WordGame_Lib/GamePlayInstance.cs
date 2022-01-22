@@ -8,9 +8,10 @@ namespace WordGame_Lib
 {
     public class GamePlayInstance
     {
-        public GamePlayInstance(SortedList<string, string> iWordDatabase, Action<SessionStats> iOnGamePlaySessionFinishedCallback)
+        public GamePlayInstance(SortedList<string, string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action<SessionStats> iOnGamePlaySessionFinishedCallback)
         {
             _wordDatabase = iWordDatabase;
+            _secretWordDatabase = iSecretWordDatabase;
             _playSessionHasFinished = false;
             _onGamePlaySessionFinishedCallback = iOnGamePlaySessionFinishedCallback;
             _rng = new Random();
@@ -34,7 +35,7 @@ namespace WordGame_Lib
             _letterGrid = new LetterGridControl(gridRectangle);
 
             _notification = null;
-            _secretWord = _wordDatabase.Keys[_rng.Next(_wordDatabase.Count)];
+            _secretWord = _secretWordDatabase[_rng.Next(_secretWordDatabase.Count)];
             _numGuesses = 0;
             _isSuccess = false;
         }
@@ -61,6 +62,7 @@ namespace WordGame_Lib
 
         private readonly Random _rng;
         private readonly SortedList<string, string> _wordDatabase;
+        private readonly OrderedUniqueList<string> _secretWordDatabase;
         private KeyboardControl _keyboard;
         private LetterGridControl _letterGrid;
         private UiFloatingText _notification;
