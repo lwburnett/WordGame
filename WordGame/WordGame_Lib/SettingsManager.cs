@@ -11,8 +11,8 @@ namespace WordGame_Lib
 
         public static class MainMenuSettings
         {
-            public const float ButtonWidthAsFractionOfPlayAreaWidth = .25f;
-            public const float ButtonHeightAsFractionOfPlayAreaHeight = .075f;
+            public const float ButtonWidthAsFractionOfPlayAreaWidth = .75f;
+            public const float ButtonHeightAsFractionOfPlayAreaHeight = .1f;
         }
 
         public static class GamePlaySettings
@@ -61,9 +61,9 @@ namespace WordGame_Lib
 
             public const float HeaderHeightAsPercentage = .1f;
             public const float SubHeaderHeightAsPercentage = .1f;
-            public static float DefinitionHeightAsPercentage = .4f;
-            public static float MainMenuButtonHeightAsPercentage = .1f;
-            public static float PlayAgainButtonHeightAsPercentage = .1f;
+            public const float DefinitionHeightAsPercentage = .4f;
+            public const float ButtonWidthAsPercentage = .75f;
+            public const float ButtonHeightAsPercentage = .1f;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace WordGame_Lib.Screens
         public void OnNavigateTo()
         {
             var bigMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.BigMarginAsPercentage);
-            //var mediumMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.MediumMarginAsPercentage);
+            var mediumMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.MediumMarginAsPercentage);
             var smallMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.SmallMarginAsPercentage);
 
             var bigMarginX = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.PostSessionStatsSettings.BigMarginAsPercentage);
@@ -53,19 +53,19 @@ namespace WordGame_Lib.Screens
             //     $"{_stats.SecretWord}: {_stats.SecretWordDefinition}",
             //     Color.White);
 
-            var mainMenuY = defY + defHeight + smallMarginY;
-            var mainMenuX = headerXLocation;
-            var mainMenuHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.MainMenuButtonHeightAsPercentage);
-            var mainMenuWidth = headerWidth;
+            var mainMenuWidth = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.PostSessionStatsSettings.ButtonWidthAsPercentage);
+            var mainMenuY = defY + defHeight + mediumMarginY;
+            var mainMenuX = (GraphicsHelper.GamePlayArea.Width - mainMenuWidth) / 2;
+            var mainMenuHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.ButtonHeightAsPercentage);
             _mainMenuButton = new UiTextButton(
                 new Rectangle(mainMenuX, mainMenuY, mainMenuWidth, mainMenuHeight),
                 "Main Menu",
                 _onMainMenuCallback);
 
-            var playAgainY = mainMenuY + mainMenuHeight + smallMarginY;
-            var playAgainX = headerXLocation;
-            var playAgainHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.PlayAgainButtonHeightAsPercentage);
-            var playAgainWidth = headerWidth;
+            var playAgainWidth = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.PostSessionStatsSettings.ButtonWidthAsPercentage);
+            var playAgainY = mainMenuY + mainMenuHeight + mediumMarginY;
+            var playAgainX = (GraphicsHelper.GamePlayArea.Width - playAgainWidth) / 2;
+            var playAgainHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.ButtonHeightAsPercentage);
             _playAgainButton = new UiTextButton(
                 new Rectangle(playAgainX, playAgainY, playAgainWidth, playAgainHeight),
                 "Play Again",
