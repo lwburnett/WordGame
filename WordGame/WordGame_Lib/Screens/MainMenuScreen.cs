@@ -7,9 +7,10 @@ namespace WordGame_Lib.Screens
 {
     public class MainMenuScreen : IScreen
     {
-        public MainMenuScreen(Action iOnPlayCallback, Action iOnExitCallback)
+        public MainMenuScreen(Action iOnPlayCallback, Action iOnSettingsCallback, Action iOnExitCallback)
         {
             _onPlayCallback = iOnPlayCallback;
+            _onSettingsCallback = iOnSettingsCallback;
             _onExitCallback = iOnExitCallback;
         }
 
@@ -22,12 +23,16 @@ namespace WordGame_Lib.Screens
             var buttonHeight = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.ButtonHeightAsFractionOfPlayAreaHeight);
 
             var playButtonTopLeftX = GraphicsHelper.GamePlayArea.X + (gamePlayAreaWidth - buttonWidth) / 2;
-            var playButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (gamePlayAreaHeight - 2 * buttonHeight) / 2;
+            var playButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (gamePlayAreaHeight - 4 * buttonHeight) / 2;
+
+            var settingsButtonTopLeftX = GraphicsHelper.GamePlayArea.X + (gamePlayAreaWidth - buttonWidth) / 2;
+            var settingsButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (gamePlayAreaHeight - buttonHeight) / 2;
 
             var exitButtonTopLeftX = GraphicsHelper.GamePlayArea.X + (gamePlayAreaWidth - buttonWidth) / 2;
             var exitButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (gamePlayAreaHeight + 2 * buttonHeight) / 2;
 
             _playButton = new UiTextButton(new Point(playButtonTopLeftX, playButtonTopLeftY), buttonWidth, buttonHeight, "Play", OnPlayClicked);
+            _settingsButton = new UiTextButton(new Point(settingsButtonTopLeftX, settingsButtonTopLeftY), buttonWidth, buttonHeight, "Settings", OnSettingsClicked);
             _exitButton = new UiTextButton(new Point(exitButtonTopLeftX, exitButtonTopLeftY), buttonWidth, buttonHeight, "Exit", OnExitClicked);
         }
 
@@ -37,23 +42,32 @@ namespace WordGame_Lib.Screens
                 _onExitCallback();
 
             _playButton.Update(iGameTime);
+            _settingsButton.Update(iGameTime);
             _exitButton.Update(iGameTime);
         }
 
         public void Draw()
         {
             _playButton.Draw();
+            _settingsButton.Draw();
             _exitButton.Draw();
         }
 
         private IUiElement _playButton;
+        private IUiElement _settingsButton;
         private IUiElement _exitButton;
         private readonly Action _onPlayCallback;
+        private readonly Action _onSettingsCallback;
         private readonly Action _onExitCallback;
 
         private void OnPlayClicked()
         {
             _onPlayCallback();
+        }
+
+        private void OnSettingsClicked()
+        {
+            _onSettingsCallback();
         }
 
         private void OnExitClicked()

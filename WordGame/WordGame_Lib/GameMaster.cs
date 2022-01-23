@@ -68,6 +68,8 @@ namespace WordGame_Lib
 
             _secretWordDatabase = LoadDatabaseFromTxtFile("SecretWordDatabase.txt");
 
+            GameSettingsManager.ReadSettingFromDiskAsync(Path.Combine(Content.RootDirectory, "GameSettings.txt"));
+
             OnMainMenu();
         }
 
@@ -122,13 +124,14 @@ namespace WordGame_Lib
         private enum ScreenId
         {
             MainMenu,
-            GamePlay
+            GamePlay,
+            Settings
         }
 
         private void OnMainMenu()
         {
             _currentScreenId = ScreenId.MainMenu;
-            _idToScreenDictionary[_currentScreenId] = new MainMenuScreen(OnPlayGame, OnExitGame);
+            _idToScreenDictionary[_currentScreenId] = new MainMenuScreen(OnPlayGame, OnSettings, OnExitGame);
             _idToScreenDictionary[_currentScreenId].OnNavigateTo();
         }
 
@@ -136,6 +139,13 @@ namespace WordGame_Lib
         {
             _currentScreenId = ScreenId.GamePlay;
             _idToScreenDictionary[_currentScreenId] = new GamePlayScreen(_wordDatabase, _secretWordDatabase, OnPlayGame, OnMainMenu, OnExitGame);
+            _idToScreenDictionary[_currentScreenId].OnNavigateTo();
+        }
+
+        private void OnSettings()
+        {
+            _currentScreenId = ScreenId.Settings;
+            _idToScreenDictionary[_currentScreenId] = new SettingsScreen(OnMainMenu);
             _idToScreenDictionary[_currentScreenId].OnNavigateTo();
         }
 

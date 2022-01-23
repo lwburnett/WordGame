@@ -4,6 +4,15 @@ namespace WordGame_Lib
 {
     static class SettingsManager
     {
+        public static string GameSettingsFileName = "";
+
+        public static class GeneralVisualSettings
+        {
+            public const float BigMarginAsPercentage = .05f;
+            public const float MediumMarginAsPercentage = .025f;
+            public const float SmallMarginAsPercentage = .01f;
+        }
+
         public static class GameMasterSettings
         {
             public const float TargetScreenAspectRatio = 1.778f;
@@ -55,10 +64,6 @@ namespace WordGame_Lib
 
         public static class PostSessionStatsSettings
         {
-            public const float BigMarginAsPercentage = .05f;
-            public const float MediumMarginAsPercentage = .025f;
-            public const float SmallMarginAsPercentage = .01f;
-
             public const float HeaderHeightAsPercentage = .1f;
             public const float SubHeaderHeightAsPercentage = .1f;
             public const float DefinitionHeightAsPercentage = .4f;

@@ -16,11 +16,11 @@ namespace WordGame_Lib.Screens
 
         public void OnNavigateTo()
         {
-            var bigMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.BigMarginAsPercentage);
-            var mediumMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.MediumMarginAsPercentage);
-            var smallMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.PostSessionStatsSettings.SmallMarginAsPercentage);
+            var bigMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GeneralVisualSettings.BigMarginAsPercentage);
+            var mediumMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GeneralVisualSettings.MediumMarginAsPercentage);
+            var smallMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GeneralVisualSettings.SmallMarginAsPercentage);
 
-            var bigMarginX = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.PostSessionStatsSettings.BigMarginAsPercentage);
+            var bigMarginX = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.BigMarginAsPercentage);
             //var mediumMarginX = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.PostSessionStatsSettings.MediumMarginAsPercentage);
             //var smallMarginX = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.PostSessionStatsSettings.SmallMarginAsPercentage);
 
