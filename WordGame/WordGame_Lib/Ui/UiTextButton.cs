@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Input.Touch;
 
 namespace WordGame_Lib.Ui
 {
     public class UiTextButton : UiButtonBase
     {
         public UiTextButton(Rectangle iBounds, string iText, Action iOnClickedCallback) :
-            base(iBounds, iOnClickedCallback)
+            base(iOnClickedCallback)
         {
+            Bounds = iBounds;
+
             _text = iText;
             _disposition = Disposition.Undecided;
 
-            var dataSize = Bounds.Width * Bounds.Height;
+            var dataSize = iBounds.Width * iBounds.Height;
             var colorData1 = new Color[dataSize];
             var colorData2 = new Color[dataSize];
             var colorData3 = new Color[dataSize];
@@ -48,21 +47,21 @@ namespace WordGame_Lib.Ui
                 colorData12[ii] = SettingsManager.ColorSettings.CorrectPressedColor;
             }
 
-            _undecidedDefaultTexture = GraphicsHelper.CreateTexture(colorData1, Bounds.Width, Bounds.Height);
-            _undecidedOverLapTexture = GraphicsHelper.CreateTexture(colorData2, Bounds.Width, Bounds.Height);
-            _undecidedPressedTexture = GraphicsHelper.CreateTexture(colorData3, Bounds.Width, Bounds.Height);
+            _undecidedDefaultTexture = GraphicsHelper.CreateTexture(colorData1, iBounds.Width, iBounds.Height);
+            _undecidedOverLapTexture = GraphicsHelper.CreateTexture(colorData2, iBounds.Width, iBounds.Height);
+            _undecidedPressedTexture = GraphicsHelper.CreateTexture(colorData3, iBounds.Width, iBounds.Height);
 
-            _incorrectDefaultTexture = GraphicsHelper.CreateTexture(colorData4, Bounds.Width, Bounds.Height);
-            _incorrectOverLapTexture = GraphicsHelper.CreateTexture(colorData5, Bounds.Width, Bounds.Height);
-            _incorrectPressedTexture = GraphicsHelper.CreateTexture(colorData6, Bounds.Width, Bounds.Height);
+            _incorrectDefaultTexture = GraphicsHelper.CreateTexture(colorData4, iBounds.Width, iBounds.Height);
+            _incorrectOverLapTexture = GraphicsHelper.CreateTexture(colorData5, iBounds.Width, iBounds.Height);
+            _incorrectPressedTexture = GraphicsHelper.CreateTexture(colorData6, iBounds.Width, iBounds.Height);
 
-            _misplacedDefaultTexture = GraphicsHelper.CreateTexture(colorData7, Bounds.Width, Bounds.Height);
-            _misplacedOverLapTexture = GraphicsHelper.CreateTexture(colorData8, Bounds.Width, Bounds.Height);
-            _misplacedPressedTexture = GraphicsHelper.CreateTexture(colorData9, Bounds.Width, Bounds.Height);
+            _misplacedDefaultTexture = GraphicsHelper.CreateTexture(colorData7, iBounds.Width, iBounds.Height);
+            _misplacedOverLapTexture = GraphicsHelper.CreateTexture(colorData8, iBounds.Width, iBounds.Height);
+            _misplacedPressedTexture = GraphicsHelper.CreateTexture(colorData9, iBounds.Width, iBounds.Height);
 
-            _correctDefaultTexture = GraphicsHelper.CreateTexture(colorData10, Bounds.Width, Bounds.Height);
-            _correctOverLapTexture = GraphicsHelper.CreateTexture(colorData11, Bounds.Width, Bounds.Height);
-            _correctPressedTexture = GraphicsHelper.CreateTexture(colorData12, Bounds.Width, Bounds.Height);
+            _correctDefaultTexture = GraphicsHelper.CreateTexture(colorData10, iBounds.Width, iBounds.Height);
+            _correctOverLapTexture = GraphicsHelper.CreateTexture(colorData11, iBounds.Width, iBounds.Height);
+            _correctPressedTexture = GraphicsHelper.CreateTexture(colorData12, iBounds.Width, iBounds.Height);
 
             _textFont = GraphicsHelper.LoadContent<SpriteFont>("PrototypeFont");
         }
@@ -95,6 +94,8 @@ namespace WordGame_Lib.Ui
         {
             _disposition = iDisposition;
         }
+
+        protected override Rectangle Bounds { get; }
 
         protected override Texture2D GetDefaultTexture()
         {

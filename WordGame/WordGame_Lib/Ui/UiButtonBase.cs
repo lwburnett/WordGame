@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,9 +9,8 @@ namespace WordGame_Lib.Ui
 {
     public abstract class UiButtonBase : IUiElement
     {
-        protected UiButtonBase(Rectangle iBounds, Action iOnClickedCallback)
+        protected UiButtonBase(Action iOnClickedCallback)
         {
-            Bounds = iBounds;
             _onClickedCallback = iOnClickedCallback;
         }
 
@@ -64,8 +62,11 @@ namespace WordGame_Lib.Ui
 
         public virtual void Draw()
         {
-            void DoDraw(Texture2D iTexture) =>
-            GraphicsHelper.DrawTexture(iTexture, new Vector2(Bounds.X, Bounds.Y));
+            void DoDraw(Texture2D iTexture)
+            {
+                if (iTexture != null)
+                    GraphicsHelper.DrawTexture(iTexture, new Vector2(Bounds.X, Bounds.Y));
+            }
 
             if (!_isOverlapped && !_isPressed)
             {
@@ -81,7 +82,7 @@ namespace WordGame_Lib.Ui
             }
         }
 
-        protected Rectangle Bounds { get; }
+        protected abstract Rectangle Bounds { get; }
         protected abstract Texture2D GetDefaultTexture();
         protected abstract Texture2D GetHoverTexture();
         protected abstract Texture2D GetPressedTexture();

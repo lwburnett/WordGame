@@ -35,9 +35,13 @@ namespace WordGame_Lib.Screens
             var exitButtonTopLeftX = GraphicsHelper.GamePlayArea.X + (gamePlayAreaWidth - buttonWidth) / 2;
             var exitButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (gamePlayAreaHeight + 2 * buttonHeight) / 2;
 
-            _playButton = new UiTextButton(new Point(playButtonTopLeftX, playButtonTopLeftY), buttonWidth, buttonHeight, "Play", OnPlayClicked);
-            _settingsButton = new UiTextButton(new Point(settingsButtonTopLeftX, settingsButtonTopLeftY), buttonWidth, buttonHeight, "Settings", OnSettingsClicked);
-            _exitButton = new UiTextButton(new Point(exitButtonTopLeftX, exitButtonTopLeftY), buttonWidth, buttonHeight, "Exit", OnExitClicked);
+            // _playButton = new UiTextButton(new Point(playButtonTopLeftX, playButtonTopLeftY), buttonWidth, buttonHeight, "Play", OnPlayClicked);
+            // _settingsButton = new UiTextButton(new Point(settingsButtonTopLeftX, settingsButtonTopLeftY), buttonWidth, buttonHeight, "Settings", OnSettingsClicked);
+            // _exitButton = new UiTextButton(new Point(exitButtonTopLeftX, exitButtonTopLeftY), buttonWidth, buttonHeight, "Exit", OnExitClicked);
+
+            _playButton = new UiMenuNeonButton(new Rectangle(playButtonTopLeftX, playButtonTopLeftY, buttonWidth, buttonHeight), "PLAY" ,OnPlayClicked);
+            _settingsButton = new UiMenuNeonButton(new Rectangle(settingsButtonTopLeftX, settingsButtonTopLeftY, buttonWidth, buttonHeight), "SETTINGS", OnSettingsClicked);
+            _exitButton = new UiMenuNeonButton(new Rectangle(exitButtonTopLeftX, exitButtonTopLeftY, buttonWidth, buttonHeight), "EXIT", OnExitClicked);
         }
 
         public void Update(GameTime iGameTime)
