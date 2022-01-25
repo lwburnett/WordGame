@@ -15,6 +15,7 @@ namespace WordGame_Lib
 
         public static class GameMasterSettings
         {
+            // 16:9
             public const float TargetScreenAspectRatio = 1.778f;
         }
 

@@ -115,10 +115,9 @@ namespace WordGame_Lib
         protected override void Draw(GameTime iGameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
-            _spriteBatch.Begin();
+            
             _idToScreenDictionary[_currentScreenId].Draw();
-            _spriteBatch.End();
+            GraphicsHelper.Flush();
 
             base.Draw(iGameTime);
         }

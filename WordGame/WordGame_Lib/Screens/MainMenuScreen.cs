@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using WordGame_Lib.Ui;
 
@@ -16,6 +17,8 @@ namespace WordGame_Lib.Screens
 
         public void OnNavigateTo()
         {
+            _background = GraphicsHelper.LoadContent<Texture2D>("Bricks1");
+
             var gamePlayAreaWidth = GraphicsHelper.GamePlayArea.Width;
             var gamePlayAreaHeight = GraphicsHelper.GamePlayArea.Height;
             
@@ -48,11 +51,13 @@ namespace WordGame_Lib.Screens
 
         public void Draw()
         {
+            GraphicsHelper.DrawTexture(_background, Vector2.Zero);
             _playButton.Draw();
             _settingsButton.Draw();
             _exitButton.Draw();
         }
 
+        private Texture2D _background;
         private IUiElement _playButton;
         private IUiElement _settingsButton;
         private IUiElement _exitButton;

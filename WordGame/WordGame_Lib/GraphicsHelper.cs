@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,6 +9,11 @@ namespace WordGame_Lib
 {
     public static class GraphicsHelper
     {
+        static GraphicsHelper()
+        {
+            ThisIterationDrawPlans = new List<DrawPlan>();
+        }
+
         public static Texture2D CreateTexture(Color[] iColorData, int iWidth, int iHeight)
         {
             Debug.Assert(sGraphicsDevice != null);
@@ -23,16 +30,51 @@ namespace WordGame_Lib
             return sContentManager.Load<T>(iContentName);
         }
 
-        public static void DrawTexture(Texture2D iTexture, Vector2 iPosition)
+        public static void DrawTexture(Texture2D iTexture, Vector2 iPosition, Effect iEffect = null)
         {
             Debug.Assert(sSpriteBatch != null);
-            sSpriteBatch.Draw(iTexture, iPosition, Color.White);
+            ThisIterationDrawPlans.Add(new DrawPlan(() => sSpriteBatch.Draw(iTexture, iPosition, Color.White), iEffect));
         }
 
         public static void DrawString(SpriteFont iFont, string iText, Vector2 iPosition, Color iColor, float iScaling = 1.0f)
         {
             Debug.Assert(sSpriteBatch != null);
-            sSpriteBatch.DrawString(iFont, iText, iPosition, iColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
+            ThisIterationDrawPlans.Add(new DrawPlan(
+                () => sSpriteBatch.DrawString(iFont, iText, iPosition, iColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f), 
+                    null));
+        }
+
+        public static void Flush()
+        {
+            var inSpriteBatch = false;
+            foreach (var drawPlan in ThisIterationDrawPlans)
+            {
+                if (drawPlan.DrawEffect == null)
+                {
+                    if (!inSpriteBatch)
+                    {
+                        sSpriteBatch.Begin();
+                        inSpriteBatch = true;
+                    }
+                    drawPlan.DrawAction();
+                }
+                else
+                {
+                    if (inSpriteBatch)
+                    {
+                        sSpriteBatch.End();
+                    }
+                    sSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, effect: drawPlan.DrawEffect);
+                    drawPlan.DrawAction();
+                    sSpriteBatch.End();
+                    inSpriteBatch = false;
+                }
+            }
+
+            if (inSpriteBatch)
+                sSpriteBatch.End();
+
+            ThisIterationDrawPlans.Clear();
         }
 
         public static Rectangle GamePlayArea
@@ -73,5 +115,19 @@ namespace WordGame_Lib
         private static GraphicsDevice sGraphicsDevice;
         private static SpriteBatch sSpriteBatch;
         private static ContentManager sContentManager;
+
+        private static readonly List<DrawPlan> ThisIterationDrawPlans;
+
+        private class DrawPlan
+        {
+            public DrawPlan(Action iDrawAction, Effect iEffect)
+            {
+                DrawAction = iDrawAction;
+                DrawEffect = iEffect;
+            }
+
+            public Action DrawAction { get; }
+            public Effect DrawEffect { get; }
+        }
     }
 }
