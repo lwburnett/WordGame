@@ -31,6 +31,13 @@
 /processorParam:DebugMode=Auto
 /build:BrickShader.fx
 
+#begin NeonFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:NeonFont.spritefont
+
 #begin PrototypeFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

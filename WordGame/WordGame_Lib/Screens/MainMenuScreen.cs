@@ -17,7 +17,8 @@ namespace WordGame_Lib.Screens
 
         public void OnNavigateTo()
         {
-            _background = GraphicsHelper.LoadContent<Texture2D>("Bricks1");
+            _backgroundTexture = GraphicsHelper.LoadContent<Texture2D>("Bricks1");
+            _backgroundEffect = GraphicsHelper.LoadContent<Effect>("BrickShader");
 
             var gamePlayAreaWidth = GraphicsHelper.GamePlayArea.Width;
             var gamePlayAreaHeight = GraphicsHelper.GamePlayArea.Height;
@@ -51,13 +52,14 @@ namespace WordGame_Lib.Screens
 
         public void Draw()
         {
-            GraphicsHelper.DrawTexture(_background, Vector2.Zero);
+            GraphicsHelper.DrawTexture(_backgroundTexture, Vector2.Zero, _backgroundEffect);
             _playButton.Draw();
             _settingsButton.Draw();
             _exitButton.Draw();
         }
 
-        private Texture2D _background;
+        private Texture2D _backgroundTexture;
+        private Effect _backgroundEffect;
         private IUiElement _playButton;
         private IUiElement _settingsButton;
         private IUiElement _exitButton;
