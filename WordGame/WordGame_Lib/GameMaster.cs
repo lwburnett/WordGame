@@ -48,7 +48,7 @@ namespace WordGame_Lib
             }
             else
             {
-                // dumb little fix for windows so the bottom doesn't get cut off
+                // The .95 is a dumb little fix for windows so the bottom doesn't get cut off
                 _graphics.PreferredBackBufferHeight = (int)(height * .95f);
                 _graphics.PreferredBackBufferWidth = (int)(height / _aspectRatioOverride.Value);
                 _graphics.IsFullScreen = false;
@@ -88,7 +88,7 @@ namespace WordGame_Lib
             OnMainMenu();
         }
 
-        OrderedUniqueList<string> LoadDatabaseFromTxtFile(string iFileName)
+        private OrderedUniqueList<string> LoadDatabaseFromTxtFile(string iFileName)
         {
             var entries = new List<string>();
             using (var stream = TitleContainer.OpenStream(Path.Combine(Content.RootDirectory, iFileName)))
