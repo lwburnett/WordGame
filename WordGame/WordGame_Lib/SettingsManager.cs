@@ -13,12 +13,6 @@ namespace WordGame_Lib
             public const float SmallMarginAsPercentage = .01f;
         }
 
-        public static class GameMasterSettings
-        {
-            // 16:9
-            public const float TargetScreenAspectRatio = 1.778f;
-        }
-
         public static class MainMenuSettings
         {
             public const float ButtonWidthAsFractionOfPlayAreaWidth = .75f;

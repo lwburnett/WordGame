@@ -70,6 +70,8 @@
     <AndroidAsset Include="Content\PrototypeFont.spritefont">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidAsset>
+    <None Include="Content\NeonFont.spritefont" />
+    <None Include="Content\NeonFont.ttf" />
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -95,7 +97,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidAsset>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Content\Bricks1.png" />
+    <Content Include="Content\BrickShader.fx" />
+  </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Data\GameSettings.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

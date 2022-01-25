@@ -14,7 +14,8 @@ namespace WordGame_Windows
 
             FileManager.RegisterBaseDirectory(AppDomain.CurrentDomain.BaseDirectory);
 
-            using var game = new GameMaster();
+            // Specifying 16:9 aspect ratio so th we don't full screen on windows
+            using var game = new GameMaster(1.778f);
             game.Run();
         }
     }

@@ -52,7 +52,7 @@ namespace WordGame_Lib.Screens
 
         public void Draw()
         {
-            GraphicsHelper.DrawTexture(_backgroundTexture, Vector2.Zero, _backgroundEffect);
+            GraphicsHelper.DrawTexture(_backgroundTexture, GraphicsHelper.GamePlayArea, _backgroundEffect);
             _playButton.Draw();
             _settingsButton.Draw();
             _exitButton.Draw();

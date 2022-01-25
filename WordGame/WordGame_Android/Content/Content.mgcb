@@ -13,6 +13,31 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Bricks1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Bricks1.png
+
+#begin BrickShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:BrickShader.fx
+
+#begin NeonFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:NeonFont.spritefont
+
 #begin PrototypeFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

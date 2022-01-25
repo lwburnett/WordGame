@@ -20,8 +20,9 @@ namespace WordGame_Lib
         private readonly Dictionary<ScreenId, IScreen> _idToScreenDictionary;
         private OrderedUniqueList<string> _wordDatabase;
         private OrderedUniqueList<string> _secretWordDatabase;
+        private float? _aspectRatioOverride;
 
-        public GameMaster()
+        public GameMaster(float? iAspectRatioOverride = null)
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -32,14 +33,26 @@ namespace WordGame_Lib
             {
                 _idToScreenDictionary.Add(enumValue, null);
             }
+
+            _aspectRatioOverride = iAspectRatioOverride;
         }
 
         protected override void Initialize()
         {
-            var height = GraphicsDevice.DisplayMode.Height * .95f;
-            _graphics.PreferredBackBufferHeight = (int)height;
-            _graphics.PreferredBackBufferWidth = (int)(height / SettingsManager.GameMasterSettings.TargetScreenAspectRatio);
-            _graphics.IsFullScreen = false;
+            var height = GraphicsDevice.DisplayMode.Height;
+            if (!_aspectRatioOverride.HasValue)
+            {
+                _graphics.PreferredBackBufferHeight = height;
+                _graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+                _graphics.IsFullScreen = true;
+            }
+            else
+            {
+                // dumb little fix for windows so the bottom doesn't get cut off
+                _graphics.PreferredBackBufferHeight = (int)(height * .95f);
+                _graphics.PreferredBackBufferWidth = (int)(height / _aspectRatioOverride.Value);
+                _graphics.IsFullScreen = false;
+            }
             _graphics.ApplyChanges();
 
             base.Initialize();
@@ -52,7 +65,7 @@ namespace WordGame_Lib
             var windowHeight = Window.ClientBounds.Height;
             var windowWidth = Window.ClientBounds.Width;
 
-            var chosenWidth = (int)(windowHeight / SettingsManager.GameMasterSettings.TargetScreenAspectRatio);
+            var chosenWidth = _aspectRatioOverride.HasValue ? (int)(windowHeight / _aspectRatioOverride.Value) : GraphicsDevice.DisplayMode.Width;
             var chosenHeight = windowHeight;
 
             var topLeftGamePlayAreaX = (int)((windowWidth / 2.0f) - (chosenWidth / 2.0f));

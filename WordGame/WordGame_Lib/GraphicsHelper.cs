@@ -36,6 +36,18 @@ namespace WordGame_Lib
             ThisIterationDrawPlans.Add(new DrawPlan(() => sSpriteBatch.Draw(iTexture, iPosition, Color.White), iEffect));
         }
 
+        public static void DrawTexture(Texture2D iTexture, Rectangle iTargetBounds, Effect iEffect = null)
+        {
+            Debug.Assert(sSpriteBatch != null);
+            ThisIterationDrawPlans.Add(
+                new DrawPlan(() => sSpriteBatch.Draw(
+                        iTexture,
+                        iTargetBounds,
+                        new Rectangle(iTargetBounds.X, iTargetBounds.Y, iTexture.Width, iTexture.Height),
+                        Color.White), 
+                    iEffect));
+        }
+
         public static void DrawString(SpriteFont iFont, string iText, Vector2 iPosition, Color iColor, float iScaling = 1.0f)
         {
             Debug.Assert(sSpriteBatch != null);
