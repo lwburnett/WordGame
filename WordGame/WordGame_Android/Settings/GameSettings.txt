@@ -1,0 +1,1 @@
+AlternateKeyColorScheme, False

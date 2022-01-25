@@ -77,6 +77,9 @@ namespace WordGame_Lib
             public const float SettingsListHeightAsPercentage = .6f;
             public const float SaveButtonWidthAsPercentage = .75f;
             public const float SaveButtonHeightAsPercentage = .1f;
+            public const float LabelColumnWidthAsPercent = .75f;
+            public const float SettingColumnWidthAsPercent = .2f;
+            public const float IndividualSettingRowHeightAsPercent = .1666f;
         }
     }
 }

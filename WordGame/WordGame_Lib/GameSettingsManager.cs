@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,7 +13,9 @@ namespace WordGame_Lib
     {
         static GameSettingsManager()
         {
-            ReadWriteLock = new object();
+            sHasRegisteredFilePath = false;
+            PropertyReadWriteLock = new object();
+            FileReadWriteLock = new object();
             sHaveLoadedFromDisk = false;
             sGameSettings = new GameSettings();
         }
@@ -21,25 +24,37 @@ namespace WordGame_Lib
         {
             get
             {
-                lock (ReadWriteLock)
+                lock (PropertyReadWriteLock)
                 {
                     return sGameSettings.DeepCopy();
                 }
             }
             private set
             {
-                lock (ReadWriteLock)
+                lock (PropertyReadWriteLock)
                 {
                     sGameSettings = value;
                 }
             }
         }
 
-        public static void ReadSettingFromDiskAsync(string iFilePath)
+        public static void RegisterFilePath(string iFilePath)
+        {
+            Debug.Assert(!sHasRegisteredFilePath, "Already registered a file path!");
+            Debug.Assert(!string.IsNullOrWhiteSpace(iFilePath), "Invalid file path given.");
+
+            lock (FileReadWriteLock)
+            {
+                sSettingsFilePath = iFilePath;
+            }
+            sHasRegisteredFilePath = true;
+        }
+
+        public static void ReadSettingFromDiskAsync()
         {
             if (!sHaveLoadedFromDisk)
             {
-                Task.Run(() => DoReadSettings(iFilePath));
+                Task.Run(DoReadSettings);
 
                 sHaveLoadedFromDisk = true;
             }
@@ -49,51 +64,111 @@ namespace WordGame_Lib
             }
         }
 
-        private static readonly object ReadWriteLock;
+        public static void UpdateSettings(GameSettings iSettings)
+        {
+            Settings = iSettings;
+        }
+
+        public static void WriteSettingsToDiskAsync()
+        {
+            Task.Run(DoWriteSettings);
+        }
+
+        private static string sSettingsFilePath;
+        private static bool sHasRegisteredFilePath;
+
+        private static readonly object PropertyReadWriteLock;
+        private static readonly object FileReadWriteLock;
         private static bool sHaveLoadedFromDisk;
         private static GameSettings sGameSettings;
 
-        private static void DoReadSettings(string iFilePath)
+        private static void DoReadSettings()
         {
-            var lines = new List<string>();
-            using (var stream = TitleContainer.OpenStream(iFilePath))
-            using (var reader = new StreamReader(stream, Encoding.ASCII))
+            try
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                    lines.Add(line);
-            }
-
-            if (lines.Any())
-            {
-                var alternateKeyColorScheme = false;
-                foreach (var line in lines)
+                var lines = new List<string>();
+                lock (FileReadWriteLock)
                 {
-                    var pieces = line.Split(',').Select(p => p.Trim()).ToList();
-
-                    if (pieces.Count != 2)
+                    if (FileManager.TryOpenStreamReadSafe(sSettingsFilePath, out var stream))
                     {
-                        Debug.Fail($"Invalid line in settings file: {line}");
-                        continue;
-                    }
-
-                    switch (pieces[0])
-                    {
-                        case nameof(GameSettings.AlternateKeyColorScheme):
-                            var success = bool.TryParse(pieces[0], out alternateKeyColorScheme);
-                            Debug.Assert(success, $"Failed to read value of line: {line}");
-                            break;
-                        default:
-                            Debug.Fail($"Unknown settings key {pieces[0]}");
-                            break;
+                        using (stream)
+                        using (var reader = new StreamReader(stream, Encoding.ASCII))
+                        {
+                            string line;
+                            while ((line = reader.ReadLine()) != null)
+                                lines.Add(line);
+                        }
                     }
                 }
 
-                Settings = new GameSettings(alternateKeyColorScheme);
+                if (lines.Any())
+                {
+                    var alternateKeyColorScheme = false;
+                    foreach (var line in lines)
+                    {
+                        var pieces = line.Split(',').Select(p => p.Trim()).ToList();
+
+                        if (pieces.Count != 2)
+                        {
+                            Debug.Fail($"Invalid line in settings file: {line}");
+                            continue;
+                        }
+
+                        switch (pieces[0])
+                        {
+                            case nameof(GameSettings.AlternateKeyColorScheme):
+                                var success = bool.TryParse(pieces[1], out alternateKeyColorScheme);
+                                Debug.Assert(success, $"Failed to read value of line: {line}");
+                                break;
+                            default:
+                                Debug.Fail($"Unknown settings key {pieces[0]}");
+                                break;
+                        }
+                    }
+
+                    Settings = new GameSettings(alternateKeyColorScheme);
+                }
+                else
+                {
+                    Settings = new GameSettings();
+                    DoWriteSettings();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Settings = new GameSettings();
+                Debug.Fail(ex.Message);
+            }
+        }
+
+        private static void DoWriteSettings()
+        {
+            try
+            {
+                var settings = Settings.DeepCopy();
+
+                var lines = new List<string>
+                {
+                    $"{nameof(settings.AlternateKeyColorScheme)}, {settings.AlternateKeyColorScheme}"
+                };
+
+                lock (FileReadWriteLock)
+                {
+                    if (FileManager.TryOpenStreamWriteSafe(sSettingsFilePath, out var stream))
+                    {
+                        using (stream)
+                        using (var writer = new StreamWriter(stream, Encoding.ASCII))
+                        {
+                            foreach (var line in lines)
+                            {
+                                writer.WriteLineAsync(line).Wait();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.Message);
             }
         }
     }

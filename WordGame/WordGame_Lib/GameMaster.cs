@@ -67,8 +67,10 @@ namespace WordGame_Lib
             _wordDatabase = LoadDatabaseFromTxtFile("WordDatabase.txt");
 
             _secretWordDatabase = LoadDatabaseFromTxtFile("SecretWordDatabase.txt");
+            
+            GameSettingsManager.RegisterFilePath(Path.Combine("Settings", "GameSettings.txt"));
 
-            GameSettingsManager.ReadSettingFromDiskAsync(Path.Combine(Content.RootDirectory, "GameSettings.txt"));
+            GameSettingsManager.ReadSettingFromDiskAsync();
 
             OnMainMenu();
         }
