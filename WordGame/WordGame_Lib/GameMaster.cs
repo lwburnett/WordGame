@@ -20,7 +20,7 @@ namespace WordGame_Lib
         private readonly Dictionary<ScreenId, IScreen> _idToScreenDictionary;
         private OrderedUniqueList<string> _wordDatabase;
         private OrderedUniqueList<string> _secretWordDatabase;
-        private float? _aspectRatioOverride;
+        private readonly float? _aspectRatioOverride;
 
         public GameMaster(float? iAspectRatioOverride = null)
         {
