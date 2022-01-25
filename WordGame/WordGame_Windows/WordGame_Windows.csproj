@@ -31,10 +31,10 @@
     <ProjectReference Include="..\WordGame_Lib\WordGame_Lib.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Settings\" />
+    <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Settings\GameSettings.txt">
+    <None Update="Data\GameSettings.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
