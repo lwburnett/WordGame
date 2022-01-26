@@ -4,8 +4,6 @@ namespace WordGame_Lib
 {
     static class SettingsManager
     {
-        public static string GameSettingsFileName = "";
-
         public static class GeneralVisualSettings
         {
             public const float BigMarginAsPercentage = .05f;
@@ -16,7 +14,11 @@ namespace WordGame_Lib
         public static class MainMenuSettings
         {
             public const float ButtonWidthAsFractionOfPlayAreaWidth = .75f;
-            public const float ButtonHeightAsFractionOfPlayAreaHeight = .1f;
+            public const float ButtonHeightAsFractionOfPlayAreaHeight = .075f;
+
+            public static Color StartButtonColor = Color.LightGreen;
+            public static Color SettingsButtonColor = Color.MonoGameOrange;
+            public static Color ExitButtonColor = Color.IndianRed;
         }
 
         public static class GamePlaySettings

@@ -48,11 +48,15 @@ namespace WordGame_Lib
                     iEffect));
         }
 
-        public static void DrawString(SpriteFont iFont, string iText, Vector2 iPosition, Color iColor, float iScaling = 1.0f)
+        public static void DrawString(SpriteFont iFont, string iText, Vector2 iPosition, Color iColor, float iScaling = 1.0f, float iSpacing = 0.0f)
         {
             Debug.Assert(sSpriteBatch != null);
             ThisIterationDrawPlans.Add(new DrawPlan(
-                () => sSpriteBatch.DrawString(iFont, iText, iPosition, iColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f), 
+                () =>
+                {
+                    iFont.Spacing = iSpacing;
+                    sSpriteBatch.DrawString(iFont, iText, iPosition, iColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
+                }, 
                     null));
         }
 
