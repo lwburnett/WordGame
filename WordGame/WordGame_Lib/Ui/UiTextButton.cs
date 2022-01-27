@@ -47,13 +47,26 @@ namespace WordGame_Lib.Ui
                 colorData12[ii] = SettingsManager.ColorSettings.CorrectPressedColor;
             }
 
-            _undecidedDefaultTexture = GraphicsHelper.CreateTexture(colorData1, iBounds.Width, iBounds.Height);
-            _undecidedOverLapTexture = GraphicsHelper.CreateTexture(colorData2, iBounds.Width, iBounds.Height);
-            _undecidedPressedTexture = GraphicsHelper.CreateTexture(colorData3, iBounds.Width, iBounds.Height);
+            if (!GameSettingsManager.Settings.AlternateKeyColorScheme)
+            {
+                _undecidedDefaultTexture = GraphicsHelper.CreateTexture(colorData1, iBounds.Width, iBounds.Height);
+                _undecidedOverLapTexture = GraphicsHelper.CreateTexture(colorData2, iBounds.Width, iBounds.Height);
+                _undecidedPressedTexture = GraphicsHelper.CreateTexture(colorData3, iBounds.Width, iBounds.Height);
 
-            _incorrectDefaultTexture = GraphicsHelper.CreateTexture(colorData4, iBounds.Width, iBounds.Height);
-            _incorrectOverLapTexture = GraphicsHelper.CreateTexture(colorData5, iBounds.Width, iBounds.Height);
-            _incorrectPressedTexture = GraphicsHelper.CreateTexture(colorData6, iBounds.Width, iBounds.Height);
+                _incorrectDefaultTexture = GraphicsHelper.CreateTexture(colorData4, iBounds.Width, iBounds.Height);
+                _incorrectOverLapTexture = GraphicsHelper.CreateTexture(colorData5, iBounds.Width, iBounds.Height);
+                _incorrectPressedTexture = GraphicsHelper.CreateTexture(colorData6, iBounds.Width, iBounds.Height);
+            }
+            else
+            {
+                _undecidedDefaultTexture = GraphicsHelper.CreateTexture(colorData4, iBounds.Width, iBounds.Height);
+                _undecidedOverLapTexture = GraphicsHelper.CreateTexture(colorData5, iBounds.Width, iBounds.Height);
+                _undecidedPressedTexture = GraphicsHelper.CreateTexture(colorData6, iBounds.Width, iBounds.Height);
+
+                _incorrectDefaultTexture = GraphicsHelper.CreateTexture(colorData1, iBounds.Width, iBounds.Height);
+                _incorrectOverLapTexture = GraphicsHelper.CreateTexture(colorData2, iBounds.Width, iBounds.Height);
+                _incorrectPressedTexture = GraphicsHelper.CreateTexture(colorData3, iBounds.Width, iBounds.Height);
+            }
 
             _misplacedDefaultTexture = GraphicsHelper.CreateTexture(colorData7, iBounds.Width, iBounds.Height);
             _misplacedOverLapTexture = GraphicsHelper.CreateTexture(colorData8, iBounds.Width, iBounds.Height);

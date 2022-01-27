@@ -28,6 +28,7 @@ struct VertexShaderOutput
 	float2 TextureCoordinates : TEXCOORD0;
 };
 
+// This avoids an overflow that happens because floats are capped at 2^14
 float GetDistSafe(float2 Point1, float2 Point2)
 {
 	float2 adjustedPoint1 = Point1 / ScreenDimensions.y;
