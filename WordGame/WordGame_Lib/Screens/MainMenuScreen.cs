@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -50,6 +51,17 @@ namespace WordGame_Lib.Screens
                 "EXIT",
                 SettingsManager.MainMenuSettings.ExitButtonColor,
                 OnExitClicked);
+
+            var allPoints = new List<PointLight>();
+            allPoints.AddRange(_playButton.LightPoints);
+            allPoints.AddRange(_settingsButton.LightPoints);
+            allPoints.AddRange(_exitButton.LightPoints);
+
+            CalculateShaderParameter(allPoints, out var positions, out var colors, out var radii);
+
+            _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);
+            _backgroundEffect.Parameters["PointLightColor"].SetValue(colors);
+            _backgroundEffect.Parameters["PointLightRadius"].SetValue(radii);
         }
 
         public void Update(GameTime iGameTime)
@@ -72,9 +84,9 @@ namespace WordGame_Lib.Screens
 
         private Texture2D _backgroundTexture;
         private Effect _backgroundEffect;
-        private IUiElement _playButton;
-        private IUiElement _settingsButton;
-        private IUiElement _exitButton;
+        private UiMenuNeonButton _playButton;
+        private UiMenuNeonButton _settingsButton;
+        private UiMenuNeonButton _exitButton;
         private readonly Action _onPlayCallback;
         private readonly Action _onSettingsCallback;
         private readonly Action _onExitCallback;
@@ -93,5 +105,34 @@ namespace WordGame_Lib.Screens
         {
             _onExitCallback();
         }
+
+        // ReSharper disable InconsistentNaming
+        private void CalculateShaderParameter(List<PointLight> iAllPoints, out Vector2[] oPositions, out Vector4[] oColors, out float[] oRadii)
+        {
+            const int maxLights = 30;
+
+            oPositions = new Vector2[maxLights];
+            oColors = new Vector4[maxLights];
+            oRadii = new float[maxLights];
+            
+            for (var ii = 0; ii < maxLights; ii++)
+            {
+                if (ii < iAllPoints.Count)
+                {
+                    var pointLightData = iAllPoints[ii];
+                    // I think the Y coordinate of shader math has 0 at the bottom of the screen and counts positive going up
+                    oPositions[ii] = new Vector2(pointLightData.Position.X, GraphicsHelper.GamePlayArea.Height - pointLightData.Position.Y);
+                    oColors[ii] = new Vector4(pointLightData.LightColor.R / 255f, pointLightData.LightColor.G / 255f, pointLightData.LightColor.B / 255f, pointLightData.LightColor.A / 255f);
+                    oRadii[ii] = pointLightData.Radius;
+                }
+                else
+                {
+                    oPositions[ii] = Vector2.Zero;
+                    oColors[ii] = Vector4.Zero;
+                    oRadii[ii] = 0.0f;
+                }
+            }
+        }
+        // ReSharper restore InconsistentNaming
     }
 }
