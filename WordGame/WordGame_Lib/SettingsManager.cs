@@ -13,9 +13,6 @@ namespace WordGame_Lib
 
         public static class MainMenuSettings
         {
-            public const float ButtonWidthAsFractionOfPlayAreaWidth = .75f;
-            public const float ButtonHeightAsFractionOfPlayAreaHeight = .075f;
-
             public static Color TitleTextColor = new Color(244, 231, 34);
             public static Color StartButtonColor = new Color(68, 214, 44);
             public static Color SettingsButtonColor = new Color(77, 77, 255);

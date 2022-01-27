@@ -34,9 +34,6 @@ namespace WordGame_Lib.Screens
             var titleWord2Height = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.TitleWord2HeightAsPercentage);
             var titleWord2Width = (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.TitleWord2WidthAsPercentage);
 
-            var buttonWidth = (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.ButtonWidthAsFractionOfPlayAreaWidth);
-            var buttonHeight = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.ButtonHeightAsFractionOfPlayAreaHeight);
-
             var playButtonTopLeftX = GraphicsHelper.GamePlayArea.X + (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.PlayButtonXAsPercentage);
             var playButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.PlayButtonYAsPercentage);
             var playButtonHeight = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.PlayButtonHeightAsPercentage);

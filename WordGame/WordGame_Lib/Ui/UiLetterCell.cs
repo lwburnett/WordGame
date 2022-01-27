@@ -10,40 +10,13 @@ namespace WordGame_Lib.Ui
         {
             _bounds = iBounds;
             _text = string.Empty;
-            _disposition = Disposition.Undecided;
 
-            var width = _bounds.Width;
-            var height = _bounds.Height;
-
-            var colorData1 = new Color[width * height];
-            for (var xx = 0; xx < height; xx++)
-            {
-                for (var yy = 0; yy < _bounds.Width; yy++)
-                {
-                    const int outlineWidth = 3;
-
-                    if (xx < outlineWidth || yy < outlineWidth || yy > width - outlineWidth - 1 || xx > width - outlineWidth - 1)
-                        colorData1[(xx * (width)) + yy] = Color.Gray;
-                }
-            }
-
-            var dataSize = _bounds.Width * _bounds.Height;
-            var colorData2 = new Color[dataSize];
-            var colorData3 = new Color[dataSize];
-            var colorData4 = new Color[dataSize];
-            for (var ii = 0; ii < dataSize; ii++)
-            {
-                colorData2[ii] = SettingsManager.ColorSettings.IncorrectDefaultColor;
-                colorData3[ii] = SettingsManager.ColorSettings.MisplacedDefaultColor;
-                colorData4[ii] = SettingsManager.ColorSettings.CorrectDefaultColor;
-            }
-
-            _emptyTexture = GraphicsHelper.CreateTexture(colorData1, _bounds.Width, _bounds.Height);
-            _incorrectTexture = GraphicsHelper.CreateTexture(colorData2, _bounds.Width, _bounds.Height);
-            _misplacedTexture = GraphicsHelper.CreateTexture(colorData3, _bounds.Width, _bounds.Height);
-            _correctTexture = GraphicsHelper.CreateTexture(colorData4, _bounds.Width, _bounds.Height);
-
+            _texture = GraphicsHelper.LoadContent<Texture2D>("LetterBoxOutline");
             _textFont = GraphicsHelper.LoadContent<SpriteFont>("PrototypeFont");
+            _shader = GraphicsHelper.LoadContent<Effect>("LetterBoxOutlineShader").Clone();
+            _shaderInnerColorParameter = _shader.Parameters["InnerColor"];
+            _shaderOuterColorParameter = _shader.Parameters["OuterColor"];
+            SetDisposition(Disposition.Undecided);
         }
 
         public void Update(GameTime iGameTime)
@@ -52,25 +25,7 @@ namespace WordGame_Lib.Ui
 
         public void Draw()
         {
-            switch (_disposition)
-            {
-                case Disposition.Undecided:
-                    GraphicsHelper.DrawTexture(_emptyTexture, new Vector2(_bounds.Left, _bounds.Top));
-                    break;
-                case Disposition.Incorrect:
-                    GraphicsHelper.DrawTexture(_incorrectTexture, new Vector2(_bounds.Left, _bounds.Top));
-                    break;
-                case Disposition.Misplaced:
-                    GraphicsHelper.DrawTexture(_misplacedTexture, new Vector2(_bounds.Left, _bounds.Top));
-                    break;
-                case Disposition.Correct:
-                    GraphicsHelper.DrawTexture(_correctTexture, new Vector2(_bounds.Left, _bounds.Top));
-                    break;
-                default:
-                    GraphicsHelper.DrawTexture(_emptyTexture, new Vector2(_bounds.Left, _bounds.Top));
-                    Debug.Fail($"Unknown value of enum {nameof(Disposition)}: {_disposition}");
-                    break;
-            }
+            GraphicsHelper.DrawTexture(_texture, _bounds, _shader);
 
             if (string.IsNullOrWhiteSpace(_text)) return;
             
@@ -96,14 +51,40 @@ namespace WordGame_Lib.Ui
         public void SetDisposition(Disposition iDisposition)
         {
             _disposition = iDisposition;
+
+            Color outerColor;
+            switch (_disposition)
+            {
+                case Disposition.Undecided:
+                    outerColor = SettingsManager.ColorSettings.UndecidedDefaultColor;
+                    break;
+                case Disposition.Incorrect:
+                    outerColor = SettingsManager.ColorSettings.IncorrectDefaultColor;
+                    break;
+                case Disposition.Misplaced:
+                    outerColor = SettingsManager.ColorSettings.MisplacedDefaultColor;
+                    break;
+                case Disposition.Correct:
+                    outerColor = SettingsManager.ColorSettings.CorrectDefaultColor;
+                    break;
+                default:
+                    outerColor = SettingsManager.ColorSettings.UndecidedDefaultColor;
+                    Debug.Fail($"Unknown value of enum {nameof(Disposition)}: {_disposition}");
+                    break;
+            }
+
+            var innerFactor = 255 / 255f;
+            var outerFactor = 1 / 255f;
+            _shaderInnerColorParameter.SetValue(new Vector4(outerColor.R * innerFactor, outerColor.G * innerFactor, outerColor.B * innerFactor, outerColor.A * innerFactor));
+            _shaderOuterColorParameter.SetValue(new Vector4(outerColor.R * outerFactor, outerColor.G * outerFactor, outerColor.B * outerFactor, outerColor.A * outerFactor));
         }
 
         private readonly Rectangle _bounds;
         private string _text;
-        private readonly Texture2D _emptyTexture;
-        private readonly Texture2D _incorrectTexture;
-        private readonly Texture2D _misplacedTexture;
-        private readonly Texture2D _correctTexture;
+        private readonly Texture2D _texture;
+        private readonly Effect _shader;
+        private readonly EffectParameter _shaderOuterColorParameter;
+        private readonly EffectParameter _shaderInnerColorParameter;
         private readonly SpriteFont _textFont;
         private Disposition _disposition;
     }

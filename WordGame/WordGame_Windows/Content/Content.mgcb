@@ -31,6 +31,24 @@
 /processorParam:DebugMode=Auto
 /build:BrickShader.fx
 
+#begin LetterBoxOutline.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:LetterBoxOutline.png
+
+#begin LetterBoxOutlineShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:LetterBoxOutlineShader.fx
+
 #begin NeonFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

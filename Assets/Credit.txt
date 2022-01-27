@@ -1,2 +1,2 @@
 "Bricks1"	Bernard Hermant		https://unsplash.com/photos/OjwQ9WywGsw
-"NeonTitleFont"	Good Apples		https://www.1001fonts.com/hello-denver-display-font.html#license
+"NeonFont"	Good Apples		https://www.1001fonts.com/hello-denver-display-font.html#license

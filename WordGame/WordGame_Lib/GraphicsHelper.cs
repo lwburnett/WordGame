@@ -43,7 +43,7 @@ namespace WordGame_Lib
                 new DrawPlan(() => sSpriteBatch.Draw(
                         iTexture,
                         iTargetBounds,
-                        new Rectangle(iTargetBounds.X, iTargetBounds.Y, iTexture.Width, iTexture.Height),
+                        iTexture.Bounds,
                         Color.White), 
                     iEffect));
         }
