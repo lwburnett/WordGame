@@ -11,6 +11,7 @@
 
 Texture2D SpriteTexture;
 
+float2  ScreenDimensions;
 float2  PointLightPosition[MAXLIGHT];
 float4  PointLightColor[MAXLIGHT];
 float   PointLightRadius[MAXLIGHT];
@@ -27,20 +28,34 @@ struct VertexShaderOutput
 	float2 TextureCoordinates : TEXCOORD0;
 };
 
+float GetDistSafe(float2 Point1, float2 Point2)
+{
+	float2 adjustedPoint1 = Point1 / ScreenDimensions.y;
+	float2 adjustedPoint2 = Point2 / ScreenDimensions.y;
+	
+	float2 diffs = adjustedPoint2 - adjustedPoint1;
+	
+	float interTerm = dot(diffs, diffs);
+	float adjustedDist = sqrt(interTerm);
+
+	return adjustedDist * ScreenDimensions.y;
+}
+
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-	float4 color = tex2D(SpriteTextureSampler,input.TextureCoordinates) * input.Color * .13;
+	float4 color = tex2D(SpriteTextureSampler,input.TextureCoordinates) * input.Color * .15;
 
 	for (int ii = 0; ii < MAXLIGHT; ii++)
 	{
 		if (PointLightRadius[ii] > 0)
 		{
-			float dist = distance(input.Position.xy, PointLightPosition[ii].xy);
+			float2 thisPixelPos = float2(input.TextureCoordinates.x * ScreenDimensions.x, input.TextureCoordinates.y * ScreenDimensions.y);
+			float dist = GetDistSafe(thisPixelPos, PointLightPosition[ii].xy);
 			if (dist <= PointLightRadius[ii])
 			{
-				float fog = clamp(dist / PointLightRadius[ii], 0, 1);
+				float fog = clamp(dist / PointLightRadius[ii], 0.0, 1.0);
 				float3 adjustedLighting = PointLightColor[ii].rgb * float3(1.75, 1.75, 1.75);
-				color *= float4(lerp(adjustedLighting, float3(1, 1, 1), fog), 1);
+				color *= float4(lerp(adjustedLighting, float3(1.0, 1.0, 1.0), fog), 1.0);
 			}
 			//if (dist <= 4)
 			//{

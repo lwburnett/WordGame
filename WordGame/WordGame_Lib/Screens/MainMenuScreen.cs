@@ -23,42 +23,72 @@ namespace WordGame_Lib.Screens
 
             var gamePlayAreaWidth = GraphicsHelper.GamePlayArea.Width;
             var gamePlayAreaHeight = GraphicsHelper.GamePlayArea.Height;
-            
+
+            var titleWord1TopLeftX = GraphicsHelper.GamePlayArea.X + (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.TitleWord1XAsPercentage);
+            var titleWord1TopLeftY = GraphicsHelper.GamePlayArea.Y + (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.TitleWord1YAsPercentage);
+            var titleWord1Height = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.TitleWord1HeightAsPercentage);
+            var titleWord1Width = (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.TitleWord1WidthAsPercentage);
+
+            var titleWord2TopLeftX = GraphicsHelper.GamePlayArea.X + (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.TitleWord2XAsPercentage);
+            var titleWord2TopLeftY = GraphicsHelper.GamePlayArea.Y + (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.TitleWord2YAsPercentage);
+            var titleWord2Height = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.TitleWord2HeightAsPercentage);
+            var titleWord2Width = (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.TitleWord2WidthAsPercentage);
+
             var buttonWidth = (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.ButtonWidthAsFractionOfPlayAreaWidth);
             var buttonHeight = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.ButtonHeightAsFractionOfPlayAreaHeight);
 
-            var playButtonTopLeftX = GraphicsHelper.GamePlayArea.X + (gamePlayAreaWidth - buttonWidth) / 2;
-            var playButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (gamePlayAreaHeight - 4 * buttonHeight) / 2;
+            var playButtonTopLeftX = GraphicsHelper.GamePlayArea.X + (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.PlayButtonXAsPercentage);
+            var playButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.PlayButtonYAsPercentage);
+            var playButtonHeight = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.PlayButtonHeightAsPercentage);
+            var playButtonWidth = (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.PlayButtonWidthAsPercentage);
 
-            var settingsButtonTopLeftX = GraphicsHelper.GamePlayArea.X + (gamePlayAreaWidth - buttonWidth) / 2;
-            var settingsButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (gamePlayAreaHeight - buttonHeight) / 2;
+            var settingsButtonTopLeftX = GraphicsHelper.GamePlayArea.X + (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.SettingsButtonXAsPercentage);
+            var settingsButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.SettingsButtonYAsPercentage);
+            var settingsButtonHeight = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.SettingsButtonHeightAsPercentage);
+            var settingsButtonWidth = (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.SettingsButtonWidthAsPercentage);
 
-            var exitButtonTopLeftX = GraphicsHelper.GamePlayArea.X + (gamePlayAreaWidth - buttonWidth) / 2;
-            var exitButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (gamePlayAreaHeight + 2 * buttonHeight) / 2;
+            var exitButtonTopLeftX = GraphicsHelper.GamePlayArea.X + (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.ExitButtonXAsPercentage);
+            var exitButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.ExitButtonYAsPercentage);
+            var exitButtonHeight = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.ExitButtonHeightAsPercentage);
+            var exitButtonWidth = (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.ExitButtonWidthAsPercentage);
+
+
+            _titleWord1 = new UiNeonFloatingText(
+                new Rectangle(titleWord1TopLeftX, titleWord1TopLeftY, titleWord1Width, titleWord1Height),
+                "WORD",
+                SettingsManager.MainMenuSettings.TitleTextColor);
+
+            _titleWord2 = new UiNeonFloatingText(
+                new Rectangle(titleWord2TopLeftX, titleWord2TopLeftY, titleWord2Width, titleWord2Height),
+                "NOIR",
+                SettingsManager.MainMenuSettings.TitleTextColor);
 
             _playButton = new UiMenuNeonButton(
-                new Rectangle(playButtonTopLeftX, playButtonTopLeftY, buttonWidth, buttonHeight), 
+                new Rectangle(playButtonTopLeftX, playButtonTopLeftY, playButtonWidth, playButtonHeight), 
                 "PLAY", 
                 SettingsManager.MainMenuSettings.StartButtonColor, 
                 OnPlayClicked);
             _settingsButton = new UiMenuNeonButton(
-                new Rectangle(settingsButtonTopLeftX, settingsButtonTopLeftY, buttonWidth, buttonHeight), 
+                new Rectangle(settingsButtonTopLeftX, settingsButtonTopLeftY, settingsButtonWidth, settingsButtonHeight), 
                 "SETTINGS",
                 SettingsManager.MainMenuSettings.SettingsButtonColor,
                 OnSettingsClicked);
             _exitButton = new UiMenuNeonButton(
-                new Rectangle(exitButtonTopLeftX, exitButtonTopLeftY, buttonWidth, buttonHeight), 
+                new Rectangle(exitButtonTopLeftX, exitButtonTopLeftY, exitButtonWidth, exitButtonHeight), 
                 "EXIT",
                 SettingsManager.MainMenuSettings.ExitButtonColor,
                 OnExitClicked);
 
             var allPoints = new List<PointLight>();
+            allPoints.AddRange(_titleWord1.LightPoints);
+            allPoints.AddRange(_titleWord2.LightPoints);
             allPoints.AddRange(_playButton.LightPoints);
             allPoints.AddRange(_settingsButton.LightPoints);
             allPoints.AddRange(_exitButton.LightPoints);
 
             CalculateShaderParameter(allPoints, out var positions, out var colors, out var radii);
 
+            _backgroundEffect.Parameters["ScreenDimensions"].SetValue(new Vector2(GraphicsHelper.GamePlayArea.Width, GraphicsHelper.GamePlayArea.Height));
             _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);
             _backgroundEffect.Parameters["PointLightColor"].SetValue(colors);
             _backgroundEffect.Parameters["PointLightRadius"].SetValue(radii);
@@ -69,6 +99,8 @@ namespace WordGame_Lib.Screens
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 _onExitCallback();
 
+            _titleWord1.Update(iGameTime);
+            _titleWord2.Update(iGameTime);
             _playButton.Update(iGameTime);
             _settingsButton.Update(iGameTime);
             _exitButton.Update(iGameTime);
@@ -77,6 +109,8 @@ namespace WordGame_Lib.Screens
         public void Draw()
         {
             GraphicsHelper.DrawTexture(_backgroundTexture, GraphicsHelper.GamePlayArea, _backgroundEffect);
+            _titleWord1.Draw();
+            _titleWord2.Draw();
             _playButton.Draw();
             _settingsButton.Draw();
             _exitButton.Draw();
@@ -84,6 +118,8 @@ namespace WordGame_Lib.Screens
 
         private Texture2D _backgroundTexture;
         private Effect _backgroundEffect;
+        private UiNeonFloatingText _titleWord1;
+        private UiNeonFloatingText _titleWord2;
         private UiMenuNeonButton _playButton;
         private UiMenuNeonButton _settingsButton;
         private UiMenuNeonButton _exitButton;
@@ -121,7 +157,7 @@ namespace WordGame_Lib.Screens
                 {
                     var pointLightData = iAllPoints[ii];
                     // I think the Y coordinate of shader math has 0 at the bottom of the screen and counts positive going up
-                    oPositions[ii] = new Vector2(pointLightData.Position.X, GraphicsHelper.GamePlayArea.Height - pointLightData.Position.Y);
+                    oPositions[ii] = new Vector2(pointLightData.Position.X, pointLightData.Position.Y);
                     oColors[ii] = new Vector4(pointLightData.LightColor.R / 255f, pointLightData.LightColor.G / 255f, pointLightData.LightColor.B / 255f, pointLightData.LightColor.A / 255f);
                     oRadii[ii] = pointLightData.Radius;
                 }

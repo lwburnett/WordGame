@@ -16,9 +16,35 @@ namespace WordGame_Lib
             public const float ButtonWidthAsFractionOfPlayAreaWidth = .75f;
             public const float ButtonHeightAsFractionOfPlayAreaHeight = .075f;
 
-            public static Color StartButtonColor = Color.LightGreen;
-            public static Color SettingsButtonColor = Color.MonoGameOrange;
-            public static Color ExitButtonColor = Color.IndianRed;
+            public static Color TitleTextColor = new Color(244, 231, 34);
+            public static Color StartButtonColor = new Color(68, 214, 44);
+            public static Color SettingsButtonColor = new Color(77, 77, 255);
+            public static Color ExitButtonColor = new Color(210, 39, 48);
+
+            public const float TitleWord1XAsPercentage = .1f;
+            public const float TitleWord1YAsPercentage = .1f;
+            public const float TitleWord1HeightAsPercentage = .1f;
+            public const float TitleWord1WidthAsPercentage = .5f;
+
+            public const float TitleWord2XAsPercentage = .4f;
+            public const float TitleWord2YAsPercentage = .18f;
+            public const float TitleWord2HeightAsPercentage = .1f;
+            public const float TitleWord2WidthAsPercentage = .5f;
+
+            public const float PlayButtonXAsPercentage = .5f;
+            public const float PlayButtonYAsPercentage = .45f;
+            public const float PlayButtonHeightAsPercentage = .075f;
+            public const float PlayButtonWidthAsPercentage = .5f;
+
+            public const float SettingsButtonXAsPercentage = .1f;
+            public const float SettingsButtonYAsPercentage = .65f;
+            public const float SettingsButtonHeightAsPercentage = .06f;
+            public const float SettingsButtonWidthAsPercentage = .55f;
+
+            public const float ExitButtonXAsPercentage = .55f;
+            public const float ExitButtonYAsPercentage = .85f;
+            public const float ExitButtonHeightAsPercentage = .06f;
+            public const float ExitButtonWidthAsPercentage = .4f;
         }
 
         public static class GamePlaySettings
@@ -77,6 +103,13 @@ namespace WordGame_Lib
             public const float LabelColumnWidthAsPercent = .75f;
             public const float SettingColumnWidthAsPercent = .2f;
             public const float IndividualSettingRowHeightAsPercent = .1666f;
+        }
+
+        public static class NeonTextSettings
+        {
+            public const float RadiusAsPercentageOfWidth = .333f;
+            public const float MinDistOfPointLightsAsPercentage = .05f;
+            public const float MaxDistOfPointLightsAsPercentage = .1f;
         }
     }
 }

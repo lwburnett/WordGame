@@ -11,6 +11,7 @@
 
 Texture2D SpriteTexture;
 
+float2  ScreenDimensions;
 float2  PointLightPosition[MAXLIGHT];
 float4  PointLightColor[MAXLIGHT];
 float   PointLightRadius[MAXLIGHT];
@@ -37,7 +38,8 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 		{
 			// I don't really know why this adjustment is needed on windows only
 			float2 adjustedPointLightPosition = PointLightPosition[ii] - float2(0.0, 6);
-			float dist = distance(input.Position.xy, adjustedPointLightPosition.xy);
+			float2 thisPixelPos = float2(input.TextureCoordinates.x * ScreenDimensions.x, input.TextureCoordinates.y * ScreenDimensions.y);
+			float dist = distance(thisPixelPos, adjustedPointLightPosition.xy);
 			if (dist <= PointLightRadius[ii])
 			{
 				float fog = clamp(dist / PointLightRadius[ii], 0, 1);
