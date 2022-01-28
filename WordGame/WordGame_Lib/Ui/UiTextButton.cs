@@ -30,21 +30,21 @@ namespace WordGame_Lib.Ui
             var colorData12 = new Color[dataSize];
             for (var ii = 0; ii < dataSize; ii++)
             {
-                colorData1[ii] = SettingsManager.ColorSettings.UndecidedDefaultColor;
-                colorData2[ii] = SettingsManager.ColorSettings.UndecidedHoverColor;
-                colorData3[ii] = SettingsManager.ColorSettings.UndecidedPressedColor;
+                colorData1[ii] = SettingsManager.UiKeyboardColors.UndecidedDefaultColor;
+                colorData2[ii] = SettingsManager.UiKeyboardColors.UndecidedHoverColor;
+                colorData3[ii] = SettingsManager.UiKeyboardColors.UndecidedPressedColor;
 
-                colorData4[ii] = SettingsManager.ColorSettings.IncorrectDefaultColor;
-                colorData5[ii] = SettingsManager.ColorSettings.IncorrectHoverColor;
-                colorData6[ii] = SettingsManager.ColorSettings.IncorrectPressedColor;
+                colorData4[ii] = SettingsManager.UiKeyboardColors.IncorrectDefaultColor;
+                colorData5[ii] = SettingsManager.UiKeyboardColors.IncorrectHoverColor;
+                colorData6[ii] = SettingsManager.UiKeyboardColors.IncorrectPressedColor;
 
-                colorData7[ii] = SettingsManager.ColorSettings.MisplacedDefaultColor;
-                colorData8[ii] = SettingsManager.ColorSettings.MisplacedHoverColor;
-                colorData9[ii] = SettingsManager.ColorSettings.MisplacedPressedColor;
+                colorData7[ii] = SettingsManager.UiKeyboardColors.MisplacedDefaultColor;
+                colorData8[ii] = SettingsManager.UiKeyboardColors.MisplacedHoverColor;
+                colorData9[ii] = SettingsManager.UiKeyboardColors.MisplacedPressedColor;
 
-                colorData10[ii] = SettingsManager.ColorSettings.CorrectDefaultColor;
-                colorData11[ii] = SettingsManager.ColorSettings.CorrectHoverColor;
-                colorData12[ii] = SettingsManager.ColorSettings.CorrectPressedColor;
+                colorData10[ii] = SettingsManager.UiKeyboardColors.CorrectDefaultColor;
+                colorData11[ii] = SettingsManager.UiKeyboardColors.CorrectHoverColor;
+                colorData12[ii] = SettingsManager.UiKeyboardColors.CorrectPressedColor;
             }
 
             if (!GameSettingsManager.Settings.AlternateKeyColorScheme)

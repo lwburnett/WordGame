@@ -82,28 +82,28 @@ namespace WordGame_Lib.Ui
             switch (iDisposition)
             {
                 case Disposition.Undecided:
-                    outerColor = SettingsManager.ColorSettings.UndecidedDefaultColor;
-                    innerColor = SettingsManager.ColorSettings.UndecidedDefaultColor * 2;
+                    outerColor = SettingsManager.LetterCellColors.Undecided;
+                    innerColor = SettingsManager.LetterCellColors.Undecided;
                     intensity = 1.75f;
                     break;
                 case Disposition.Incorrect:
-                    outerColor = SettingsManager.ColorSettings.IncorrectDefaultColor;
-                    innerColor = SettingsManager.ColorSettings.IncorrectDefaultColor;
+                    outerColor = SettingsManager.LetterCellColors.Incorrect;
+                    innerColor = SettingsManager.LetterCellColors.Incorrect;
                     intensity = 0.0f;
                     break;
                 case Disposition.Misplaced:
-                    outerColor = SettingsManager.ColorSettings.MisplacedDefaultColor;
+                    outerColor = SettingsManager.LetterCellColors.Misplaced;
                     innerColor = Color.White;
-                    intensity = 3.0f;
+                    intensity = 4.0f;
                     break;
                 case Disposition.Correct:
-                    outerColor = SettingsManager.ColorSettings.CorrectDefaultColor;
+                    outerColor = SettingsManager.LetterCellColors.Correct;
                     innerColor = Color.White;
-                    intensity = 3.0f;
+                    intensity = 4.0f;
                     break;
                 default:
-                    outerColor = SettingsManager.ColorSettings.UndecidedDefaultColor;
-                    innerColor = SettingsManager.ColorSettings.UndecidedDefaultColor * 2;
+                    outerColor = SettingsManager.LetterCellColors.Undecided;
+                    innerColor = SettingsManager.LetterCellColors.Undecided;
                     intensity = 1.75f;
                     Debug.Fail($"Unknown value of enum {nameof(Disposition)}: {iDisposition}");
                     break;

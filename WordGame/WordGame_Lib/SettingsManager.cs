@@ -63,7 +63,7 @@ namespace WordGame_Lib
             public const float CellMarginAsPercentage = .01f;
         }
 
-        public static class ColorSettings
+        public static class UiKeyboardColors
         {
             public static Color UndecidedDefaultColor = Color.LightGray;
             public static Color UndecidedHoverColor = Color.DarkGray;
@@ -80,6 +80,14 @@ namespace WordGame_Lib
             public static Color CorrectDefaultColor = new Color(48, 185, 8);
             public static Color CorrectHoverColor = new Color(43, 163, 8);
             public static Color CorrectPressedColor = new Color(43, 163, 8);
+        }
+
+        public static class LetterCellColors
+        {
+            public static Color Undecided = new Color(230, 230, 230);
+            public static Color Incorrect = new Color(30, 30, 30);
+            public static Color Misplaced = new Color(214, 231, 34);
+            public static Color Correct = new Color(68, 214, 44);
         }
 
         public static class PostSessionStatsSettings
