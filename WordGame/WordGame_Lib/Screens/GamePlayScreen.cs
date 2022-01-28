@@ -49,7 +49,7 @@ namespace WordGame_Lib.Screens
         public void Draw()
         {
             var lightPoints = _gamePlayInstance.LightPoints;
-            CalculateShaderParameter(lightPoints, out var positions, out var colors, out var radii, out var intensity);
+            GraphicsHelper.CalculatePointLightShaderParameters(lightPoints, out var positions, out var colors, out var radii, out var intensity);
 
             _backgroundEffect.Parameters["ScreenDimensions"].SetValue(new Vector2(GraphicsHelper.GamePlayArea.Width, GraphicsHelper.GamePlayArea.Height));
             _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);

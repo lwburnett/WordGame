@@ -1,17 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib.Ui
 {
-    public class UiToggleSwitch : IUiElement
+    public class UiToggleSwitch : INeonUiElement
     {
         public UiToggleSwitch(Rectangle iBounds, bool iInitialValue, Action<bool> iOnToggleCallback)
         {
             _currentValue = iInitialValue;
             _onToggleCallback = iOnToggleCallback;
 
-            _onButton = new UiTextButton(iBounds, "On", () => OnToggle(false));
-            _offButton = new UiTextButton(iBounds, "Off", () => OnToggle(true));
+            _onButton = new UiNeonSpriteButton(iBounds, "CheckMark", SettingsManager.MainMenuSettings.StartButtonColor, () => OnToggle(false));
+            _offButton = new UiNeonSpriteButton(iBounds, "ExMark", SettingsManager.MainMenuSettings.ExitButtonColor, () => OnToggle(true));
+
+            LightPoints = new List<PointLight>();
+            LightPoints.AddRange(_currentValue ? _onButton.LightPoints : _offButton.LightPoints);
         }
 
         public void Update(GameTime iGameTime)
@@ -30,15 +34,19 @@ namespace WordGame_Lib.Ui
                 _offButton.Draw();
         }
 
+        public List<PointLight> LightPoints { get; }
+
         private bool _currentValue;
         private readonly Action<bool> _onToggleCallback;
 
-        private readonly UiTextButton _onButton;
-        private readonly UiTextButton _offButton;
+        private readonly INeonUiElement _onButton;
+        private readonly INeonUiElement _offButton;
 
         private void OnToggle(bool iNewValue)
         {
             _currentValue = iNewValue;
+            LightPoints.Clear();
+            LightPoints.AddRange(_currentValue ? _onButton.LightPoints : _offButton.LightPoints);
             _onToggleCallback(iNewValue);
         }
     }

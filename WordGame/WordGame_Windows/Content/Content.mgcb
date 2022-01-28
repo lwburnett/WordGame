@@ -31,6 +31,30 @@
 /processorParam:DebugMode=Auto
 /build:BrickShader.fx
 
+#begin CheckMark.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:CheckMark.png
+
+#begin ExMark.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:ExMark.png
+
 #begin LetterBoxOutline.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -49,6 +73,12 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:NeonFont.spritefont
+
+#begin NeonSpriteShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:NeonSpriteShader.fx
 
 #begin PrototypeFont.spritefont
 /importer:FontDescriptionImporter
