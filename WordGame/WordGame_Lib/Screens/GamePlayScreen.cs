@@ -121,11 +121,22 @@ namespace WordGame_Lib.Screens
                 if (ii < iAllPoints.Count)
                 {
                     var pointLightData = iAllPoints[ii];
-                    // I think the Y coordinate of shader math has 0 at the bottom of the screen and counts positive going up
-                    oPositions[ii] = new Vector2(pointLightData.Position.X, pointLightData.Position.Y);
-                    oColors[ii] = new Vector4(pointLightData.LightColor.R / 255f, pointLightData.LightColor.G / 255f, pointLightData.LightColor.B / 255f, pointLightData.LightColor.A / 255f);
-                    oRadii[ii] = pointLightData.Radius;
-                    oIntensity[ii] = pointLightData.Intensity;
+
+                    if (pointLightData.Intensity >= 1.0f)
+                    {
+                        // I think the Y coordinate of shader math has 0 at the bottom of the screen and counts positive going up
+                        oPositions[ii] = new Vector2(pointLightData.Position.X, pointLightData.Position.Y);
+                        oColors[ii] = new Vector4(pointLightData.LightColor.R / 255f, pointLightData.LightColor.G / 255f, pointLightData.LightColor.B / 255f, pointLightData.LightColor.A / 255f);
+                        oRadii[ii] = pointLightData.Radius;
+                        oIntensity[ii] = pointLightData.Intensity;
+                    }
+                    else
+                    {
+                        oPositions[ii] = Vector2.Zero;
+                        oColors[ii] = Vector4.Zero;
+                        oRadii[ii] = 0.0f;
+                        oIntensity[ii] = 0.0f;
+                    }
                 }
                 else
                 {
