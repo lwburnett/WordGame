@@ -47,8 +47,8 @@ namespace WordGame_Lib
         public static class GamePlaySettings
         {
             public const float KeyboardHeightAsPercentage = .25f;
-            public const float LetterGridHeightAsPercentage = .65f;
-            public const float NotificationHeightAsPercentage = .1f;
+            public const float KeyboardYPosAsPercentage = .7f;
+            public const float NotificationHeightAsPercentage = .05f;
         }
 
         public static class KeyboardSettings

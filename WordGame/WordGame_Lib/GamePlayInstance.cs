@@ -21,7 +21,7 @@ namespace WordGame_Lib
         public void LoadLevel()
         {
             var keyboardHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.KeyboardHeightAsPercentage);
-            var keyboardYPosition = GraphicsHelper.GamePlayArea.Height - keyboardHeight;
+            var keyboardYPosition = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.KeyboardYPosAsPercentage);
 
             const int keyboardXPosition = 0;
             var keyboardWidth = GraphicsHelper.GamePlayArea.Width;
@@ -29,7 +29,7 @@ namespace WordGame_Lib
             var keyboardRectangle = new Rectangle(keyboardXPosition, keyboardYPosition, keyboardWidth, keyboardHeight);
             _keyboard = new KeyboardControl(keyboardRectangle, OnLetterPressed, OnDelete, OnEnter);
 
-            var gridHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.LetterGridHeightAsPercentage);
+            var gridHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.KeyboardYPosAsPercentage);
             var gridWidth = GraphicsHelper.GamePlayArea.Width;
             var gridRectangle = new Rectangle(0, 0, gridWidth, gridHeight);
 
@@ -166,7 +166,7 @@ namespace WordGame_Lib
         private void SetNotification(string iText)
         {
             var height = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.NotificationHeightAsPercentage);
-            var yLocation = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.LetterGridHeightAsPercentage);
+            var yLocation = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.KeyboardYPosAsPercentage - height);
 
             _notification = new UiFloatingText(
                 new Rectangle(0, yLocation, GraphicsHelper.GamePlayArea.Width, height),
