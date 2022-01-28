@@ -43,18 +43,18 @@
 /processorParam:TextureFormat=Color
 /build:LetterBoxOutline.png
 
-#begin LetterBoxOutlineShader.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:LetterBoxOutlineShader.fx
-
 #begin NeonFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:NeonFont.spritefont
+
+#begin NeonSpriteShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:NeonSpriteShader.fx
 
 #begin PrototypeFont.spritefont
 /importer:FontDescriptionImporter

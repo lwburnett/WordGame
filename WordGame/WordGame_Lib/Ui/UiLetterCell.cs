@@ -14,7 +14,7 @@ namespace WordGame_Lib.Ui
 
             _texture = GraphicsHelper.LoadContent<Texture2D>("LetterBoxOutline");
             _textFont = GraphicsHelper.LoadContent<SpriteFont>("PrototypeFont");
-            _shader = GraphicsHelper.LoadContent<Effect>("LetterBoxOutlineShader").Clone();
+            _shader = GraphicsHelper.LoadContent<Effect>("NeonSpriteShader").Clone();
             _shaderInnerColorParameter = _shader.Parameters["InnerColor"];
             _shaderOuterColorParameter = _shader.Parameters["OuterColor"];
             SetDisposition(Disposition.Undecided);
