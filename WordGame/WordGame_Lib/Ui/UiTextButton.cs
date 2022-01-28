@@ -88,9 +88,15 @@ namespace WordGame_Lib.Ui
         {
             base.Draw();
 
+            const float offsetScalar = 1.1f;
             const float scaling = 1.0f;
             var stringDimensions = _textFont.MeasureString(_text) * scaling;
-            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X + (Bounds.Width - stringDimensions.X) / 2f, Bounds.Y + (Bounds.Height - stringDimensions.Y) / 2f), Color.White);
+            var pos = new Vector2(Bounds.X + (Bounds.Width - stringDimensions.X) / 2f, Bounds.Y + (Bounds.Height - stringDimensions.Y) / 2f);
+            GraphicsHelper.DrawString(_textFont, _text, pos + new Vector2(-offsetScalar * scaling, -offsetScalar * scaling), Color.Black);
+            GraphicsHelper.DrawString(_textFont, _text, pos + new Vector2(offsetScalar * scaling, -offsetScalar * scaling), Color.Black);
+            GraphicsHelper.DrawString(_textFont, _text, pos + new Vector2(-offsetScalar * scaling, offsetScalar * scaling), Color.Black);
+            GraphicsHelper.DrawString(_textFont, _text, pos + new Vector2(offsetScalar * scaling, offsetScalar * scaling), Color.Black);
+            GraphicsHelper.DrawString(_textFont, _text, pos, Color.White);
         }
 
         public string GetText()

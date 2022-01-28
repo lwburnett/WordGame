@@ -57,8 +57,24 @@ namespace WordGame_Lib
                 {
                     iFont.Spacing = iSpacing;
                     sSpriteBatch.DrawString(iFont, iText, iPosition, iColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
-                }, 
-                    null));
+                },
+                null));
+        }
+
+        public static void DrawStringWithBorder(SpriteFont iFont, string iText, Vector2 iPosition, float iOffset, Color iInnerColor, Color iOuterColor, float iScaling = 1.0f, float iSpacing = 0.0f)
+        {
+            Debug.Assert(sSpriteBatch != null);
+            ThisIterationDrawPlans.Add(new DrawPlan(
+                () =>
+                {
+                    iFont.Spacing = iSpacing;
+                    sSpriteBatch.DrawString(iFont, iText, iPosition + new Vector2(-iOffset, -iOffset), iOuterColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
+                    sSpriteBatch.DrawString(iFont, iText, iPosition + new Vector2(-iOffset, iOffset), iOuterColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
+                    sSpriteBatch.DrawString(iFont, iText, iPosition + new Vector2(iOffset, -iOffset), iOuterColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
+                    sSpriteBatch.DrawString(iFont, iText, iPosition + new Vector2(iOffset, iOffset), iOuterColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
+                    sSpriteBatch.DrawString(iFont, iText, iPosition, iInnerColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
+                },
+                null));
         }
 
         public static void Flush()

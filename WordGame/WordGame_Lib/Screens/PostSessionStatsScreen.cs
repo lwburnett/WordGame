@@ -32,6 +32,7 @@ namespace WordGame_Lib.Screens
                 new Rectangle(headerXLocation, headerYLocation, headerWidth, headerHeight),
                 _stats.Success ? "Success!" : "Failure!",
                 Color.White,
+                Color.Black,
                 1.5f);
 
             var subHeaderY = headerYLocation + headerHeight + smallMarginY;
@@ -42,6 +43,7 @@ namespace WordGame_Lib.Screens
                 new Rectangle(subHeaderX, subHeaderY, subHeaderWidth, subHeaderHeight),
                 $"Guesses: {_stats.NumGuesses}\nWord: {_stats.SecretWord}",
                 Color.White,
+                Color.Black,
                 1.5f);
 
             var defY = subHeaderY + subHeaderHeight + smallMarginY;

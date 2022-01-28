@@ -171,7 +171,8 @@ namespace WordGame_Lib
             _notification = new UiFloatingText(
                 new Rectangle(0, yLocation, GraphicsHelper.GamePlayArea.Width, height),
                 iText, 
-                Color.White);
+                Color.White,
+                Color.Black);
         }
     }
 }

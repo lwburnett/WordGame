@@ -7,23 +7,10 @@ namespace WordGame_Lib.Ui
 {
     public class UiFloatingText : IUiElement
     {
-        public UiFloatingText(Point iTopLeft, string iText) :
-            this(iTopLeft, iText, Color.Black)
-        {
-        }
-
-        public UiFloatingText(Point iTopLeft, string iText, Color iTextColor)
-        {
-            _topLeft = iTopLeft;
-            _text = iText;
-            _textColor = iTextColor;
-
-            _textFont = GraphicsHelper.LoadContent<SpriteFont>("PrototypeFont");
-        }
-
-        public UiFloatingText(Rectangle iBounds, string iText, Color iTextColor, float iScaling = 1.0f)
+        public UiFloatingText(Rectangle iBounds, string iText, Color iTextColor, Color? iTexBorderColor = null, float iScaling = 1.0f)
         {
             _textColor = iTextColor;
+            _textBorderColor = iTexBorderColor;
 
             _textFont = GraphicsHelper.LoadContent<SpriteFont>("PrototypeFont");
             _scaling = iScaling;
@@ -66,13 +53,19 @@ namespace WordGame_Lib.Ui
 
         public void Draw()
         {
-            GraphicsHelper.DrawString(_textFont, _text, _topLeft.ToVector2(), _textColor, _scaling);
+            const float offsetScalar = 1.1f;
+            var pos = _topLeft.ToVector2();
+            if (_textBorderColor.HasValue)
+                GraphicsHelper.DrawStringWithBorder(_textFont, _text, pos, offsetScalar, _textColor, _textBorderColor.Value, _scaling);
+            else
+                GraphicsHelper.DrawString(_textFont, _text, pos, _textColor, _scaling);
         }
 
         private Point _topLeft;
         private readonly string _text;
         private readonly SpriteFont _textFont;
         private readonly Color _textColor;
+        private readonly Color? _textBorderColor;
         private readonly float _scaling;
     }
 }

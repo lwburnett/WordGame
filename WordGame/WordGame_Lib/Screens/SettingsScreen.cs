@@ -50,7 +50,8 @@ namespace WordGame_Lib.Screens
             _altColorLabel = new UiFloatingText(
                 new Rectangle(altColorLabelX, altColorLabelY, altColorLabelWidth, altColorLabelHeight),
                 "Alternate Color Scheme",
-                Color.White);
+                Color.White,
+                Color.Black);
 
             var altColorToggleY = settingsEditBounds.Y;
             var altColorToggleX = altColorLabelX + altColorLabelWidth + medMarginX;
