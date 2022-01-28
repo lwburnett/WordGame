@@ -67,11 +67,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Content.mgcb" />
-    <AndroidAsset Include="Content\PrototypeFont.spritefont">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Content\Fonts\NeonFont.spritefont" />
+    <AndroidAsset Include="Content\Fonts\NeonFont.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <None Include="Content\NeonFont.spritefont" />
-    <None Include="Content\NeonFont.ttf" />
+    <None Include="Content\Fonts\PrototypeFont.spritefont" />
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -88,27 +88,24 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Content\WordDatabase.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Content\SecretWordDatabase.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\Bricks1.png" />
-    <Content Include="Content\BrickShader.fx" />
-    <Content Include="Content\CheckMark.png" />
-    <Content Include="Content\ExMark.png" />
-    <Content Include="Content\LetterBoxOutline.png" />
-    <Content Include="Content\NeonSpriteShader.fx" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Data\GameSettings.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Content\Data\SecretWordDatabase.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="Content\Data\WordDatabase.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidAsset>
+    <Content Include="Content\Shaders\BrickShader.fx" />
+    <Content Include="Content\Shaders\NeonSpriteShader.fx" />
+    <Content Include="Content\Textures\Bricks1.png" />
+    <Content Include="Content\Textures\CheckMark.png" />
+    <Content Include="Content\Textures\ExMark.png" />
+    <Content Include="Content\Textures\LetterBoxOutline.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

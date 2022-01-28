@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,7 +13,7 @@ namespace WordGame_Lib.Ui
             _textColor = iTextColor;
             _textBorderColor = iTexBorderColor;
 
-            _textFont = GraphicsHelper.LoadContent<SpriteFont>("PrototypeFont");
+            _textFont = GraphicsHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "PrototypeFont"));
             _scaling = iScaling;
 
             var words = iText.Split(' ');

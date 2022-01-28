@@ -77,9 +77,9 @@ namespace WordGame_Lib
             GraphicsHelper.RegisterSpriteBatch(_spriteBatch);
             GraphicsHelper.RegisterGamePlayArea(gamePlayArea);
 
-            _wordDatabase = LoadDatabaseFromTxtFile("WordDatabase.txt");
+            _wordDatabase = LoadDatabaseFromTxtFile(Path.Combine("Data", "WordDatabase.txt"));
 
-            _secretWordDatabase = LoadDatabaseFromTxtFile("SecretWordDatabase.txt");
+            _secretWordDatabase = LoadDatabaseFromTxtFile(Path.Combine("Data", "SecretWordDatabase.txt"));
             
             GameSettingsManager.RegisterFilePath(Path.Combine("Data", "GameSettings.txt"));
 

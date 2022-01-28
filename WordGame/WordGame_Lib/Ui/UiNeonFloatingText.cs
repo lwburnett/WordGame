@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,7 +12,7 @@ namespace WordGame_Lib.Ui
         {
             _text = iText;
 
-            _textFont = GraphicsHelper.LoadContent<SpriteFont>("NeonFont");
+            _textFont = GraphicsHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "NeonFont"));
 
             const float factor = 1.75f;
             _textColorInner = new Color(iTextColor.R * factor, iTextColor.G * factor, iTextColor.B * factor, iTextColor.A);

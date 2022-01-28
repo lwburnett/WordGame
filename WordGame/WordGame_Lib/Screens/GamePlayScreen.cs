@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,8 +19,8 @@ namespace WordGame_Lib.Screens
             _onMainMenuCallback = iOnMainMenuCallback;
             _subScreen = SubScreen.GamePlay;
 
-            _backgroundTexture = GraphicsHelper.LoadContent<Texture2D>("Bricks1");
-            _backgroundEffect = GraphicsHelper.LoadContent<Effect>("BrickShader").Clone();
+            _backgroundTexture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "Bricks1"));
+            _backgroundEffect = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "BrickShader")).Clone();
         }
 
         public void OnNavigateTo()

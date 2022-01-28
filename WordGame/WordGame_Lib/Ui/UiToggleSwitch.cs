@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib.Ui
@@ -11,8 +12,8 @@ namespace WordGame_Lib.Ui
             _currentValue = iInitialValue;
             _onToggleCallback = iOnToggleCallback;
 
-            _onButton = new UiNeonSpriteButton(iBounds, "CheckMark", SettingsManager.MainMenuSettings.StartButtonColor, () => OnToggle(false));
-            _offButton = new UiNeonSpriteButton(iBounds, "ExMark", SettingsManager.MainMenuSettings.ExitButtonColor, () => OnToggle(true));
+            _onButton = new UiNeonSpriteButton(iBounds, Path.Combine("Textures", "CheckMark"), SettingsManager.MainMenuSettings.StartButtonColor, () => OnToggle(false));
+            _offButton = new UiNeonSpriteButton(iBounds, Path.Combine("Textures", "ExMark"), SettingsManager.MainMenuSettings.ExitButtonColor, () => OnToggle(true));
 
             LightPoints = new List<PointLight>();
             LightPoints.AddRange(_currentValue ? _onButton.LightPoints : _offButton.LightPoints);

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,9 +13,9 @@ namespace WordGame_Lib.Ui
             _bounds = iBounds;
             _text = string.Empty;
 
-            _texture = GraphicsHelper.LoadContent<Texture2D>("LetterBoxOutline");
-            _textFont = GraphicsHelper.LoadContent<SpriteFont>("PrototypeFont");
-            _shader = GraphicsHelper.LoadContent<Effect>("NeonSpriteShader").Clone();
+            _texture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "LetterBoxOutline"));
+            _textFont = GraphicsHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "PrototypeFont"));
+            _shader = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "NeonSpriteShader")).Clone();
             _shaderInnerColorParameter = _shader.Parameters["InnerColor"];
             _shaderOuterColorParameter = _shader.Parameters["OuterColor"];
             SetDisposition(Disposition.Undecided);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,7 +14,7 @@ namespace WordGame_Lib.Ui
             Bounds = iBounds;
 
             _texture = GraphicsHelper.LoadContent<Texture2D>(iTextureName);
-            _shader = GraphicsHelper.LoadContent<Effect>("NeonSpriteShader").Clone();
+            _shader = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "NeonSpriteShader")).Clone();
             _shader.Parameters["OuterColor"].SetValue(new Vector4(iOuterColor.R / 255f, iOuterColor.G / 255f, iOuterColor.B / 255f, iOuterColor.A / 255f));
             _shader.Parameters["InnerColor"].SetValue(new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
             var pointLight = new PointLight(iOuterColor, iBounds.Center.ToVector2(), GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonTextSettings.RadiusAsPercentageOfWidth / 1.5f, 4.0f);

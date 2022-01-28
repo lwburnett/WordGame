@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using WordGame_Lib.Ui;
@@ -18,8 +19,8 @@ namespace WordGame_Lib.Screens
 
         public void OnNavigateTo()
         {
-            _backgroundTexture = GraphicsHelper.LoadContent<Texture2D>("Bricks1");
-            _backgroundEffect = GraphicsHelper.LoadContent<Effect>("BrickShader").Clone();
+            _backgroundTexture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "Bricks1"));
+            _backgroundEffect = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "BrickShader")).Clone();
 
             var bigMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GeneralVisualSettings.BigMarginAsPercentage);
             var medMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GeneralVisualSettings.MediumMarginAsPercentage);

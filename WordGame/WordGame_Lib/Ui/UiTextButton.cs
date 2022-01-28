@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -76,7 +77,7 @@ namespace WordGame_Lib.Ui
             _correctOverLapTexture = GraphicsHelper.CreateTexture(colorData11, iBounds.Width, iBounds.Height);
             _correctPressedTexture = GraphicsHelper.CreateTexture(colorData12, iBounds.Width, iBounds.Height);
 
-            _textFont = GraphicsHelper.LoadContent<SpriteFont>("PrototypeFont");
+            _textFont = GraphicsHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "PrototypeFont"));
         }
 
         public UiTextButton(Point iTopLeft, int iWidth, int iHeight, string iText, Action iOnClickedCallback) : 
