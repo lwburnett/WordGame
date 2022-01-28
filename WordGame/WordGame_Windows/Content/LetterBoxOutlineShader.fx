@@ -27,12 +27,18 @@ struct VertexShaderOutput
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float4 color = tex2D(SpriteTextureSampler, input.TextureCoordinates) * input.Color;
-    if (color.a == 0.0)
-        return color;		
-    if (dot(color.rgb, color.rgb) == 0.0)
-        return OuterColor;
-	
-    return InnerColor;
+    if (color.a != 0.0)
+    {        
+        if (color.r < 0.1)
+        {
+            color = OuterColor;
+        }
+        else
+        {
+            color = InnerColor;
+        }
+    }
+    return color;
 }
 
 technique SpriteDrawing

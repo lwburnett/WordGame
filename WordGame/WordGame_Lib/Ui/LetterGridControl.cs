@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib.Ui
 {
-    public class LetterGridControl : IUiElement
+    public class LetterGridControl : INeonUiElement
     {
         public LetterGridControl(Rectangle iBounds)
         {
@@ -18,11 +17,14 @@ namespace WordGame_Lib.Ui
             var cellHeight = cellWidth;
 
             _cells = CreateCells(gridMargin, cellMargin, cellWidth, cellHeight);
+            LightPoints = new List<PointLight>();
         }
 
         public void Update(GameTime iGameTime)
         {
             _cells.ForEach(c => c.Update(iGameTime));
+            LightPoints.Clear();
+            LightPoints.AddRange(_cells.SelectMany(c => c.LightPoints));
         }
 
         public void Draw()
@@ -59,6 +61,8 @@ namespace WordGame_Lib.Ui
 
             return word;
         }
+
+        public List<PointLight> LightPoints { get; }
 
         private readonly List<UiLetterCell> _cells;
         private int _cursorLocation;

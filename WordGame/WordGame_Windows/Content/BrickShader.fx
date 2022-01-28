@@ -15,6 +15,7 @@ float2  ScreenDimensions;
 float2  PointLightPosition[MAXLIGHT];
 float4  PointLightColor[MAXLIGHT];
 float   PointLightRadius[MAXLIGHT];
+float   PointLightIntensity[MAXLIGHT];
 
 sampler2D SpriteTextureSampler = sampler_state
 {
@@ -34,7 +35,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 
 	for (int ii = 0; ii < MAXLIGHT; ii++)
 	{
-		if (PointLightRadius[ii] > 0)
+        if (PointLightIntensity[ii] > 0)
 		{
 			// I don't really know why this adjustment is needed on windows only
 			float2 adjustedPointLightPosition = PointLightPosition[ii] - float2(0.0, 6);
@@ -42,10 +43,11 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 			float dist = distance(thisPixelPos, adjustedPointLightPosition.xy);
 			if (dist <= PointLightRadius[ii])
 			{
-				float fog = clamp(dist / PointLightRadius[ii], 0, 1);
-				float3 adjustedLighting = PointLightColor[ii].rgb * float3(1.75, 1.75, 1.75);
-				color *= float4(lerp(adjustedLighting, float3(1, 1, 1), fog), 1);
-			}
+				float fog = 1 - clamp(dist / PointLightRadius[ii], 0, 1);
+                float intensity = PointLightIntensity[ii];
+                float3 adjustedLighting = float3(PointLightColor[ii].r * intensity, PointLightColor[ii].g * intensity, PointLightColor[ii].b * intensity);
+                color *= float4(lerp(float3(1.0, 1.0, 1.0), adjustedLighting, fog), 1);
+            }
 			//if (dist <= 4)
 			//{
 				//color = PointLightColor[ii];

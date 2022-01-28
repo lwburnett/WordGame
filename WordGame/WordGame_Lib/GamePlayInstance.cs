@@ -6,7 +6,7 @@ using WordGame_Lib.Ui;
 
 namespace WordGame_Lib
 {
-    public class GamePlayInstance
+    public class GamePlayInstance : INeonUiElement
     {
         public GamePlayInstance(OrderedUniqueList<string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action<SessionStats> iOnGamePlaySessionFinishedCallback)
         {
@@ -15,6 +15,7 @@ namespace WordGame_Lib
             _playSessionHasFinished = false;
             _onGamePlaySessionFinishedCallback = iOnGamePlaySessionFinishedCallback;
             _rng = new Random();
+            LightPoints = new List<PointLight>();
         }
 
         public void LoadLevel()
@@ -38,7 +39,11 @@ namespace WordGame_Lib
             _secretWord = _secretWordDatabase[_rng.Next(_secretWordDatabase.Count)];
             _numGuesses = 0;
             _isSuccess = false;
+
+            LightPoints.AddRange(_letterGrid.LightPoints);
         }
+
+        public List<PointLight> LightPoints { get; }
 
         public void Update(GameTime iGameTime)
         {
@@ -50,6 +55,9 @@ namespace WordGame_Lib
 
             _keyboard.Update(iGameTime);
             _letterGrid.Update(iGameTime);
+            LightPoints.Clear();
+            LightPoints.AddRange(_letterGrid.LightPoints);
+
             _notification?.Update(iGameTime);
         }
 

@@ -69,7 +69,7 @@ namespace WordGame_Lib.Ui
             var lights = new List<PointLight>();
             if (Bounds.Width <= minDist)
             {
-                lights.Add(new PointLight(_textColorOuter, Bounds.Center.ToVector2(), radius));
+                lights.Add(new PointLight(_textColorOuter, Bounds.Center.ToVector2(), radius, 1.75f));
             }
             else
             {
@@ -80,7 +80,7 @@ namespace WordGame_Lib.Ui
 
                 for (var ii = 0; ii < minNumInterPointsNeeded + 2; ii++)
                 {
-                    lights.Add(new PointLight(_textColorOuter, new Vector2(Bounds.X + (ii * spaceBetweenPoints), height), radius));
+                    lights.Add(new PointLight(_textColorOuter, new Vector2(Bounds.X + (ii * spaceBetweenPoints), height), radius, 1.75f));
                 }
             }
 
@@ -113,19 +113,5 @@ namespace WordGame_Lib.Ui
         //         GraphicsHelper.DrawTexture(texture, point.Position);
         //     }
         // }
-    }
-
-    public class PointLight
-    {
-        public PointLight(Color iLightColor, Vector2 iPosition, float iRadius)
-        {
-            LightColor = iLightColor;
-            Position = iPosition;
-            Radius = iRadius;
-        }
-
-        public Color LightColor { get; }
-        public Vector2 Position { get; }
-        public float Radius { get; }
     }
 }

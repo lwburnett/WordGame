@@ -1,10 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace WordGame_Lib.Ui
 {
-    public class UiLetterCell : IUiElement
+    public class UiLetterCell : INeonUiElement
     {
         public UiLetterCell(Rectangle iBounds)
         {
@@ -52,32 +53,15 @@ namespace WordGame_Lib.Ui
         {
             _disposition = iDisposition;
 
-            Color outerColor;
-            switch (_disposition)
-            {
-                case Disposition.Undecided:
-                    outerColor = SettingsManager.ColorSettings.UndecidedDefaultColor;
-                    break;
-                case Disposition.Incorrect:
-                    outerColor = SettingsManager.ColorSettings.IncorrectDefaultColor;
-                    break;
-                case Disposition.Misplaced:
-                    outerColor = SettingsManager.ColorSettings.MisplacedDefaultColor;
-                    break;
-                case Disposition.Correct:
-                    outerColor = SettingsManager.ColorSettings.CorrectDefaultColor;
-                    break;
-                default:
-                    outerColor = SettingsManager.ColorSettings.UndecidedDefaultColor;
-                    Debug.Fail($"Unknown value of enum {nameof(Disposition)}: {_disposition}");
-                    break;
-            }
+            GetColorForDisposition(_disposition, out var outerColor, out var innerColor, out var intensity);
 
-            var innerFactor = 255 / 255f;
-            var outerFactor = 1 / 255f;
-            _shaderInnerColorParameter.SetValue(new Vector4(outerColor.R * innerFactor, outerColor.G * innerFactor, outerColor.B * innerFactor, outerColor.A * innerFactor));
-            _shaderOuterColorParameter.SetValue(new Vector4(outerColor.R * outerFactor, outerColor.G * outerFactor, outerColor.B * outerFactor, outerColor.A * outerFactor));
+            _shaderInnerColorParameter.SetValue(new Vector4(innerColor.R / 255f, innerColor.G / 255f, innerColor.B / 255f, innerColor.A / 255f));
+            _shaderOuterColorParameter.SetValue(new Vector4(outerColor.R / 255f, outerColor.G / 255f, outerColor.B / 255f, outerColor.A / 255f));
+
+            _pointLight = new PointLight(outerColor, _bounds.Center.ToVector2(), GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonTextSettings.RadiusAsPercentageOfWidth / 1.5f, intensity);
         }
+
+        public List<PointLight> LightPoints => new List<PointLight> { _pointLight };
 
         private readonly Rectangle _bounds;
         private string _text;
@@ -87,5 +71,48 @@ namespace WordGame_Lib.Ui
         private readonly EffectParameter _shaderInnerColorParameter;
         private readonly SpriteFont _textFont;
         private Disposition _disposition;
+        private PointLight _pointLight;
+
+        // ReSharper disable InconsistentNaming
+        private static void GetColorForDisposition(Disposition iDisposition, out Color oOuterColor, out Color oInnerColor, out float oIntensity)
+        {
+            Color outerColor;
+            Color innerColor;
+            float intensity;
+            switch (iDisposition)
+            {
+                case Disposition.Undecided:
+                    outerColor = SettingsManager.ColorSettings.UndecidedDefaultColor;
+                    innerColor = SettingsManager.ColorSettings.UndecidedDefaultColor * 2;
+                    intensity = 1.75f;
+                    break;
+                case Disposition.Incorrect:
+                    outerColor = SettingsManager.ColorSettings.IncorrectDefaultColor;
+                    innerColor = SettingsManager.ColorSettings.IncorrectDefaultColor;
+                    intensity = 0.0f;
+                    break;
+                case Disposition.Misplaced:
+                    outerColor = SettingsManager.ColorSettings.MisplacedDefaultColor;
+                    innerColor = Color.White;
+                    intensity = 3.0f;
+                    break;
+                case Disposition.Correct:
+                    outerColor = SettingsManager.ColorSettings.CorrectDefaultColor;
+                    innerColor = Color.White;
+                    intensity = 3.0f;
+                    break;
+                default:
+                    outerColor = SettingsManager.ColorSettings.UndecidedDefaultColor;
+                    innerColor = SettingsManager.ColorSettings.UndecidedDefaultColor * 2;
+                    intensity = 1.75f;
+                    Debug.Fail($"Unknown value of enum {nameof(Disposition)}: {iDisposition}");
+                    break;
+            }
+
+            oOuterColor = outerColor;
+            oInnerColor = innerColor;
+            oIntensity = intensity;
+        }
+        // ReSharper restore InconsistentNaming
     }
 }

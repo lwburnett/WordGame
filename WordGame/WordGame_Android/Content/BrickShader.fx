@@ -14,7 +14,8 @@ Texture2D SpriteTexture;
 float2  ScreenDimensions;
 float2  PointLightPosition[MAXLIGHT];
 float4  PointLightColor[MAXLIGHT];
-float   PointLightRadius[MAXLIGHT];
+float	PointLightRadius[MAXLIGHT];
+float	PointLightIntensity[MAXLIGHT];
 
 sampler2D SpriteTextureSampler = sampler_state
 {
@@ -54,10 +55,11 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 			float dist = GetDistSafe(thisPixelPos, PointLightPosition[ii].xy);
 			if (dist <= PointLightRadius[ii])
 			{
-				float fog = clamp(dist / PointLightRadius[ii], 0.0, 1.0);
-				float3 adjustedLighting = PointLightColor[ii].rgb * float3(1.75, 1.75, 1.75);
-				color *= float4(lerp(adjustedLighting, float3(1.0, 1.0, 1.0), fog), 1.0);
-			}
+                float fog = 1 - clamp(dist / PointLightRadius[ii], 0.0, 1.0);
+                float intensity = PointLightIntensity[ii];
+                float3 adjustedLighting = float3(PointLightColor[ii].r * intensity, PointLightColor[ii].g * intensity, PointLightColor[ii].b * intensity);
+                color *= float4(lerp(float3(1.0, 1.0, 1.0), adjustedLighting, fog), 1.0);
+            }
 			//if (dist <= 4)
 			//{
 				//color = PointLightColor[ii];
