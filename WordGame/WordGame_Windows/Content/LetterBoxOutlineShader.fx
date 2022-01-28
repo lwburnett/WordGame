@@ -29,14 +29,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float4 color = tex2D(SpriteTextureSampler, input.TextureCoordinates) * input.Color;
     if (color.a != 0.0)
     {        
-        if (color.r < 0.1)
-        {
-            color = OuterColor;
-        }
-        else
-        {
-            color = InnerColor;
-        }
+        color = lerp(InnerColor, OuterColor, 1 - color.r);
     }
     return color;
 }
