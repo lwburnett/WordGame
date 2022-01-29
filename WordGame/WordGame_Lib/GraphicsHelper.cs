@@ -159,7 +159,7 @@ namespace WordGame_Lib
 
             for (var ii = 0; ii < maxLights; ii++)
             {
-                if (ii < iAllPoints.Count)
+                if (ii < iAllPoints.Count && iAllPoints[ii].Intensity >= 1.0f)
                 {
                     var pointLightData = iAllPoints[ii];
                     // I think the Y coordinate of shader math has 0 at the bottom of the screen and counts positive going up
