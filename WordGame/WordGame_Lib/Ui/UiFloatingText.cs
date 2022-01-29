@@ -38,6 +38,7 @@ namespace WordGame_Lib.Ui
             if (singleLineBuffer.Length > 0)
                 singleLines.Add(singleLineBuffer);
 
+            // ReSharper disable once InconsistentNaming
             _text = string.Join("\n", singleLines.Select(l => l.Trim()));
 
             var stringDimensions = _textFont.MeasureString(_text) * _scaling;
@@ -54,10 +55,12 @@ namespace WordGame_Lib.Ui
 
         public void Draw()
         {
-            const float offsetScalar = 1.1f;
             var pos = _topLeft.ToVector2();
             if (_textBorderColor.HasValue)
-                GraphicsHelper.DrawStringWithBorder(_textFont, _text, pos, offsetScalar, _textColor, _textBorderColor.Value, _scaling);
+            {
+                var borderWidth = GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.TextBorderWidthAsPercentage;
+                GraphicsHelper.DrawStringWithBorder(_textFont, _text, pos, borderWidth, _textColor, _textBorderColor.Value, _scaling);
+            }
             else
                 GraphicsHelper.DrawString(_textFont, _text, pos, _textColor, _scaling);
         }

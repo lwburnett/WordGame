@@ -33,9 +33,9 @@ namespace WordGame_Lib.Ui
             
             const float scaling = 1.0f;
             var stringDimensions = _textFont.MeasureString(_text) * scaling;
-            const float offsetScalar = 1.1f;
+            var borderWidth = GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.TextBorderWidthAsPercentage;
             var pos = new Vector2(_bounds.X + (_bounds.Width - stringDimensions.X) / 2f, _bounds.Y + (_bounds.Height - stringDimensions.Y) / 2f);
-            GraphicsHelper.DrawStringWithBorder(_textFont, _text, pos, offsetScalar, Color.White, Color.Black);
+            GraphicsHelper.DrawStringWithBorder(_textFont, _text, pos, borderWidth, Color.White, Color.Black);
         }
 
         public void SetText(string iKeyString)

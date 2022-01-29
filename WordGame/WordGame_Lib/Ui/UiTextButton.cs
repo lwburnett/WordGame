@@ -88,16 +88,12 @@ namespace WordGame_Lib.Ui
         public override void Draw()
         {
             base.Draw();
-
-            const float offsetScalar = 1.1f;
+            
             const float scaling = 1.0f;
             var stringDimensions = _textFont.MeasureString(_text) * scaling;
             var pos = new Vector2(Bounds.X + (Bounds.Width - stringDimensions.X) / 2f, Bounds.Y + (Bounds.Height - stringDimensions.Y) / 2f);
-            GraphicsHelper.DrawString(_textFont, _text, pos + new Vector2(-offsetScalar * scaling, -offsetScalar * scaling), Color.Black);
-            GraphicsHelper.DrawString(_textFont, _text, pos + new Vector2(offsetScalar * scaling, -offsetScalar * scaling), Color.Black);
-            GraphicsHelper.DrawString(_textFont, _text, pos + new Vector2(-offsetScalar * scaling, offsetScalar * scaling), Color.Black);
-            GraphicsHelper.DrawString(_textFont, _text, pos + new Vector2(offsetScalar * scaling, offsetScalar * scaling), Color.Black);
-            GraphicsHelper.DrawString(_textFont, _text, pos, Color.White);
+            var borderWidth = GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.TextBorderWidthAsPercentage;
+            GraphicsHelper.DrawStringWithBorder(_textFont, _text, pos, borderWidth, Color.White, Color.Black);
         }
 
         public string GetText()

@@ -2,13 +2,15 @@
 
 namespace WordGame_Lib
 {
-    static class SettingsManager
+    public static class SettingsManager
     {
         public static class GeneralVisualSettings
         {
             public const float BigMarginAsPercentage = .05f;
             public const float MediumMarginAsPercentage = .025f;
             public const float SmallMarginAsPercentage = .01f;
+
+            public const float TextBorderWidthAsPercentage = .002f;
         }
 
         public static class MainMenuSettings
