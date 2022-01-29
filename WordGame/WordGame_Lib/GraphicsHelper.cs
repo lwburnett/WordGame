@@ -148,7 +148,8 @@ namespace WordGame_Lib
         // ReSharper disable InconsistentNaming
         public static void CalculatePointLightShaderParameters(IReadOnlyList<PointLight> iAllPoints, out Vector2[] oPositions, out Vector4[] oColors, out float[] oRadii, out float[] oIntensity)
         {
-            const int maxLights = 30;
+            // This number needs to match the MAXLIGHT numbers in BrickShader.fx
+            const int maxLights = 50;
 
             oPositions = new Vector2[maxLights];
             oColors = new Vector4[maxLights];

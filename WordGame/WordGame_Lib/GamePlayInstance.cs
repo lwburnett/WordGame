@@ -8,14 +8,38 @@ namespace WordGame_Lib
 {
     public class GamePlayInstance : INeonUiElement
     {
-        public GamePlayInstance(OrderedUniqueList<string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action<SessionStats> iOnGamePlaySessionFinishedCallback)
+        public GamePlayInstance(OrderedUniqueList<string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action iOnMainMenuCallback, Action iOnPlayAgainCallback)
         {
             _wordDatabase = iWordDatabase;
             _secretWordDatabase = iSecretWordDatabase;
             _playSessionHasFinished = false;
-            _onGamePlaySessionFinishedCallback = iOnGamePlaySessionFinishedCallback;
             _rng = new Random();
             LightPoints = new List<PointLight>();
+
+
+            var mainMenuXPos = GraphicsHelper.GamePlayArea.X + (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.BigMarginAsPercentage);
+            var mainMenuYPos = GraphicsHelper.GamePlayArea.Y + (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.MainMenuButtonYAsPercentage);
+            var mainMenuWidth = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.GamePlaySettings.MainMenuButtonWidthAsPercentage);
+            var mainMenuHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.MainMenuButtonHeightAsPercentage);
+            _mainMenuButton = new UiMenuNeonButton(
+                new Rectangle(mainMenuXPos, mainMenuYPos, mainMenuWidth, mainMenuHeight),
+                "MAIN MENU",
+                SettingsManager.GamePlaySettings.MainMenuButtonColor,
+                iOnMainMenuCallback);
+
+            var playAgainYPos = GraphicsHelper.GamePlayArea.Y + (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.PlayAgainButtonYAsPercentage);
+            var playAgainWidth = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.GamePlaySettings.PlayAgainButtonWidthAsPercentage);
+            var playAgainXPos = 
+                GraphicsHelper.GamePlayArea.X + 
+                GraphicsHelper.GamePlayArea.Width - 
+                (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.BigMarginAsPercentage) - 
+                playAgainWidth;
+            var playAgainHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.PlayAgainButtonHeightAsPercentage);
+            _playAgainButton = new UiMenuNeonButton(
+                new Rectangle(playAgainXPos, playAgainYPos, playAgainWidth, playAgainHeight),
+                "PLAY AGAIN",
+                SettingsManager.GamePlaySettings.PlayAgainButtonColor,
+                iOnPlayAgainCallback);
         }
 
         public void LoadLevel()
@@ -37,33 +61,46 @@ namespace WordGame_Lib
 
             _notification = null;
             _secretWord = _secretWordDatabase[_rng.Next(_secretWordDatabase.Count)];
-            _numGuesses = 0;
-            _isSuccess = false;
-
-            LightPoints.AddRange(_letterGrid.LightPoints);
+            //_numGuesses = 0;
+            //_isSuccess = false;
         }
 
         public List<PointLight> LightPoints { get; }
 
         public void Update(GameTime iGameTime)
         {
-            if (_playSessionHasFinished)
-            {
-                _onGamePlaySessionFinishedCallback(new SessionStats(_isSuccess, _numGuesses, _secretWord));
-                return;
-            }
-
-            _keyboard.Update(iGameTime);
             _letterGrid.Update(iGameTime);
             LightPoints.Clear();
             LightPoints.AddRange(_letterGrid.LightPoints);
+
+            if (!_playSessionHasFinished)
+            {
+                _keyboard.Update(iGameTime);
+            }
+            else
+            {
+                _mainMenuButton.Update(iGameTime);
+                _playAgainButton.Update(iGameTime);
+
+                LightPoints.AddRange(_mainMenuButton.LightPoints);
+                LightPoints.AddRange(_playAgainButton.LightPoints);
+            }
 
             _notification?.Update(iGameTime);
         }
 
         public void Draw()
         {
-            _keyboard.Draw();
+            if (!_playSessionHasFinished)
+            {
+                _keyboard.Draw();
+            }
+            else
+            {
+                _mainMenuButton.Draw();
+                _playAgainButton.Draw();
+            }
+
             _letterGrid.Draw();
             _notification?.Draw();
         }
@@ -74,11 +111,12 @@ namespace WordGame_Lib
         private KeyboardControl _keyboard;
         private LetterGridControl _letterGrid;
         private UiFloatingText _notification;
-        private int _numGuesses;
-        private bool _isSuccess;
+        //private int _numGuesses;
+        //private bool _isSuccess;
 
         private bool _playSessionHasFinished;
-        private readonly Action<SessionStats> _onGamePlaySessionFinishedCallback;
+        private readonly INeonUiElement _mainMenuButton;
+        private readonly INeonUiElement _playAgainButton;
 
         private string _secretWord;
 
@@ -145,20 +183,20 @@ namespace WordGame_Lib
                 }
             }
 
-            _numGuesses++;
+            //_numGuesses++;
             _letterGrid.OnGuessEntered(dispositionList.ToList());
             _keyboard.OnGuessEntered(currentWord, dispositionList.ToList());
 
             if (currentWord == _secretWord)
             {
-                SetNotification("Correct!!");
-                _isSuccess = true;
+                SetNotification($"Correct!! The word was {_secretWord}");
+                //_isSuccess = true;
                 _playSessionHasFinished = true;
             }
             else if (_letterGrid.IsFinished())
             {
                 SetNotification($"Incorrect. The word was {_secretWord}");
-                _isSuccess = false;
+                //_isSuccess = false;
                 _playSessionHasFinished = true;
             }
         }

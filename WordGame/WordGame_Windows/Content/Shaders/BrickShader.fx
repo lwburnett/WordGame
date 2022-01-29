@@ -7,7 +7,7 @@
 	#define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
 
-#define MAXLIGHT 30
+#define MAXLIGHT 50
 
 Texture2D SpriteTexture;
 
