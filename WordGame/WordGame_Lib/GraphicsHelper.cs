@@ -144,9 +144,7 @@ namespace WordGame_Lib
             Debug.Assert(!sGamePlayArea.HasValue);
             sGamePlayArea = iGamePlayArea;
         }
-
-
-
+        
         // ReSharper disable InconsistentNaming
         public static void CalculatePointLightShaderParameters(IReadOnlyList<PointLight> iAllPoints, out Vector2[] oPositions, out Vector4[] oColors, out float[] oRadii, out float[] oIntensity)
         {
