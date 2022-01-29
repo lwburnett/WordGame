@@ -11,7 +11,7 @@ namespace WordGame_Lib.Ui
         public UiLetterCell(Rectangle iBounds)
         {
             _bounds = iBounds;
-            _floatingText = new UiFloatingText(iBounds, string.Empty, Color.White);
+            _floatingText = new UiFloatingText(iBounds, string.Empty, Color.White, Color.Black);
 
             _texture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "LetterBoxOutline"));
             _shader = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "NeonSpriteShader")).Clone();

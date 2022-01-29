@@ -53,13 +53,13 @@ namespace WordGame_Lib
             public const float NotificationHeightAsPercentage = .05f;
 
             public static float MainMenuButtonYAsPercentage = .75f;
-            public static float MainMenuButtonHeightAsPercentage = .075f;
-            public static float MainMenuButtonWidthAsPercentage = .6f;
+            public static float MainMenuButtonHeightAsPercentage = .065f;
+            public static float MainMenuButtonWidthAsPercentage = .7f;
             public static Color MainMenuButtonColor = new Color(255, 173, 0);
 
             public static float PlayAgainButtonYAsPercentage = .85f;
-            public static float PlayAgainButtonHeightAsPercentage = .075f;
-            public static float PlayAgainButtonWidthAsPercentage = .6f;
+            public static float PlayAgainButtonHeightAsPercentage = .065f;
+            public static float PlayAgainButtonWidthAsPercentage = .7f;
             public static Color PlayAgainButtonColor = new Color(77, 77, 255);
         }
 
