@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,9 +11,9 @@ namespace WordGame_Lib.Ui
             base(iOnClickedCallback)
         {
             Bounds = iBounds;
-
-            _text = iText;
+            
             _disposition = Disposition.Undecided;
+            _floatingText = new UiFloatingText(iBounds, iText, Color.White, Color.Black);
 
             var dataSize = iBounds.Width * iBounds.Height;
             var colorData1 = new Color[dataSize];
@@ -76,8 +75,6 @@ namespace WordGame_Lib.Ui
             _correctDefaultTexture = GraphicsHelper.CreateTexture(colorData10, iBounds.Width, iBounds.Height);
             _correctOverLapTexture = GraphicsHelper.CreateTexture(colorData11, iBounds.Width, iBounds.Height);
             _correctPressedTexture = GraphicsHelper.CreateTexture(colorData12, iBounds.Width, iBounds.Height);
-
-            _textFont = GraphicsHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "PrototypeFont"));
         }
 
         public UiTextButton(Point iTopLeft, int iWidth, int iHeight, string iText, Action iOnClickedCallback) : 
@@ -88,17 +85,13 @@ namespace WordGame_Lib.Ui
         public override void Draw()
         {
             base.Draw();
-            
-            const float scaling = 1.0f;
-            var stringDimensions = _textFont.MeasureString(_text) * scaling;
-            var pos = new Vector2(Bounds.X + (Bounds.Width - stringDimensions.X) / 2f, Bounds.Y + (Bounds.Height - stringDimensions.Y) / 2f);
-            var borderWidth = GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.TextBorderWidthAsPercentage;
-            GraphicsHelper.DrawStringWithBorder(_textFont, _text, pos, borderWidth, Color.White, Color.Black);
+
+            _floatingText.Draw();
         }
 
         public string GetText()
         {
-            return _text;
+            return _floatingText.GetText();
         }
 
         public Disposition GetDisposition()
@@ -166,8 +159,8 @@ namespace WordGame_Lib.Ui
                     return _undecidedPressedTexture;
             }
         }
-
-        private readonly string _text;
+        
+        private readonly UiFloatingText _floatingText;
         private Disposition _disposition;
         private readonly Texture2D _undecidedDefaultTexture;
         private readonly Texture2D _undecidedOverLapTexture;
@@ -181,7 +174,6 @@ namespace WordGame_Lib.Ui
         private readonly Texture2D _correctDefaultTexture;
         private readonly Texture2D _correctOverLapTexture;
         private readonly Texture2D _correctPressedTexture;
-        private readonly SpriteFont _textFont;
         
     }
 }

@@ -11,10 +11,9 @@ namespace WordGame_Lib.Ui
         public UiLetterCell(Rectangle iBounds)
         {
             _bounds = iBounds;
-            _text = string.Empty;
+            _floatingText = new UiFloatingText(iBounds, string.Empty, Color.White);
 
             _texture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "LetterBoxOutline"));
-            _textFont = GraphicsHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "PrototypeFont"));
             _shader = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "NeonSpriteShader")).Clone();
             _shaderInnerColorParameter = _shader.Parameters["InnerColor"];
             _shaderOuterColorParameter = _shader.Parameters["OuterColor"];
@@ -28,24 +27,17 @@ namespace WordGame_Lib.Ui
         public void Draw()
         {
             GraphicsHelper.DrawTexture(_texture, _bounds, _shader);
-
-            if (string.IsNullOrWhiteSpace(_text)) return;
-            
-            const float scaling = 1.0f;
-            var stringDimensions = _textFont.MeasureString(_text) * scaling;
-            var borderWidth = GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.TextBorderWidthAsPercentage;
-            var pos = new Vector2(_bounds.X + (_bounds.Width - stringDimensions.X) / 2f, _bounds.Y + (_bounds.Height - stringDimensions.Y) / 2f);
-            GraphicsHelper.DrawStringWithBorder(_textFont, _text, pos, borderWidth, Color.White, Color.Black);
+            _floatingText.Draw();
         }
 
         public void SetText(string iKeyString)
         {
-            _text = iKeyString;
+            _floatingText.SetText(iKeyString);
         }
 
         public string GetText()
         {
-            return _text;
+            return _floatingText.GetText();
         }
 
         public void SetDisposition(Disposition iDisposition)
@@ -63,12 +55,11 @@ namespace WordGame_Lib.Ui
         public List<PointLight> LightPoints => new List<PointLight> { _pointLight };
 
         private readonly Rectangle _bounds;
-        private string _text;
+        private readonly UiFloatingText _floatingText;
         private readonly Texture2D _texture;
         private readonly Effect _shader;
         private readonly EffectParameter _shaderOuterColorParameter;
         private readonly EffectParameter _shaderInnerColorParameter;
-        private readonly SpriteFont _textFont;
         private Disposition _disposition;
         private PointLight _pointLight;
 

@@ -10,23 +10,49 @@ namespace WordGame_Lib.Ui
     {
         public UiFloatingText(Rectangle iBounds, string iText, Color iTextColor, Color? iTexBorderColor = null, float iScaling = 1.0f)
         {
+            _boundingBox = iBounds;
             _textColor = iTextColor;
             _textBorderColor = iTexBorderColor;
 
             _textFont = GraphicsHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "PrototypeFont"));
             _scaling = iScaling;
 
-            var words = iText.Split(' ');
+            SetText(iText);
+        }
+
+        public void Update(GameTime iGameTime)
+        {
+        }
+
+        public void Draw()
+        {
+            if (string.IsNullOrWhiteSpace(_text))
+                return;
+
+            var pos = _renderedStringBounds.Location.ToVector2();
+            if (_textBorderColor.HasValue)
+            {
+                var borderWidth = GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.TextBorderWidthAsPercentage;
+                GraphicsHelper.DrawStringWithBorder(_textFont, _text, pos, borderWidth, _textColor, _textBorderColor.Value, _scaling);
+            }
+            else
+                GraphicsHelper.DrawString(_textFont, _text, pos, _textColor, _scaling);
+        }
+
+        public string GetText() => _text;
+
+        public void SetText(string iNewText)
+        {
+            var words = iNewText.Split(' ');
 
             var singleLines = new List<string>();
             var singleLineBuffer = string.Empty;
-            for (var ii = 0; ii < words.Length; ii++)
+            foreach (var thisWord in words)
             {
-                var thisWord = words[ii];
                 var thisLine = singleLineBuffer + thisWord;
 
                 var thisStringDimension = _textFont.MeasureString(thisLine) * _scaling;
-                if (thisStringDimension.X <= iBounds.Width) 
+                if (thisStringDimension.X <= _boundingBox.Width)
                     singleLineBuffer = $"{thisLine} ";
                 else
                 {
@@ -42,31 +68,13 @@ namespace WordGame_Lib.Ui
             _text = string.Join("\n", singleLines.Select(l => l.Trim()));
 
             var stringDimensions = _textFont.MeasureString(_text) * _scaling;
-
-            var left = iBounds.Left + (iBounds.Width / 2) - ((int)stringDimensions.X / 2);
-            var top = iBounds.Top + (iBounds.Height / 2) - ((int)stringDimensions.Y / 2);
-
-            _topLeft = new Point(left, top);
+            var topLeft = _boundingBox.Center - (stringDimensions / 2.0f).ToPoint();
+            _renderedStringBounds = new Rectangle(topLeft, stringDimensions.ToPoint());
         }
 
-        public void Update(GameTime iGameTime)
-        {
-        }
-
-        public void Draw()
-        {
-            var pos = _topLeft.ToVector2();
-            if (_textBorderColor.HasValue)
-            {
-                var borderWidth = GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.TextBorderWidthAsPercentage;
-                GraphicsHelper.DrawStringWithBorder(_textFont, _text, pos, borderWidth, _textColor, _textBorderColor.Value, _scaling);
-            }
-            else
-                GraphicsHelper.DrawString(_textFont, _text, pos, _textColor, _scaling);
-        }
-
-        private Point _topLeft;
-        private readonly string _text;
+        private readonly Rectangle _boundingBox;
+        private Rectangle _renderedStringBounds;
+        private string _text;
         private readonly SpriteFont _textFont;
         private readonly Color _textColor;
         private readonly Color? _textBorderColor;
