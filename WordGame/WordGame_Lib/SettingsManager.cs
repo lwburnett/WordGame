@@ -122,11 +122,27 @@ namespace WordGame_Lib
             public const float IndividualSettingRowHeightAsPercent = .1666f;
         }
 
-        public static class NeonTextSettings
+        public static class NeonSettings
         {
-            public const float RadiusAsPercentageOfWidth = .333f;
-            public const float MinDistOfPointLightsAsPercentage = .05f;
-            public const float MaxDistOfPointLightsAsPercentage = .1f;
+            public const float PulsePeriodSec = 4.0f;
+            public const float PulseIntensityAmplitude = .1f;
+
+            public static class Text
+            {
+                public const float RadiusAsPercentageOfWidth = .333f;
+                public const float MinDistOfPointLightsAsPercentage = .05f;
+                public const float MaxDistOfPointLightsAsPercentage = .1f;
+            }
+
+            public static class LetterCell
+            {
+                public const float RadiusAsPercentageOfWidth = .22f;
+            }
+
+            public static class Sprite
+            {
+                public const float RadiusAsPercentageOfWidth = .22f;
+            }
         }
     }
 }

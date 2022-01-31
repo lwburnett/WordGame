@@ -6,11 +6,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WordGame_Lib.Ui
 {
-    public class UiLetterCell : INeonUiElement
+    public class UiLetterCell : NeonUiElementBase
     {
         public UiLetterCell(Rectangle iBounds)
         {
-            _bounds = iBounds;
+            Bounds = iBounds;
             _floatingText = new UiFloatingText(iBounds, string.Empty, Color.White, Color.Black);
 
             _texture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "LetterBoxOutline"));
@@ -20,13 +20,9 @@ namespace WordGame_Lib.Ui
             SetDisposition(Disposition.Undecided);
         }
 
-        public void Update(GameTime iGameTime)
+        public override void Draw()
         {
-        }
-
-        public void Draw()
-        {
-            GraphicsHelper.DrawTexture(_texture, _bounds, _shader);
+            GraphicsHelper.DrawTexture(_texture, Bounds, _shader);
             _floatingText.Draw();
         }
 
@@ -46,21 +42,26 @@ namespace WordGame_Lib.Ui
 
             GetColorForDisposition(_disposition, out var outerColor, out var innerColor, out var intensity);
 
+            _currentIntensity = intensity;
+
             _shaderInnerColorParameter.SetValue(new Vector4(innerColor.R / 255f, innerColor.G / 255f, innerColor.B / 255f, innerColor.A / 255f));
             _shaderOuterColorParameter.SetValue(new Vector4(outerColor.R / 255f, outerColor.G / 255f, outerColor.B / 255f, outerColor.A / 255f));
 
-            _pointLight = new PointLight(outerColor, _bounds.Center.ToVector2(), GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonTextSettings.RadiusAsPercentageOfWidth / 1.5f, intensity);
+            _pointLight = new PointLight(outerColor, Bounds.Center.ToVector2(), GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonSettings.LetterCell.RadiusAsPercentageOfWidth, intensity);
         }
 
-        public List<PointLight> LightPoints => new List<PointLight> { _pointLight };
+        public override Rectangle Bounds { get; }
+        public override List<PointLight> LightPoints => new List<PointLight> { _pointLight };
 
-        private readonly Rectangle _bounds;
+        protected override float FullIntensity => _currentIntensity;
+
         private readonly UiFloatingText _floatingText;
         private readonly Texture2D _texture;
         private readonly Effect _shader;
         private readonly EffectParameter _shaderOuterColorParameter;
         private readonly EffectParameter _shaderInnerColorParameter;
         private Disposition _disposition;
+        private float _currentIntensity;
         private PointLight _pointLight;
 
         // ReSharper disable InconsistentNaming

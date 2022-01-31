@@ -15,6 +15,7 @@ namespace WordGame_Lib.Screens
             _onPlayCallback = iOnPlayCallback;
             _onSettingsCallback = iOnSettingsCallback;
             _onExitCallback = iOnExitCallback;
+            _lightPoints = new List<PointLight>();
         }
 
         public void OnNavigateTo()
@@ -77,14 +78,13 @@ namespace WordGame_Lib.Screens
                 SettingsManager.MainMenuSettings.ExitButtonColor,
                 OnExitClicked);
 
-            var allPoints = new List<PointLight>();
-            allPoints.AddRange(_titleWord1.LightPoints);
-            allPoints.AddRange(_titleWord2.LightPoints);
-            allPoints.AddRange(_playButton.LightPoints);
-            allPoints.AddRange(_settingsButton.LightPoints);
-            allPoints.AddRange(_exitButton.LightPoints);
+            _lightPoints.AddRange(_titleWord1.LightPoints);
+            _lightPoints.AddRange(_titleWord2.LightPoints);
+            _lightPoints.AddRange(_playButton.LightPoints);
+            _lightPoints.AddRange(_settingsButton.LightPoints);
+            _lightPoints.AddRange(_exitButton.LightPoints);
 
-            GraphicsHelper.CalculatePointLightShaderParameters(allPoints, out var positions, out var colors, out var radii, out var intensity);
+            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity);
 
             _backgroundEffect.Parameters["ScreenDimensions"].SetValue(new Vector2(GraphicsHelper.GamePlayArea.Width, GraphicsHelper.GamePlayArea.Height));
             _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);
@@ -103,6 +103,12 @@ namespace WordGame_Lib.Screens
             _playButton.Update(iGameTime);
             _settingsButton.Update(iGameTime);
             _exitButton.Update(iGameTime);
+
+            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity);
+            _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);
+            _backgroundEffect.Parameters["PointLightColor"].SetValue(colors);
+            _backgroundEffect.Parameters["PointLightRadius"].SetValue(radii);
+            _backgroundEffect.Parameters["PointLightIntensity"].SetValue(intensity);
         }
 
         public void Draw()
@@ -115,6 +121,7 @@ namespace WordGame_Lib.Screens
             _exitButton.Draw();
         }
 
+        private readonly List<PointLight> _lightPoints;
         private Texture2D _backgroundTexture;
         private Effect _backgroundEffect;
         private UiNeonFloatingText _titleWord1;

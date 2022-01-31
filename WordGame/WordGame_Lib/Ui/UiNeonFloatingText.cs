@@ -6,11 +6,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WordGame_Lib.Ui
 {
-    public class UiNeonFloatingText : INeonUiElement
+    public class UiNeonFloatingText : NeonUiElementBase
     {
         public UiNeonFloatingText(Rectangle iBounds, string iText, Color iTextColor)
         {
             _text = iText;
+            FullIntensity = 1.75f;
 
             _textFont = GraphicsHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "NeonFont"));
 
@@ -34,12 +35,7 @@ namespace WordGame_Lib.Ui
             LightPoints = CalculateLightPoints();
         }
 
-        public void Update(GameTime iGameTime)
-        {
-
-        }
-
-        public void Draw()
+        public override void Draw()
         {
             const float scalar = 1.25f;
             GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(-scalar * _scaling, -scalar * _scaling), _textColorOuter, _scaling);
@@ -51,9 +47,11 @@ namespace WordGame_Lib.Ui
             //DrawPointLightsDebug();
         }
 
-        public List<PointLight> LightPoints { get; }
+        public override List<PointLight> LightPoints { get; }
 
-        public Rectangle Bounds { get; }
+        public override Rectangle Bounds { get; }
+
+        protected sealed override float FullIntensity { get; }
 
         private readonly string _text;
         private readonly SpriteFont _textFont;
@@ -63,14 +61,14 @@ namespace WordGame_Lib.Ui
 
         private List<PointLight> CalculateLightPoints()
         {
-            var minDist = GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonTextSettings.MinDistOfPointLightsAsPercentage;
-            var maxDist = GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonTextSettings.MaxDistOfPointLightsAsPercentage;
-            var radius = GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonTextSettings.RadiusAsPercentageOfWidth;
+            var minDist = GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonSettings.Text.MinDistOfPointLightsAsPercentage;
+            var maxDist = GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonSettings.Text.MaxDistOfPointLightsAsPercentage;
+            var radius = GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonSettings.Text.RadiusAsPercentageOfWidth;
 
             var lights = new List<PointLight>();
             if (Bounds.Width <= minDist)
             {
-                lights.Add(new PointLight(_textColorOuter, Bounds.Center.ToVector2(), radius, 1.75f));
+                lights.Add(new PointLight(_textColorOuter, Bounds.Center.ToVector2(), radius, FullIntensity));
             }
             else
             {
@@ -81,7 +79,7 @@ namespace WordGame_Lib.Ui
 
                 for (var ii = 0; ii < minNumInterPointsNeeded + 2; ii++)
                 {
-                    lights.Add(new PointLight(_textColorOuter, new Vector2(Bounds.X + (ii * spaceBetweenPoints), height), radius, 1.75f));
+                    lights.Add(new PointLight(_textColorOuter, new Vector2(Bounds.X + (ii * spaceBetweenPoints), height), radius, FullIntensity));
                 }
             }
 
