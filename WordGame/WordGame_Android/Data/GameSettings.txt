@@ -1,1 +1,2 @@
 AlternateKeyColorScheme, False
+NeonLightPulse, True
