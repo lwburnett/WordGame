@@ -51,16 +51,18 @@ namespace WordGame_Lib.Screens
             var exitButtonHeight = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.ExitButtonHeightAsPercentage);
             var exitButtonWidth = (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.ExitButtonWidthAsPercentage);
 
-
+            var pulseOffsetInterpolationValue = new Random().NextDouble();
             _titleWord1 = new UiNeonFloatingText(
                 new Rectangle(titleWord1TopLeftX, titleWord1TopLeftY, titleWord1Width, titleWord1Height),
                 "WORD",
-                SettingsManager.MainMenuSettings.TitleTextColor);
+                SettingsManager.MainMenuSettings.TitleTextColor,
+                pulseOffsetInterpolationValue);
 
             _titleWord2 = new UiNeonFloatingText(
                 new Rectangle(titleWord2TopLeftX, titleWord2TopLeftY, titleWord2Width, titleWord2Height),
                 "NOIR",
-                SettingsManager.MainMenuSettings.TitleTextColor);
+                SettingsManager.MainMenuSettings.TitleTextColor,
+                pulseOffsetInterpolationValue);
 
             _playButton = new UiMenuNeonButton(
                 new Rectangle(playButtonTopLeftX, playButtonTopLeftY, playButtonWidth, playButtonHeight), 

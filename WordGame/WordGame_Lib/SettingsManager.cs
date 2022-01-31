@@ -125,7 +125,7 @@ namespace WordGame_Lib
         public static class NeonSettings
         {
             public const float PulsePeriodSec = 4.0f;
-            public const float PulseIntensityAmplitude = .1f;
+            public const float PulseIntensityAmplitude = .05f;
 
             public static class Text
             {

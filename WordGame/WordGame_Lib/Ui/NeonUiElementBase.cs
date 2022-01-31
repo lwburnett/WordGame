@@ -6,10 +6,10 @@ namespace WordGame_Lib.Ui
 {
     public abstract class NeonUiElementBase : INeonUiElement
     {
-        protected NeonUiElementBase()
+        protected NeonUiElementBase(double? iPulseOffsetLerpValue)
         {
-            var rng = new Random();
-            _pulseOffset = SettingsManager.NeonSettings.PulsePeriodSec * rng.NextDouble();
+            var pulseLerpValue = iPulseOffsetLerpValue ?? new Random().NextDouble();
+            _pulseOffset = SettingsManager.NeonSettings.PulsePeriodSec * pulseLerpValue;
         }
 
         public virtual void Update(GameTime iGameTime)
@@ -19,7 +19,7 @@ namespace WordGame_Lib.Ui
             const float amp = SettingsManager.NeonSettings.PulseIntensityAmplitude;
 
             var gameTimeSeconds = (float)iGameTime.TotalGameTime.TotalSeconds;
-            var multiplier = amp * (float)Math.Abs(Math.Cos((gameTimeSeconds * pi2 / (2 * period)) + _pulseOffset)) + (1 - amp);
+            var multiplier = amp * (float)Math.Cos((gameTimeSeconds * pi2 / period) + _pulseOffset) + (1 - amp);
 
             LightPoints.ForEach(iLp => iLp.Intensity = FullIntensity * multiplier);
         }

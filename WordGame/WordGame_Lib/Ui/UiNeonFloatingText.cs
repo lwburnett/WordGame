@@ -8,7 +8,8 @@ namespace WordGame_Lib.Ui
 {
     public class UiNeonFloatingText : NeonUiElementBase
     {
-        public UiNeonFloatingText(Rectangle iBounds, string iText, Color iTextColor)
+        public UiNeonFloatingText(Rectangle iBounds, string iText, Color iTextColor, double? iPulseOffsetLerpValue = null) :
+            base(iPulseOffsetLerpValue)
         {
             _text = iText;
             FullIntensity = 1.75f;

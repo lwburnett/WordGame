@@ -7,7 +7,8 @@ namespace WordGame_Lib.Ui
 {
     public class UiNeonFloatSprite : NeonUiElementBase
     {
-        public UiNeonFloatSprite(Rectangle iBounds, string iTextureName, Color iOuterColor)
+        public UiNeonFloatSprite(Rectangle iBounds, string iTextureName, Color iOuterColor) :
+            base(null)
         {
             Bounds = iBounds;
             FullIntensity = 4.0f;

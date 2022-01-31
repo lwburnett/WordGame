@@ -8,7 +8,8 @@ namespace WordGame_Lib.Ui
 {
     public class UiLetterCell : NeonUiElementBase
     {
-        public UiLetterCell(Rectangle iBounds)
+        public UiLetterCell(Rectangle iBounds) :
+            base(0)
         {
             Bounds = iBounds;
             _floatingText = new UiFloatingText(iBounds, string.Empty, Color.White, Color.Black);
