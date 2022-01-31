@@ -14,14 +14,17 @@ namespace WordGame_Lib.Ui
 
         public virtual void Update(GameTime iGameTime)
         {
-            const double pi2 = Math.PI * 2;
-            const float period = SettingsManager.NeonSettings.PulsePeriodSec;
-            const float amp = SettingsManager.NeonSettings.PulseIntensityAmplitude;
+            if (GameSettingsManager.Settings.NeonLightPulse)
+            {
+                const double pi2 = Math.PI * 2;
+                const float period = SettingsManager.NeonSettings.PulsePeriodSec;
+                const float amp = SettingsManager.NeonSettings.PulseIntensityAmplitude;
 
-            var gameTimeSeconds = (float)iGameTime.TotalGameTime.TotalSeconds;
-            var multiplier = amp * (float)Math.Cos((gameTimeSeconds * pi2 / period) + _pulseOffset) + (1 - amp);
+                var gameTimeSeconds = (float)iGameTime.TotalGameTime.TotalSeconds;
+                var multiplier = amp * (float)Math.Cos((gameTimeSeconds * pi2 / period) + _pulseOffset) + (1 - amp);
 
-            LightPoints.ForEach(iLp => iLp.Intensity = FullIntensity * multiplier);
+                LightPoints.ForEach(iLp => iLp.Intensity = FullIntensity * multiplier);
+            }
         }
 
         public abstract void Draw();

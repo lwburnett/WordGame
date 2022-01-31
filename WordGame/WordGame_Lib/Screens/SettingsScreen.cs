@@ -63,6 +63,25 @@ namespace WordGame_Lib.Screens
                 _settings.AlternateKeyColorScheme,
                 OnToggleAlternateColorScheme);
 
+            var neonPulseLabelY = altColorLabelY + altColorToggleHeight + medMarginY;
+            var neonPulseLabelX = settingsEditBounds.X;
+            var neonPulseLabelWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.LabelColumnWidthAsPercent);
+            var neonPulseLabelHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
+            _neonPulseLabel = new UiFloatingText(
+                new Rectangle(neonPulseLabelX, neonPulseLabelY, neonPulseLabelWidth, neonPulseLabelHeight),
+                "Neon Light Pulse",
+                Color.White,
+                Color.Black);
+
+            var neonPulseToggleY = neonPulseLabelY;
+            var neonPulseToggleX = neonPulseLabelX + neonPulseLabelWidth + medMarginX;
+            var neonPulseToggleWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.SettingColumnWidthAsPercent / 1.5f);
+            var neonPulseToggleHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
+            _neonPulseToggle = new UiToggleSwitch(
+                new Rectangle(neonPulseToggleX, neonPulseToggleY, neonPulseToggleWidth, neonPulseToggleHeight),
+                _settings.NeonLightPulse,
+                OnToggleNeonLightPulse);
+
             var saveWidth = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.SettingsScreenSettings.SaveButtonWidthAsPercentage);
             var saveY = settingsEditBounds.Y + settingsEditBounds.Height + medMarginY;
             var saveX = (GraphicsHelper.GamePlayArea.Width - saveWidth) / 2;
@@ -80,11 +99,14 @@ namespace WordGame_Lib.Screens
             _saveButton.Update(iGameTime);
             _altColorLabel.Update(iGameTime);
             _altColorToggle.Update(iGameTime);
+            _neonPulseLabel.Update(iGameTime);
+            _neonPulseToggle.Update(iGameTime);
 
             _lightPoints.Clear();
             _lightPoints.AddRange(_header.LightPoints);
             _lightPoints.AddRange(_altColorToggle.LightPoints);
             _lightPoints.AddRange(_saveButton.LightPoints);
+            _lightPoints.AddRange(_neonPulseToggle.LightPoints);
         }
 
         public void Draw()
@@ -103,6 +125,8 @@ namespace WordGame_Lib.Screens
             _saveButton.Draw();
             _altColorLabel.Draw();
             _altColorToggle.Draw();
+            _neonPulseLabel.Draw();
+            _neonPulseToggle.Draw();
         }
 
         private Texture2D _backgroundTexture;
@@ -114,6 +138,8 @@ namespace WordGame_Lib.Screens
         private INeonUiElement _header;
         private IUiElement _altColorLabel;
         private INeonUiElement _altColorToggle;
+        private IUiElement _neonPulseLabel;
+        private INeonUiElement _neonPulseToggle;
         private INeonUiElement _saveButton;
         private readonly List<PointLight> _lightPoints;
 
@@ -126,7 +152,12 @@ namespace WordGame_Lib.Screens
 
         private void OnToggleAlternateColorScheme(bool iNewValue)
         {
-            _settings = new GameSettings(iNewValue);
+            _settings = new GameSettings(iNewValue, _settings.NeonLightPulse);
+        }
+
+        private void OnToggleNeonLightPulse(bool iNewValue)
+        {
+            _settings = new GameSettings(_settings.AlternateKeyColorScheme, iNewValue);
         }
     }
 }

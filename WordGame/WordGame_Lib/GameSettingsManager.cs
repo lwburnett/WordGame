@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib
 {
@@ -104,21 +103,27 @@ namespace WordGame_Lib
                 if (lines.Any())
                 {
                     var alternateKeyColorScheme = false;
+                    var neonLightPulse = false;
                     foreach (var line in lines)
                     {
-                        var pieces = line.Split(',').Select(p => p.Trim()).ToList();
+                        var pieces = line.Split(',').Select(iP => iP.Trim()).ToList();
 
                         if (pieces.Count != 2)
                         {
                             Debug.Fail($"Invalid line in settings file: {line}");
+                            // ReSharper disable once HeuristicUnreachableCode
                             continue;
                         }
 
                         switch (pieces[0])
                         {
                             case nameof(GameSettings.AlternateKeyColorScheme):
-                                var success = bool.TryParse(pieces[1], out alternateKeyColorScheme);
-                                Debug.Assert(success, $"Failed to read value of line: {line}");
+                                var success1 = bool.TryParse(pieces[1], out alternateKeyColorScheme);
+                                Debug.Assert(success1, $"Failed to read value of line: {line}");
+                                break;
+                            case nameof(GameSettings.NeonLightPulse):
+                                var success2 = bool.TryParse(pieces[1], out neonLightPulse);
+                                Debug.Assert(success2, $"Failed to read value of line: {line}");
                                 break;
                             default:
                                 Debug.Fail($"Unknown settings key {pieces[0]}");
@@ -126,7 +131,7 @@ namespace WordGame_Lib
                         }
                     }
 
-                    Settings = new GameSettings(alternateKeyColorScheme);
+                    Settings = new GameSettings(alternateKeyColorScheme, neonLightPulse);
                 }
                 else
                 {
@@ -148,7 +153,8 @@ namespace WordGame_Lib
 
                 var lines = new List<string>
                 {
-                    $"{nameof(settings.AlternateKeyColorScheme)}, {settings.AlternateKeyColorScheme}"
+                    $"{nameof(settings.AlternateKeyColorScheme)}, {settings.AlternateKeyColorScheme}",
+                    $"{nameof(settings.NeonLightPulse)}, {settings.NeonLightPulse}"
                 };
 
                 lock (FileReadWriteLock)
@@ -178,18 +184,21 @@ namespace WordGame_Lib
         public GameSettings()
         {
             AlternateKeyColorScheme = false;
+            NeonLightPulse = false;
         }
 
-        public GameSettings(bool iAlternateKeyColorScheme)
+        public GameSettings(bool iAlternateKeyColorScheme, bool iNeonLightPulse)
         {
             AlternateKeyColorScheme = iAlternateKeyColorScheme;
+            NeonLightPulse = iNeonLightPulse;
         }
 
         public bool AlternateKeyColorScheme { get; }
+        public bool NeonLightPulse { get; }
 
         public GameSettings DeepCopy()
         {
-            return new GameSettings(AlternateKeyColorScheme);
+            return new GameSettings(AlternateKeyColorScheme, NeonLightPulse);
         }
     }
 }
