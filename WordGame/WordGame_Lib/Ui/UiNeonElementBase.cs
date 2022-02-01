@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib.Ui
 {
-    public abstract class NeonUiElementBase : INeonUiElement
+    public abstract class UiNeonElementBase : IUiNeonElement
     {
-        protected NeonUiElementBase(double? iPulseOffsetLerpValue)
+        protected UiNeonElementBase(double? iPulseOffsetLerpValue)
         {
             var pulseLerpValue = iPulseOffsetLerpValue ?? new Random().NextDouble();
             _pulseOffset = SettingsManager.NeonSettings.PulsePeriodSec * pulseLerpValue;

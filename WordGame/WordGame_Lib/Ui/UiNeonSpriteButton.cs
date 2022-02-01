@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WordGame_Lib.Ui
 {
-    public class UiNeonSpriteButton : UiButtonBase, INeonUiElement
+    public class UiNeonSpriteButton : UiButtonBase, IUiNeonElement
     {
         public UiNeonSpriteButton(Rectangle iBounds, string iTextureName, Color iOuterColor, Action iOnClickedCallback) :
             base(iOnClickedCallback)
@@ -37,6 +37,6 @@ namespace WordGame_Lib.Ui
 
         public List<PointLight> LightPoints => _neonSprite.LightPoints;
 
-        private readonly NeonUiElementBase _neonSprite;
+        private readonly UiNeonElementBase _neonSprite;
     }
 }

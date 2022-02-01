@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib.Ui
 {
-    public class UiToggleSwitch : INeonUiElement
+    public class UiToggleSwitch : IUiNeonElement
     {
         public UiToggleSwitch(Rectangle iBounds, bool iInitialValue, Action<bool> iOnToggleCallback)
         {
@@ -40,8 +40,8 @@ namespace WordGame_Lib.Ui
         private bool _currentValue;
         private readonly Action<bool> _onToggleCallback;
 
-        private readonly INeonUiElement _onButton;
-        private readonly INeonUiElement _offButton;
+        private readonly IUiNeonElement _onButton;
+        private readonly IUiNeonElement _offButton;
 
         private void OnToggle(bool iNewValue)
         {

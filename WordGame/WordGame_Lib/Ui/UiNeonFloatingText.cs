@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WordGame_Lib.Ui
 {
-    public class UiNeonFloatingText : NeonUiElementBase
+    public class UiNeonFloatingText : UiNeonElementBase
     {
         public UiNeonFloatingText(Rectangle iBounds, string iText, Color iTextColor, double? iPulseOffsetLerpValue = null) :
             base(iPulseOffsetLerpValue)

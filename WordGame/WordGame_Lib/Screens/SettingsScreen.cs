@@ -135,12 +135,12 @@ namespace WordGame_Lib.Screens
         private GameSettings _settings;
         private readonly Action _mainMenuCallback;
 
-        private INeonUiElement _header;
+        private IUiNeonElement _header;
         private IUiElement _altColorLabel;
-        private INeonUiElement _altColorToggle;
+        private IUiNeonElement _altColorToggle;
         private IUiElement _neonPulseLabel;
-        private INeonUiElement _neonPulseToggle;
-        private INeonUiElement _saveButton;
+        private IUiNeonElement _neonPulseToggle;
+        private IUiNeonElement _saveButton;
         private readonly List<PointLight> _lightPoints;
 
         private void OnSave()

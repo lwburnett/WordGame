@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WordGame_Lib.Ui
 {
-    public class UiNeonFloatSprite : NeonUiElementBase
+    public class UiNeonFloatSprite : UiNeonElementBase
     {
         public UiNeonFloatSprite(Rectangle iBounds, string iTextureName, Color iOuterColor) :
             base(null)

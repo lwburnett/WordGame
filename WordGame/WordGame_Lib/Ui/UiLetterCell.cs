@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WordGame_Lib.Ui
 {
-    public class UiLetterCell : NeonUiElementBase
+    public class UiLetterCell : UiNeonElementBase
     {
         public UiLetterCell(Rectangle iBounds) :
             base(0)

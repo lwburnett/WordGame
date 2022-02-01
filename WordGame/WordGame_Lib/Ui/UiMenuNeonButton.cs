@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WordGame_Lib.Ui
 {
-    public class UiMenuNeonButton : UiButtonBase, INeonUiElement
+    public class UiMenuNeonButton : UiButtonBase, IUiNeonElement
     {
         public UiMenuNeonButton(Rectangle iBounds, string iText, Color iTextColor, Action iOnClickedCallback) :
             base(iOnClickedCallback)

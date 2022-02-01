@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib.Ui
 {
-    public class LetterGridControl : INeonUiElement
+    public class LetterGridControl : IUiNeonElement
     {
         public LetterGridControl(Rectangle iBounds)
         {

@@ -6,7 +6,7 @@ using WordGame_Lib.Ui;
 
 namespace WordGame_Lib
 {
-    public class GamePlayInstance : INeonUiElement
+    public class GamePlayInstance : IUiNeonElement
     {
         public GamePlayInstance(OrderedUniqueList<string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action iOnMainMenuCallback, Action iOnPlayAgainCallback)
         {
@@ -115,8 +115,8 @@ namespace WordGame_Lib
         //private bool _isSuccess;
 
         private bool _playSessionHasFinished;
-        private readonly INeonUiElement _mainMenuButton;
-        private readonly INeonUiElement _playAgainButton;
+        private readonly IUiNeonElement _mainMenuButton;
+        private readonly IUiNeonElement _playAgainButton;
 
         private string _secretWord;
 

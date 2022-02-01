@@ -2,7 +2,7 @@
 
 namespace WordGame_Lib.Ui
 {
-    public interface INeonUiElement : IUiElement
+    public interface IUiNeonElement : IUiElement
     {
         List<PointLight> LightPoints { get; }
     }
