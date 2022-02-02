@@ -32,39 +32,42 @@ namespace WordGame_Lib.Ui
             OuterColorToDraw = OuterColorAtFullIntensity;
             InnerColorToDraw = InnerColorAtFullIntensity;
 
-            bool doFlicker;
-            if (sTimeOfLastFlickerCheck == iGameTime.TotalGameTime)
+            if (GameSettingsManager.Settings.NeonLightFlicker)
             {
-                doFlicker = sIsFlickeringThisTick;
-            }
-            else
-            {
-                sTimeOfLastFlickerCheck = iGameTime.TotalGameTime;
-                if (!_timeOfLastFlicker.HasValue)
-                    _timeOfLastFlicker = iGameTime.TotalGameTime;
-
-                var probOfFlicker = ProbabilityOfFlicker(_timeOfLastFlicker.Value, iGameTime.TotalGameTime);
-                var rngNum = _rng.NextDouble();
-
-                if (rngNum < probOfFlicker)
+                bool doFlicker;
+                if (sTimeOfLastFlickerCheck == iGameTime.TotalGameTime)
                 {
-                    sIsFlickeringThisTick = true;
-                    doFlicker = true;
+                    doFlicker = sIsFlickeringThisTick;
                 }
                 else
                 {
-                    sIsFlickeringThisTick = false;
-                    doFlicker = false;
+                    sTimeOfLastFlickerCheck = iGameTime.TotalGameTime;
+                    if (!_timeOfLastFlicker.HasValue)
+                        _timeOfLastFlicker = iGameTime.TotalGameTime;
+
+                    var probOfFlicker = ProbabilityOfFlicker(_timeOfLastFlicker.Value, iGameTime.TotalGameTime);
+                    var rngNum = _rng.NextDouble();
+
+                    if (rngNum < probOfFlicker)
+                    {
+                        sIsFlickeringThisTick = true;
+                        doFlicker = true;
+                    }
+                    else
+                    {
+                        sIsFlickeringThisTick = false;
+                        doFlicker = false;
+                    }
                 }
-            }
 
-            if (doFlicker)
-            {
-                _timeOfLastFlicker = iGameTime.TotalGameTime;
-                OuterColorToDraw = ColorLerp(OuterColorAtFullIntensity, SettingsManager.NeonSettings.NeonLightOffColor, .05f);
-                InnerColorToDraw = ColorLerp(InnerColorAtFullIntensity, SettingsManager.NeonSettings.NeonLightOffColor, .05f);
+                if (doFlicker)
+                {
+                    _timeOfLastFlicker = iGameTime.TotalGameTime;
+                    OuterColorToDraw = ColorLerp(OuterColorAtFullIntensity, SettingsManager.NeonSettings.NeonLightOffColor, .05f);
+                    InnerColorToDraw = ColorLerp(InnerColorAtFullIntensity, SettingsManager.NeonSettings.NeonLightOffColor, .05f);
 
-                LightPoints.ForEach(iLp => iLp.Intensity *= 1 - .05f);
+                    LightPoints.ForEach(iLp => iLp.Intensity *= 1 - .05f);
+                }
             }
         }
 

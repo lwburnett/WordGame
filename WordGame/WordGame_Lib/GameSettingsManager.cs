@@ -103,7 +103,8 @@ namespace WordGame_Lib
                 if (lines.Any())
                 {
                     var alternateKeyColorScheme = false;
-                    var neonLightPulse = false;
+                    var neonLightPulse = true;
+                    var neonLightFlicker = true;
                     foreach (var line in lines)
                     {
                         var pieces = line.Split(',').Select(iP => iP.Trim()).ToList();
@@ -125,13 +126,17 @@ namespace WordGame_Lib
                                 var success2 = bool.TryParse(pieces[1], out neonLightPulse);
                                 Debug.Assert(success2, $"Failed to read value of line: {line}");
                                 break;
+                            case nameof(GameSettings.NeonLightFlicker):
+                                var success3 = bool.TryParse(pieces[1], out neonLightFlicker);
+                                Debug.Assert(success3, $"Failed to read value of line: {line}");
+                                break;
                             default:
                                 Debug.Fail($"Unknown settings key {pieces[0]}");
                                 break;
                         }
                     }
 
-                    Settings = new GameSettings(alternateKeyColorScheme, neonLightPulse);
+                    Settings = new GameSettings(alternateKeyColorScheme, neonLightPulse, neonLightFlicker);
                 }
                 else
                 {
@@ -184,21 +189,24 @@ namespace WordGame_Lib
         public GameSettings()
         {
             AlternateKeyColorScheme = false;
-            NeonLightPulse = false;
+            NeonLightPulse = true;
+            NeonLightFlicker = true;
         }
 
-        public GameSettings(bool iAlternateKeyColorScheme, bool iNeonLightPulse)
+        public GameSettings(bool iAlternateKeyColorScheme, bool iNeonLightPulse, bool iNeonLightFlicker)
         {
             AlternateKeyColorScheme = iAlternateKeyColorScheme;
             NeonLightPulse = iNeonLightPulse;
+            NeonLightFlicker = iNeonLightFlicker;
         }
 
         public bool AlternateKeyColorScheme { get; }
         public bool NeonLightPulse { get; }
+        public bool NeonLightFlicker { get; }
 
         public GameSettings DeepCopy()
         {
-            return new GameSettings(AlternateKeyColorScheme, NeonLightPulse);
+            return new GameSettings(AlternateKeyColorScheme, NeonLightPulse, NeonLightFlicker);
         }
     }
 }

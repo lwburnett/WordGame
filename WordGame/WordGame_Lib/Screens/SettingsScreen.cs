@@ -82,6 +82,25 @@ namespace WordGame_Lib.Screens
                 _settings.NeonLightPulse,
                 OnToggleNeonLightPulse);
 
+            var neonFlickerLabelY = neonPulseLabelY + neonPulseLabelHeight + medMarginY;
+            var neonFlickerLabelX = settingsEditBounds.X;
+            var neonFlickerLabelWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.LabelColumnWidthAsPercent);
+            var neonFlickerLabelHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
+            _neonFlickerLabel = new UiFloatingText(
+                new Rectangle(neonFlickerLabelX, neonFlickerLabelY, neonFlickerLabelWidth, neonFlickerLabelHeight),
+                "Neon Light Flicker",
+                Color.White,
+                Color.Black);
+
+            var neonFlickerToggleY = neonFlickerLabelY;
+            var neonFlickerToggleX = neonFlickerLabelX + neonFlickerLabelWidth + medMarginX;
+            var neonFlickerToggleWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.SettingColumnWidthAsPercent / 1.5f);
+            var neonFlickerToggleHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
+            _neonFlickerToggle = new UiToggleSwitch(
+                new Rectangle(neonFlickerToggleX, neonFlickerToggleY, neonFlickerToggleWidth, neonFlickerToggleHeight),
+                _settings.NeonLightFlicker,
+                OnToggleNeonLightFlicker);
+
             var saveWidth = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.SettingsScreenSettings.SaveButtonWidthAsPercentage);
             var saveY = settingsEditBounds.Y + settingsEditBounds.Height + medMarginY;
             var saveX = (GraphicsHelper.GamePlayArea.Width - saveWidth) / 2;
@@ -101,12 +120,15 @@ namespace WordGame_Lib.Screens
             _altColorToggle.Update(iGameTime);
             _neonPulseLabel.Update(iGameTime);
             _neonPulseToggle.Update(iGameTime);
+            _neonFlickerLabel.Update(iGameTime);
+            _neonFlickerToggle.Update(iGameTime);
 
             _lightPoints.Clear();
             _lightPoints.AddRange(_header.LightPoints);
             _lightPoints.AddRange(_altColorToggle.LightPoints);
             _lightPoints.AddRange(_saveButton.LightPoints);
             _lightPoints.AddRange(_neonPulseToggle.LightPoints);
+            _lightPoints.AddRange(_neonFlickerToggle.LightPoints);
         }
 
         public void Draw()
@@ -127,6 +149,8 @@ namespace WordGame_Lib.Screens
             _altColorToggle.Draw();
             _neonPulseLabel.Draw();
             _neonPulseToggle.Draw();
+            _neonFlickerLabel.Draw();
+            _neonFlickerToggle.Draw();
         }
 
         private Texture2D _backgroundTexture;
@@ -140,6 +164,8 @@ namespace WordGame_Lib.Screens
         private IUiNeonElement _altColorToggle;
         private IUiElement _neonPulseLabel;
         private IUiNeonElement _neonPulseToggle;
+        private IUiElement _neonFlickerLabel;
+        private IUiNeonElement _neonFlickerToggle;
         private IUiNeonElement _saveButton;
         private readonly List<PointLight> _lightPoints;
 
@@ -152,12 +178,17 @@ namespace WordGame_Lib.Screens
 
         private void OnToggleAlternateColorScheme(bool iNewValue)
         {
-            _settings = new GameSettings(iNewValue, _settings.NeonLightPulse);
+            _settings = new GameSettings(iNewValue, _settings.NeonLightPulse, _settings.NeonLightFlicker);
         }
 
         private void OnToggleNeonLightPulse(bool iNewValue)
         {
-            _settings = new GameSettings(_settings.AlternateKeyColorScheme, iNewValue);
+            _settings = new GameSettings(_settings.AlternateKeyColorScheme, iNewValue, _settings.NeonLightFlicker);
+        }
+
+        private void OnToggleNeonLightFlicker(bool iNewValue)
+        {
+            _settings = new GameSettings(_settings.AlternateKeyColorScheme, _settings.NeonLightPulse, iNewValue);
         }
     }
 }
