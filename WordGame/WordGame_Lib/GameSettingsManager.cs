@@ -159,7 +159,8 @@ namespace WordGame_Lib
                 var lines = new List<string>
                 {
                     $"{nameof(settings.AlternateKeyColorScheme)}, {settings.AlternateKeyColorScheme}",
-                    $"{nameof(settings.NeonLightPulse)}, {settings.NeonLightPulse}"
+                    $"{nameof(settings.NeonLightPulse)}, {settings.NeonLightPulse}",
+                    $"{nameof(settings.NeonLightFlicker)}, {settings.NeonLightFlicker}"
                 };
 
                 lock (FileReadWriteLock)
