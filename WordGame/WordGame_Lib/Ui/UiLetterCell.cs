@@ -23,6 +23,8 @@ namespace WordGame_Lib.Ui
 
         public override void Draw()
         {
+            _shaderInnerColorParameter.SetValue(new Vector4(InnerColorToDraw.R / 255f, InnerColorToDraw.G / 255f, InnerColorToDraw.B / 255f, InnerColorToDraw.A / 255f));
+            _shaderOuterColorParameter.SetValue(new Vector4(OuterColorToDraw.R / 255f, OuterColorToDraw.G / 255f, OuterColorToDraw.B / 255f, OuterColorToDraw.A / 255f));
             GraphicsHelper.DrawTexture(_texture, Bounds, _shader);
             _floatingText.Draw();
         }
@@ -42,11 +44,10 @@ namespace WordGame_Lib.Ui
             _disposition = iDisposition;
 
             GetColorForDisposition(_disposition, out var outerColor, out var innerColor, out var intensity);
+            _outerColor = outerColor;
+            _innerColor = innerColor;
 
             _currentIntensity = intensity;
-
-            _shaderInnerColorParameter.SetValue(new Vector4(innerColor.R / 255f, innerColor.G / 255f, innerColor.B / 255f, innerColor.A / 255f));
-            _shaderOuterColorParameter.SetValue(new Vector4(outerColor.R / 255f, outerColor.G / 255f, outerColor.B / 255f, outerColor.A / 255f));
 
             _pointLight = new PointLight(outerColor, Bounds.Center.ToVector2(), GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonSettings.LetterCell.RadiusAsPercentageOfWidth, intensity);
         }
@@ -55,10 +56,14 @@ namespace WordGame_Lib.Ui
         public override List<PointLight> LightPoints => new List<PointLight> { _pointLight };
 
         protected override float FullIntensity => _currentIntensity;
+        protected override Color InnerColorAtFullIntensity => _innerColor;
+        protected override Color OuterColorAtFullIntensity => _outerColor;
 
         private readonly UiFloatingText _floatingText;
         private readonly Texture2D _texture;
         private readonly Effect _shader;
+        private Color _outerColor;
+        private Color _innerColor;
         private readonly EffectParameter _shaderOuterColorParameter;
         private readonly EffectParameter _shaderInnerColorParameter;
         private Disposition _disposition;
@@ -74,28 +79,28 @@ namespace WordGame_Lib.Ui
             switch (iDisposition)
             {
                 case Disposition.Undecided:
-                    outerColor = SettingsManager.LetterCellColors.Undecided;
-                    innerColor = SettingsManager.LetterCellColors.Undecided;
+                    outerColor = SettingsManager.NeonSettings.LetterCell.Undecided;
+                    innerColor = SettingsManager.NeonSettings.LetterCell.Undecided;
                     intensity = 1.75f;
                     break;
                 case Disposition.Incorrect:
-                    outerColor = SettingsManager.LetterCellColors.Incorrect;
-                    innerColor = SettingsManager.LetterCellColors.Incorrect;
+                    outerColor = SettingsManager.NeonSettings.LetterCell.Incorrect;
+                    innerColor = SettingsManager.NeonSettings.LetterCell.Incorrect;
                     intensity = 0.0f;
                     break;
                 case Disposition.Misplaced:
-                    outerColor = SettingsManager.LetterCellColors.Misplaced;
+                    outerColor = SettingsManager.NeonSettings.LetterCell.Misplaced;
                     innerColor = Color.White;
                     intensity = 4.0f;
                     break;
                 case Disposition.Correct:
-                    outerColor = SettingsManager.LetterCellColors.Correct;
+                    outerColor = SettingsManager.NeonSettings.LetterCell.Correct;
                     innerColor = Color.White;
                     intensity = 4.0f;
                     break;
                 default:
-                    outerColor = SettingsManager.LetterCellColors.Undecided;
-                    innerColor = SettingsManager.LetterCellColors.Undecided;
+                    outerColor = SettingsManager.NeonSettings.LetterCell.Undecided;
+                    innerColor = SettingsManager.NeonSettings.LetterCell.Undecided;
                     intensity = 1.75f;
                     Debug.Fail($"Unknown value of enum {nameof(Disposition)}: {iDisposition}");
                     break;

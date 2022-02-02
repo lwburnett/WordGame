@@ -94,14 +94,6 @@ namespace WordGame_Lib
             public static Color CorrectPressedColor = new Color(43, 163, 8);
         }
 
-        public static class LetterCellColors
-        {
-            public static Color Undecided = new Color(230, 230, 230);
-            public static Color Incorrect = new Color(30, 30, 30);
-            public static Color Misplaced = new Color(214, 231, 34);
-            public static Color Correct = new Color(68, 214, 44);
-        }
-
         public static class PostSessionStatsSettings
         {
             public const float HeaderHeightAsPercentage = .1f;
@@ -126,6 +118,7 @@ namespace WordGame_Lib
         {
             public const float PulsePeriodSec = 4.0f;
             public const float PulseIntensityAmplitude = .05f;
+            public static Color NeonLightOffColor = new Color(30, 30, 30);
 
             public static class Text
             {
@@ -137,6 +130,10 @@ namespace WordGame_Lib
             public static class LetterCell
             {
                 public const float RadiusAsPercentageOfWidth = .22f;
+                public static Color Undecided = new Color(230, 230, 230);
+                public static Color Incorrect = NeonLightOffColor;
+                public static Color Misplaced = new Color(214, 231, 34);
+                public static Color Correct = new Color(68, 214, 44);
             }
 
             public static class Sprite

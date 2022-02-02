@@ -17,8 +17,8 @@ namespace WordGame_Lib.Ui
             _textFont = GraphicsHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "NeonFont"));
 
             const float factor = 1.75f;
-            _textColorInner = new Color(iTextColor.R * factor, iTextColor.G * factor, iTextColor.B * factor, iTextColor.A);
-            _textColorOuter = iTextColor;
+            InnerColorAtFullIntensity = new Color(iTextColor.R * factor, iTextColor.G * factor, iTextColor.B * factor, iTextColor.A);
+            OuterColorAtFullIntensity = iTextColor;
 
             var defaultStringDimensionsOuter = _textFont.MeasureString(_text) * 1.0f;
             var possibleXScalingOuter = iBounds.Width / defaultStringDimensionsOuter.X;
@@ -39,11 +39,11 @@ namespace WordGame_Lib.Ui
         public override void Draw()
         {
             const float scalar = 1.25f;
-            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(-scalar * _scaling, -scalar * _scaling), _textColorOuter, _scaling);
-            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(scalar * _scaling, -scalar * _scaling), _textColorOuter, _scaling);
-            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(-scalar * _scaling, scalar * _scaling), _textColorOuter, _scaling);
-            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(scalar * _scaling, scalar * _scaling), _textColorOuter, _scaling);
-            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y), _textColorInner, _scaling);
+            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(-scalar * _scaling, -scalar * _scaling), OuterColorToDraw, _scaling);
+            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(scalar * _scaling, -scalar * _scaling), OuterColorToDraw, _scaling);
+            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(-scalar * _scaling, scalar * _scaling), OuterColorToDraw, _scaling);
+            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(scalar * _scaling, scalar * _scaling), OuterColorToDraw, _scaling);
+            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y), InnerColorToDraw, _scaling);
 
             //DrawPointLightsDebug();
         }
@@ -53,11 +53,12 @@ namespace WordGame_Lib.Ui
         public override Rectangle Bounds { get; }
 
         protected sealed override float FullIntensity { get; }
+        protected override Color OuterColorAtFullIntensity { get; }
+        protected override Color InnerColorAtFullIntensity { get; }
+
 
         private readonly string _text;
         private readonly SpriteFont _textFont;
-        private readonly Color _textColorInner;
-        private readonly Color _textColorOuter;
         private readonly float _scaling;
 
         private List<PointLight> CalculateLightPoints()
@@ -69,7 +70,7 @@ namespace WordGame_Lib.Ui
             var lights = new List<PointLight>();
             if (Bounds.Width <= minDist)
             {
-                lights.Add(new PointLight(_textColorOuter, Bounds.Center.ToVector2(), radius, FullIntensity));
+                lights.Add(new PointLight(OuterColorAtFullIntensity, Bounds.Center.ToVector2(), radius, FullIntensity));
             }
             else
             {
@@ -80,7 +81,7 @@ namespace WordGame_Lib.Ui
 
                 for (var ii = 0; ii < minNumInterPointsNeeded + 2; ii++)
                 {
-                    lights.Add(new PointLight(_textColorOuter, new Vector2(Bounds.X + (ii * spaceBetweenPoints), height), radius, FullIntensity));
+                    lights.Add(new PointLight(OuterColorAtFullIntensity, new Vector2(Bounds.X + (ii * spaceBetweenPoints), height), radius, FullIntensity));
                 }
             }
 
