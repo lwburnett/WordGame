@@ -88,11 +88,16 @@ namespace WordGame_Lib.Ui
         private static TimeSpan sTimeOfLastFlickerCheck = TimeSpan.MinValue;
         private static bool sIsFlickeringThisTick;
 
-        private float ProbabilityOfFlicker(TimeSpan iTimeOfLastFlicker, TimeSpan iCurrentTime)
+        private static float ProbabilityOfFlicker(TimeSpan iTimeOfLastFlicker, TimeSpan iCurrentTime)
         {
+            const float t1 = 5f;
+            const float t2 = 10f;
+
             var secondsSinceLastFlicker = (float)(iCurrentTime.TotalSeconds - iTimeOfLastFlicker.TotalSeconds);
 
-            return (float)(1 - (1 / (Math.Pow(secondsSinceLastFlicker, 32) + 1)));
+            var probability = (secondsSinceLastFlicker - t1) / (t2 - t1);
+
+            return Math.Min(Math.Max(probability, 0f), 1f);
         }
 
         private static Color ColorLerp(Color iCol1, Color iCol2, float iColLerpValue)
