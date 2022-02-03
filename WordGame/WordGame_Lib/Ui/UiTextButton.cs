@@ -12,7 +12,6 @@ namespace WordGame_Lib.Ui
             base(iOnClickedCallback)
         {
             Bounds = iBounds;
-            _text = iText;
 
             _disposition = Disposition.Undecided;
             _floatingText = new UiFloatingText(iBounds, iText, Color.White, Color.Black);
@@ -25,11 +24,6 @@ namespace WordGame_Lib.Ui
         public UiTextButton(Point iTopLeft, int iWidth, int iHeight, string iText, Action<GameTime> iOnClickedCallback) : 
             this(new Rectangle(iTopLeft.X, iTopLeft.Y, iWidth, iHeight), iText, iOnClickedCallback)
         {
-        }
-
-        public override void Update(GameTime iGameTime)
-        {
-            base.Update(iGameTime);
         }
 
         public override void Draw()
@@ -57,8 +51,7 @@ namespace WordGame_Lib.Ui
         }
 
         protected override Rectangle Bounds { get; }
-
-        private readonly string _text;
+        
         private readonly UiFloatingText _floatingText;
         private Disposition _disposition;
         private readonly Texture2D _texture;
@@ -89,9 +82,9 @@ namespace WordGame_Lib.Ui
                 switch (_disposition)
                 {
                     case Disposition.Undecided:
-                        return SettingsManager.UiKeyboardColors.UndecidedHoverColor;
+                        return GameSettingsManager.Settings.AlternateKeyColorScheme ? SettingsManager.UiKeyboardColors.IncorrectHoverColor : SettingsManager.UiKeyboardColors.UndecidedHoverColor;
                     case Disposition.Incorrect:
-                        return SettingsManager.UiKeyboardColors.IncorrectHoverColor;
+                        return GameSettingsManager.Settings.AlternateKeyColorScheme ? SettingsManager.UiKeyboardColors.UndecidedHoverColor : SettingsManager.UiKeyboardColors.IncorrectHoverColor;
                     case Disposition.Misplaced:
                         return SettingsManager.UiKeyboardColors.MisplacedHoverColor;
                     case Disposition.Correct:
@@ -106,9 +99,9 @@ namespace WordGame_Lib.Ui
                 switch (_disposition)
                 {
                     case Disposition.Undecided:
-                        return SettingsManager.UiKeyboardColors.UndecidedPressedColor;
+                        return GameSettingsManager.Settings.AlternateKeyColorScheme ? SettingsManager.UiKeyboardColors.IncorrectPressedColor : SettingsManager.UiKeyboardColors.UndecidedPressedColor;
                     case Disposition.Incorrect:
-                        return SettingsManager.UiKeyboardColors.IncorrectPressedColor;
+                        return GameSettingsManager.Settings.AlternateKeyColorScheme ? SettingsManager.UiKeyboardColors.UndecidedPressedColor : SettingsManager.UiKeyboardColors.IncorrectPressedColor;
                     case Disposition.Misplaced:
                         return SettingsManager.UiKeyboardColors.MisplacedPressedColor;
                     case Disposition.Correct:
