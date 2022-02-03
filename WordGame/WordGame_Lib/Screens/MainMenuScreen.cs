@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -8,9 +9,9 @@ using WordGame_Lib.Ui;
 
 namespace WordGame_Lib.Screens
 {
-    public class MainMenuScreen : IScreen
+    public class MainMenuScreen : ScreenBase
     {
-        public MainMenuScreen(Action iOnPlayCallback, Action iOnSettingsCallback, Action iOnExitCallback)
+        public MainMenuScreen(Action<GameTime> iOnPlayCallback, Action<GameTime> iOnSettingsCallback, Action<GameTime> iOnExitCallback)
         {
             _onPlayCallback = iOnPlayCallback;
             _onSettingsCallback = iOnSettingsCallback;
@@ -18,7 +19,47 @@ namespace WordGame_Lib.Screens
             _lightPoints = new List<PointLight>();
         }
 
-        public void OnNavigateTo()
+        public override void Update(GameTime iGameTime)
+        {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                _onExitCallback(iGameTime);
+
+            _titleWord1.Update(iGameTime);
+            _titleWord2.Update(iGameTime);
+            _playButton.Update(iGameTime);
+            _settingsButton.Update(iGameTime);
+            _exitButton.Update(iGameTime);
+
+            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity);
+            _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);
+            _backgroundEffect.Parameters["PointLightColor"].SetValue(colors);
+            _backgroundEffect.Parameters["PointLightRadius"].SetValue(radii);
+            _backgroundEffect.Parameters["PointLightIntensity"].SetValue(intensity);
+        }
+
+        public override void Draw()
+        {
+            GraphicsHelper.DrawTexture(_backgroundTexture, GraphicsHelper.GamePlayArea, _backgroundEffect);
+            _titleWord1.Draw();
+            _titleWord2.Draw();
+            _playButton.Draw();
+            _settingsButton.Draw();
+            _exitButton.Draw();
+        }
+
+        private readonly List<PointLight> _lightPoints;
+        private Texture2D _backgroundTexture;
+        private Effect _backgroundEffect;
+        private UiNeonFloatingText _titleWord1;
+        private UiNeonFloatingText _titleWord2;
+        private UiMenuNeonButton _playButton;
+        private UiMenuNeonButton _settingsButton;
+        private UiMenuNeonButton _exitButton;
+        private readonly Action<GameTime> _onPlayCallback;
+        private readonly Action<GameTime> _onSettingsCallback;
+        private readonly Action<GameTime> _onExitCallback;
+
+        protected override void DoLoad()
         {
             _backgroundTexture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "Bricks1"));
             _backgroundEffect = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "BrickShader")).Clone();
@@ -65,17 +106,17 @@ namespace WordGame_Lib.Screens
                 pulseOffsetInterpolationValue);
 
             _playButton = new UiMenuNeonButton(
-                new Rectangle(playButtonTopLeftX, playButtonTopLeftY, playButtonWidth, playButtonHeight), 
-                "PLAY", 
-                SettingsManager.MainMenuSettings.StartButtonColor, 
+                new Rectangle(playButtonTopLeftX, playButtonTopLeftY, playButtonWidth, playButtonHeight),
+                "PLAY",
+                SettingsManager.MainMenuSettings.StartButtonColor,
                 OnPlayClicked);
             _settingsButton = new UiMenuNeonButton(
-                new Rectangle(settingsButtonTopLeftX, settingsButtonTopLeftY, settingsButtonWidth, settingsButtonHeight), 
+                new Rectangle(settingsButtonTopLeftX, settingsButtonTopLeftY, settingsButtonWidth, settingsButtonHeight),
                 "SETTINGS",
                 SettingsManager.MainMenuSettings.SettingsButtonColor,
                 OnSettingsClicked);
             _exitButton = new UiMenuNeonButton(
-                new Rectangle(exitButtonTopLeftX, exitButtonTopLeftY, exitButtonWidth, exitButtonHeight), 
+                new Rectangle(exitButtonTopLeftX, exitButtonTopLeftY, exitButtonWidth, exitButtonHeight),
                 "EXIT",
                 SettingsManager.MainMenuSettings.ExitButtonColor,
                 OnExitClicked);
@@ -95,59 +136,19 @@ namespace WordGame_Lib.Screens
             _backgroundEffect.Parameters["PointLightIntensity"].SetValue(intensity);
         }
 
-        public void Update(GameTime iGameTime)
+        private void OnPlayClicked(GameTime iGameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                _onExitCallback();
-
-            _titleWord1.Update(iGameTime);
-            _titleWord2.Update(iGameTime);
-            _playButton.Update(iGameTime);
-            _settingsButton.Update(iGameTime);
-            _exitButton.Update(iGameTime);
-
-            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity);
-            _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);
-            _backgroundEffect.Parameters["PointLightColor"].SetValue(colors);
-            _backgroundEffect.Parameters["PointLightRadius"].SetValue(radii);
-            _backgroundEffect.Parameters["PointLightIntensity"].SetValue(intensity);
+            _onPlayCallback(iGameTime);
         }
 
-        public void Draw()
+        private void OnSettingsClicked(GameTime iGameTime)
         {
-            GraphicsHelper.DrawTexture(_backgroundTexture, GraphicsHelper.GamePlayArea, _backgroundEffect);
-            _titleWord1.Draw();
-            _titleWord2.Draw();
-            _playButton.Draw();
-            _settingsButton.Draw();
-            _exitButton.Draw();
+            _onSettingsCallback(iGameTime);
         }
 
-        private readonly List<PointLight> _lightPoints;
-        private Texture2D _backgroundTexture;
-        private Effect _backgroundEffect;
-        private UiNeonFloatingText _titleWord1;
-        private UiNeonFloatingText _titleWord2;
-        private UiMenuNeonButton _playButton;
-        private UiMenuNeonButton _settingsButton;
-        private UiMenuNeonButton _exitButton;
-        private readonly Action _onPlayCallback;
-        private readonly Action _onSettingsCallback;
-        private readonly Action _onExitCallback;
-
-        private void OnPlayClicked()
+        private void OnExitClicked(GameTime iGameTime)
         {
-            _onPlayCallback();
-        }
-
-        private void OnSettingsClicked()
-        {
-            _onSettingsCallback();
-        }
-
-        private void OnExitClicked()
-        {
-            _onExitCallback();
+            _onExitCallback(iGameTime);
         }
     }
 }

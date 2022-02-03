@@ -12,8 +12,8 @@ namespace WordGame_Lib.Ui
             _currentValue = iInitialValue;
             _onToggleCallback = iOnToggleCallback;
 
-            _onButton = new UiNeonSpriteButton(iBounds, Path.Combine("Textures", "CheckMark"), SettingsManager.MainMenuSettings.StartButtonColor, () => OnToggle(false));
-            _offButton = new UiNeonSpriteButton(iBounds, Path.Combine("Textures", "ExMark"), SettingsManager.MainMenuSettings.ExitButtonColor, () => OnToggle(true));
+            _onButton = new UiNeonSpriteButton(iBounds, Path.Combine("Textures", "CheckMark"), SettingsManager.MainMenuSettings.StartButtonColor, iGt => OnToggle(false));
+            _offButton = new UiNeonSpriteButton(iBounds, Path.Combine("Textures", "ExMark"), SettingsManager.MainMenuSettings.ExitButtonColor, iGt => OnToggle(true));
 
             LightPoints = new List<PointLight>();
             LightPoints.AddRange(_currentValue ? _onButton.LightPoints : _offButton.LightPoints);

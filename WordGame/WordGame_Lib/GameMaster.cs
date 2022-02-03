@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -21,6 +22,9 @@ namespace WordGame_Lib
         private OrderedUniqueList<string> _wordDatabase;
         private OrderedUniqueList<string> _secretWordDatabase;
         private readonly float? _aspectRatioOverride;
+
+        private Task _screenLoadTask;
+        private ScreenId? _screenToTransitionTo;
 
         public GameMaster(float? iAspectRatioOverride = null)
         {
@@ -85,7 +89,7 @@ namespace WordGame_Lib
 
             GameSettingsManager.ReadSettingFromDiskAsync();
 
-            OnMainMenu();
+            OnStartupScreen();
         }
 
         private OrderedUniqueList<string> LoadDatabaseFromTxtFile(string iFileName)
@@ -120,7 +124,22 @@ namespace WordGame_Lib
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (_currentScreenId == ScreenId.StartupScreen && !_screenToTransitionTo.HasValue)
+            {
+                OnMainMenu(iGameTime);
+            }
+
             _idToScreenDictionary[_currentScreenId].Update(iGameTime);
+            if (_screenToTransitionTo.HasValue)
+            {
+                if (_screenLoadTask.IsCompleted && !_idToScreenDictionary[_currentScreenId].IsVisible)
+                {
+                    _currentScreenId = _screenToTransitionTo.Value;
+                    _screenLoadTask = null;
+                    _screenToTransitionTo = null;
+                    _idToScreenDictionary[_currentScreenId].StartTransitionIn(iGameTime);
+                }
+            }
 
             base.Update(iGameTime);
         }
@@ -137,33 +156,46 @@ namespace WordGame_Lib
 
         private enum ScreenId
         {
+            StartupScreen,
             MainMenu,
             GamePlay,
             Settings
         }
 
-        private void OnMainMenu()
+        private void OnStartupScreen()
         {
-            _currentScreenId = ScreenId.MainMenu;
-            _idToScreenDictionary[_currentScreenId] = new MainMenuScreen(OnPlayGame, OnSettings, OnExitGame);
-            _idToScreenDictionary[_currentScreenId].OnNavigateTo();
+            _currentScreenId = ScreenId.StartupScreen;
+            _idToScreenDictionary[_currentScreenId] = new StartupScreen();
+            _idToScreenDictionary[_currentScreenId].Load().Wait();
         }
 
-        private void OnPlayGame()
+        private void SetupScreenTransition(ScreenId iId, Func<IScreen> iCreateFunc, GameTime iGameTime)
         {
-            _currentScreenId = ScreenId.GamePlay;
-            _idToScreenDictionary[_currentScreenId] = new GamePlayScreen(_wordDatabase, _secretWordDatabase, OnPlayGame, OnMainMenu, OnExitGame);
-            _idToScreenDictionary[_currentScreenId].OnNavigateTo();
+            _screenToTransitionTo = iId;
+            var screen = iCreateFunc();
+            _screenLoadTask = screen.Load();
+
+            _idToScreenDictionary[iId] = screen;
+
+            _idToScreenDictionary[_currentScreenId].StartTransitionOut(iGameTime);
         }
 
-        private void OnSettings()
+        private void OnMainMenu(GameTime iGameTime)
         {
-            _currentScreenId = ScreenId.Settings;
-            _idToScreenDictionary[_currentScreenId] = new SettingsScreen(OnMainMenu);
-            _idToScreenDictionary[_currentScreenId].OnNavigateTo();
+            SetupScreenTransition(ScreenId.MainMenu, () => new MainMenuScreen(OnPlayGame, OnSettings, OnExitGame), iGameTime);
         }
 
-        private void OnExitGame()
+        private void OnPlayGame(GameTime iGameTime)
+        {
+            SetupScreenTransition(ScreenId.GamePlay, () => new GamePlayScreen(_wordDatabase, _secretWordDatabase, OnPlayGame, OnMainMenu, OnExitGame), iGameTime);
+        }
+
+        private void OnSettings(GameTime iGameTime)
+        {
+            SetupScreenTransition(ScreenId.Settings, () => new SettingsScreen(OnMainMenu), iGameTime);
+        }
+
+        private void OnExitGame(GameTime iGameTime)
         {
             Exit();
         }

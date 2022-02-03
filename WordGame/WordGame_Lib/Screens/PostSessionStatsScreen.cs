@@ -4,9 +4,9 @@ using WordGame_Lib.Ui;
 
 namespace WordGame_Lib.Screens
 {
-    public class PostSessionStatsScreen : IScreen
+    public class PostSessionStatsScreen : ScreenBase
     {
-        public PostSessionStatsScreen(Rectangle iBounds, SessionStats iStats, Action iOnMainMenuCallback, Action iOnPlayAgainCallback)
+        public PostSessionStatsScreen(Rectangle iBounds, SessionStats iStats, Action<GameTime> iOnMainMenuCallback, Action<GameTime> iOnPlayAgainCallback)
         {
             _bounds = iBounds;
             _stats = iStats;
@@ -14,8 +14,27 @@ namespace WordGame_Lib.Screens
             _onPlayAgainCallback = iOnPlayAgainCallback;
         }
 
-        public void OnNavigateTo()
+        public override void Update(GameTime iGameTime)
         {
+            _header.Update(iGameTime);
+            _subHeader.Update(iGameTime);
+            //_definition.Update(iGameTime);
+            _mainMenuButton.Update(iGameTime);
+            _playAgainButton.Update(iGameTime);
+        }
+
+        public override void Draw()
+        {
+            _header.Draw();
+            _subHeader.Draw();
+            //_definition.Draw();
+            _mainMenuButton.Draw();
+            _playAgainButton.Draw();
+        }
+
+        protected override void DoLoad()
+        {
+
             var bigMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GeneralVisualSettings.BigMarginAsPercentage);
             var mediumMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GeneralVisualSettings.MediumMarginAsPercentage);
             var smallMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GeneralVisualSettings.SmallMarginAsPercentage);
@@ -74,28 +93,10 @@ namespace WordGame_Lib.Screens
                 _onPlayAgainCallback);
         }
 
-        public void Update(GameTime iGameTime)
-        {
-            _header.Update(iGameTime);
-            _subHeader.Update(iGameTime);
-            //_definition.Update(iGameTime);
-            _mainMenuButton.Update(iGameTime);
-            _playAgainButton.Update(iGameTime);
-        }
-
-        public void Draw()
-        {
-            _header.Draw();
-            _subHeader.Draw();
-            //_definition.Draw();
-            _mainMenuButton.Draw();
-            _playAgainButton.Draw();
-        }
-
         private readonly Rectangle _bounds;
         private readonly SessionStats _stats;
-        private readonly Action _onMainMenuCallback;
-        private readonly Action _onPlayAgainCallback;
+        private readonly Action<GameTime> _onMainMenuCallback;
+        private readonly Action<GameTime> _onPlayAgainCallback;
 
         private UiFloatingText _header;
         private UiFloatingText _subHeader;

@@ -93,7 +93,7 @@ namespace WordGame_Lib.Ui
                     (int)iKeyWidth,
                     (int)iKeyHeight,
                     thisKeyString,
-                    () => OnKeyPressed(thisKeyString));
+                    iGt => OnKeyPressed(thisKeyString));
 
                 buttons.Add(thisButton);
             }
@@ -115,7 +115,7 @@ namespace WordGame_Lib.Ui
                     (int)iKeyWidth,
                     (int)iKeyHeight,
                     thisKeyString,
-                    () => OnKeyPressed(thisKeyString));
+                    iGt => OnKeyPressed(thisKeyString));
 
                 buttons.Add(thisButton);
             }
@@ -134,7 +134,7 @@ namespace WordGame_Lib.Ui
                 (int)specialButtonWidths,
                 (int)iKeyHeight,
                 keyStrings[0],
-                () => OnKeyPressed(keyStrings[0])));
+                iGt => OnKeyPressed(keyStrings[0])));
 
             for (var ii = 1; ii < keyStrings.Count - 1; ii++)
             {
@@ -145,7 +145,7 @@ namespace WordGame_Lib.Ui
                     (int)iKeyWidth,
                     (int)iKeyHeight,
                     thisKeyString,
-                    () => OnKeyPressed(thisKeyString));
+                    iGt => OnKeyPressed(thisKeyString));
 
                 buttons.Add(thisButton);
             }
@@ -155,7 +155,7 @@ namespace WordGame_Lib.Ui
                 (int)specialButtonWidths,
                 (int)iKeyHeight,
                 keyStrings[8],
-                () => OnKeyPressed(keyStrings[8])));
+                iGt => OnKeyPressed(keyStrings[8])));
 
             return buttons;
         }

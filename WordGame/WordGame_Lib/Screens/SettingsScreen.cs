@@ -7,9 +7,9 @@ using WordGame_Lib.Ui;
 
 namespace WordGame_Lib.Screens
 {
-    public class SettingsScreen : IScreen
+    public class SettingsScreen : ScreenBase
     {
-        public SettingsScreen(Action iMainMenuCallback)
+        public SettingsScreen(Action<GameTime> iMainMenuCallback)
         {
             _bounds = GraphicsHelper.GamePlayArea;
             _settings = GameSettingsManager.Settings;
@@ -17,7 +17,48 @@ namespace WordGame_Lib.Screens
             _lightPoints = new List<PointLight>();
         }
 
-        public void OnNavigateTo()
+        public override void Update(GameTime iGameTime)
+        {
+            _header.Update(iGameTime);
+            _saveButton.Update(iGameTime);
+            _altColorLabel.Update(iGameTime);
+            _altColorToggle.Update(iGameTime);
+            _neonPulseLabel.Update(iGameTime);
+            _neonPulseToggle.Update(iGameTime);
+            _neonFlickerLabel.Update(iGameTime);
+            _neonFlickerToggle.Update(iGameTime);
+
+            _lightPoints.Clear();
+            _lightPoints.AddRange(_header.LightPoints);
+            _lightPoints.AddRange(_altColorToggle.LightPoints);
+            _lightPoints.AddRange(_saveButton.LightPoints);
+            _lightPoints.AddRange(_neonPulseToggle.LightPoints);
+            _lightPoints.AddRange(_neonFlickerToggle.LightPoints);
+        }
+
+        public override void Draw()
+        {
+            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity);
+
+            _backgroundEffect.Parameters["ScreenDimensions"].SetValue(new Vector2(GraphicsHelper.GamePlayArea.Width, GraphicsHelper.GamePlayArea.Height));
+            _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);
+            _backgroundEffect.Parameters["PointLightColor"].SetValue(colors);
+            _backgroundEffect.Parameters["PointLightRadius"].SetValue(radii);
+            _backgroundEffect.Parameters["PointLightIntensity"].SetValue(intensity);
+            
+            GraphicsHelper.DrawTexture(_backgroundTexture, GraphicsHelper.GamePlayArea, _backgroundEffect);
+
+            _header.Draw();
+            _saveButton.Draw();
+            _altColorLabel.Draw();
+            _altColorToggle.Draw();
+            _neonPulseLabel.Draw();
+            _neonPulseToggle.Draw();
+            _neonFlickerLabel.Draw();
+            _neonFlickerToggle.Draw();
+        }
+
+        protected override void DoLoad()
         {
             _backgroundTexture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "Bricks1"));
             _backgroundEffect = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "BrickShader")).Clone();
@@ -46,7 +87,7 @@ namespace WordGame_Lib.Screens
 
             var altColorLabelY = settingsEditBounds.Y;
             var altColorLabelX = settingsEditBounds.X;
-            var altColorLabelWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.LabelColumnWidthAsPercent); 
+            var altColorLabelWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.LabelColumnWidthAsPercent);
             var altColorLabelHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
             _altColorLabel = new UiFloatingText(
                 new Rectangle(altColorLabelX, altColorLabelY, altColorLabelWidth, altColorLabelHeight),
@@ -59,7 +100,7 @@ namespace WordGame_Lib.Screens
             var altColorToggleWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.SettingColumnWidthAsPercent / 1.5f);
             var altColorToggleHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
             _altColorToggle = new UiToggleSwitch(
-                new Rectangle(altColorToggleX, altColorToggleY, altColorToggleWidth, altColorToggleHeight), 
+                new Rectangle(altColorToggleX, altColorToggleY, altColorToggleWidth, altColorToggleHeight),
                 _settings.AlternateKeyColorScheme,
                 OnToggleAlternateColorScheme);
 
@@ -112,52 +153,11 @@ namespace WordGame_Lib.Screens
                 OnSave);
         }
 
-        public void Update(GameTime iGameTime)
-        {
-            _header.Update(iGameTime);
-            _saveButton.Update(iGameTime);
-            _altColorLabel.Update(iGameTime);
-            _altColorToggle.Update(iGameTime);
-            _neonPulseLabel.Update(iGameTime);
-            _neonPulseToggle.Update(iGameTime);
-            _neonFlickerLabel.Update(iGameTime);
-            _neonFlickerToggle.Update(iGameTime);
-
-            _lightPoints.Clear();
-            _lightPoints.AddRange(_header.LightPoints);
-            _lightPoints.AddRange(_altColorToggle.LightPoints);
-            _lightPoints.AddRange(_saveButton.LightPoints);
-            _lightPoints.AddRange(_neonPulseToggle.LightPoints);
-            _lightPoints.AddRange(_neonFlickerToggle.LightPoints);
-        }
-
-        public void Draw()
-        {
-            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity);
-
-            _backgroundEffect.Parameters["ScreenDimensions"].SetValue(new Vector2(GraphicsHelper.GamePlayArea.Width, GraphicsHelper.GamePlayArea.Height));
-            _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);
-            _backgroundEffect.Parameters["PointLightColor"].SetValue(colors);
-            _backgroundEffect.Parameters["PointLightRadius"].SetValue(radii);
-            _backgroundEffect.Parameters["PointLightIntensity"].SetValue(intensity);
-            
-            GraphicsHelper.DrawTexture(_backgroundTexture, GraphicsHelper.GamePlayArea, _backgroundEffect);
-
-            _header.Draw();
-            _saveButton.Draw();
-            _altColorLabel.Draw();
-            _altColorToggle.Draw();
-            _neonPulseLabel.Draw();
-            _neonPulseToggle.Draw();
-            _neonFlickerLabel.Draw();
-            _neonFlickerToggle.Draw();
-        }
-
         private Texture2D _backgroundTexture;
         private Effect _backgroundEffect;
         private readonly Rectangle _bounds;
         private GameSettings _settings;
-        private readonly Action _mainMenuCallback;
+        private readonly Action<GameTime> _mainMenuCallback;
 
         private IUiNeonElement _header;
         private IUiElement _altColorLabel;
@@ -169,11 +169,11 @@ namespace WordGame_Lib.Screens
         private IUiNeonElement _saveButton;
         private readonly List<PointLight> _lightPoints;
 
-        private void OnSave()
+        private void OnSave(GameTime iGameTime)
         {
             GameSettingsManager.UpdateSettings(_settings);
             GameSettingsManager.WriteSettingsToDiskAsync();
-            _mainMenuCallback();
+            _mainMenuCallback(iGameTime);
         }
 
         private void OnToggleAlternateColorScheme(bool iNewValue)

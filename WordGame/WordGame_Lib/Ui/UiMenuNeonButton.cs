@@ -7,7 +7,7 @@ namespace WordGame_Lib.Ui
 {
     public class UiMenuNeonButton : UiButtonBase, IUiNeonElement
     {
-        public UiMenuNeonButton(Rectangle iBounds, string iText, Color iTextColor, Action iOnClickedCallback) :
+        public UiMenuNeonButton(Rectangle iBounds, string iText, Color iTextColor, Action<GameTime> iOnClickedCallback) :
             base(iOnClickedCallback)
         {
             _neonText = new UiNeonFloatingText(iBounds, iText, iTextColor);
@@ -22,20 +22,12 @@ namespace WordGame_Lib.Ui
 
         public override void Draw()
         {
-            base.Draw();
-
             _neonText.Draw();
         }
 
         public List<PointLight> LightPoints => _neonText.LightPoints;
 
         protected override Rectangle Bounds => _neonText.Bounds;
-
-        protected override Texture2D GetDefaultTexture() => null;
-
-        protected override Texture2D GetHoverTexture() => null;
-
-        protected override Texture2D GetPressedTexture() => null;
 
         private readonly UiNeonFloatingText _neonText;
     }

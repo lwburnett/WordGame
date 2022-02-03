@@ -7,7 +7,7 @@ namespace WordGame_Lib.Ui
 {
     public class UiNeonSpriteButton : UiButtonBase, IUiNeonElement
     {
-        public UiNeonSpriteButton(Rectangle iBounds, string iTextureName, Color iOuterColor, Action iOnClickedCallback) :
+        public UiNeonSpriteButton(Rectangle iBounds, string iTextureName, Color iOuterColor, Action<GameTime> iOnClickedCallback) :
             base(iOnClickedCallback)
         {
             _neonSprite = new UiNeonFloatSprite(iBounds, iTextureName, iOuterColor);
@@ -22,18 +22,10 @@ namespace WordGame_Lib.Ui
 
         public override void Draw()
         {
-            base.Draw();
-
             _neonSprite.Draw();
         }
 
         protected override Rectangle Bounds => _neonSprite.Bounds;
-
-        protected override Texture2D GetDefaultTexture() => null;
-
-        protected override Texture2D GetHoverTexture() => null;
-
-        protected override Texture2D GetPressedTexture() => null;
 
         public List<PointLight> LightPoints => _neonSprite.LightPoints;
 

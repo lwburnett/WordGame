@@ -8,15 +8,19 @@ namespace WordGame_Lib
 {
     public class GamePlayInstance : IUiNeonElement
     {
-        public GamePlayInstance(OrderedUniqueList<string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action iOnMainMenuCallback, Action iOnPlayAgainCallback)
+        public GamePlayInstance(OrderedUniqueList<string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action<GameTime> iOnMainMenuCallback, Action<GameTime> iOnPlayAgainCallback)
         {
             _wordDatabase = iWordDatabase;
             _secretWordDatabase = iSecretWordDatabase;
+            _onMainMenuCallback = iOnMainMenuCallback;
+            _onPlayAgainCallback = iOnPlayAgainCallback;
             _playSessionHasFinished = false;
             _rng = new Random();
             LightPoints = new List<PointLight>();
+        }
 
-
+        public void LoadLevel()
+        {
             var mainMenuXPos = GraphicsHelper.GamePlayArea.X + (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.BigMarginAsPercentage);
             var mainMenuYPos = GraphicsHelper.GamePlayArea.Y + (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.MainMenuButtonYAsPercentage);
             var mainMenuWidth = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.GamePlaySettings.MainMenuButtonWidthAsPercentage);
@@ -25,25 +29,23 @@ namespace WordGame_Lib
                 new Rectangle(mainMenuXPos, mainMenuYPos, mainMenuWidth, mainMenuHeight),
                 "MAIN MENU",
                 SettingsManager.GamePlaySettings.MainMenuButtonColor,
-                iOnMainMenuCallback);
+                _onMainMenuCallback);
 
             var playAgainYPos = GraphicsHelper.GamePlayArea.Y + (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.PlayAgainButtonYAsPercentage);
             var playAgainWidth = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.GamePlaySettings.PlayAgainButtonWidthAsPercentage);
-            var playAgainXPos = 
-                GraphicsHelper.GamePlayArea.X + 
-                GraphicsHelper.GamePlayArea.Width - 
-                (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.BigMarginAsPercentage) - 
+            var playAgainXPos =
+                GraphicsHelper.GamePlayArea.X +
+                GraphicsHelper.GamePlayArea.Width -
+                (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.BigMarginAsPercentage) -
                 playAgainWidth;
             var playAgainHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.PlayAgainButtonHeightAsPercentage);
             _playAgainButton = new UiMenuNeonButton(
                 new Rectangle(playAgainXPos, playAgainYPos, playAgainWidth, playAgainHeight),
                 "PLAY AGAIN",
                 SettingsManager.GamePlaySettings.PlayAgainButtonColor,
-                iOnPlayAgainCallback);
-        }
+                _onPlayAgainCallback);
 
-        public void LoadLevel()
-        {
+
             var keyboardHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.KeyboardHeightAsPercentage);
             var keyboardYPosition = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.KeyboardYPosAsPercentage);
 
@@ -108,6 +110,8 @@ namespace WordGame_Lib
         private readonly Random _rng;
         private readonly OrderedUniqueList<string> _wordDatabase;
         private readonly OrderedUniqueList<string> _secretWordDatabase;
+        private readonly Action<GameTime> _onMainMenuCallback;
+        private readonly Action<GameTime> _onPlayAgainCallback;
         private KeyboardControl _keyboard;
         private LetterGridControl _letterGrid;
         private UiFloatingText _notification;
@@ -115,8 +119,8 @@ namespace WordGame_Lib
         //private bool _isSuccess;
 
         private bool _playSessionHasFinished;
-        private readonly IUiNeonElement _mainMenuButton;
-        private readonly IUiNeonElement _playAgainButton;
+        private IUiNeonElement _mainMenuButton;
+        private IUiNeonElement _playAgainButton;
 
         private string _secretWord;
 

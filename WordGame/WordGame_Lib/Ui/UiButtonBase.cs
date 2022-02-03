@@ -9,7 +9,7 @@ namespace WordGame_Lib.Ui
 {
     public abstract class UiButtonBase : IUiElement
     {
-        protected UiButtonBase(Action iOnClickedCallback)
+        protected UiButtonBase(Action<GameTime> iOnClickedCallback)
         {
             _onClickedCallback = iOnClickedCallback;
         }
@@ -25,7 +25,7 @@ namespace WordGame_Lib.Ui
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                         OnPressed();
                     else if (Mouse.GetState().LeftButton == ButtonState.Released)
-                        OnReleased();
+                        OnReleased(iGameTime);
                 }
                 else
                 {
@@ -44,7 +44,7 @@ namespace WordGame_Lib.Ui
                 var touchState = TouchPanel.GetState();
                 if (!touchState.Any())
                 {
-                    OnNoTouch();
+                    OnNoTouch(iGameTime);
                     return;
                 }
 
@@ -58,36 +58,34 @@ namespace WordGame_Lib.Ui
                     OnNotOverlappingTouch();
                 }
             }
-        }
-
-        public virtual void Draw()
-        {
-            void DoDraw(Texture2D iTexture)
-            {
-                if (iTexture != null)
-                    GraphicsHelper.DrawTexture(iTexture, new Vector2(Bounds.X, Bounds.Y));
-            }
 
             if (!_isOverlapped && !_isPressed)
             {
-                DoDraw(GetDefaultTexture());
+                StateOfPress = PressState.Default;
             }
             else if (_isOverlapped && !_isPressed)
             {
-                DoDraw(GetHoverTexture());
+                StateOfPress = PressState.Hover;
             }
             else
             {
-                DoDraw(GetPressedTexture());
+                StateOfPress = PressState.Pressed;
             }
         }
 
-        protected abstract Rectangle Bounds { get; }
-        protected abstract Texture2D GetDefaultTexture();
-        protected abstract Texture2D GetHoverTexture();
-        protected abstract Texture2D GetPressedTexture();
+        public abstract void Draw();
 
-        private readonly Action _onClickedCallback; 
+        protected abstract Rectangle Bounds { get; }
+
+        protected enum PressState
+        {
+            Default,
+            Hover,
+            Pressed
+        }
+
+        protected PressState StateOfPress;
+        private readonly Action<GameTime> _onClickedCallback; 
         private bool _isPressed;
         private bool _isOverlapped;
 
@@ -104,10 +102,10 @@ namespace WordGame_Lib.Ui
             _isPressed = true;
         }
 
-        private void OnReleased()
+        private void OnReleased(GameTime iGameTime)
         {
             if (_isPressed && _isOverlapped)
-                _onClickedCallback();
+                _onClickedCallback(iGameTime);
 
             _isPressed = false;
         }
@@ -128,10 +126,10 @@ namespace WordGame_Lib.Ui
             _isOverlapped = false;
         }
 
-        private void OnNoTouch()
+        private void OnNoTouch(GameTime iGameTime)
         {
             if (_isPressed && _isOverlapped)
-                _onClickedCallback();
+                _onClickedCallback(iGameTime);
 
             Reset();
         }

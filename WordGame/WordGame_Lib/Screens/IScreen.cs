@@ -1,13 +1,20 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib.Screens
 {
     public interface IScreen
     {
-        void OnNavigateTo();
+        Task Load();
 
         void Update(GameTime iGameTime);
 
         void Draw();
+
+        void StartTransitionOut(GameTime iGameTime);
+
+        void StartTransitionIn(GameTime iGameTime);
+
+        bool IsVisible { get; }
     }
 }
