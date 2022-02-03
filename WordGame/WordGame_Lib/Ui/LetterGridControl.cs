@@ -62,6 +62,18 @@ namespace WordGame_Lib.Ui
             return word;
         }
 
+        public void Reset()
+        {
+            _cells.ForEach(iC =>
+            {
+                iC.SetDisposition(Disposition.Undecided);
+                iC.SetText(string.Empty);
+            });
+
+            _cursorLocation = 0;
+            _currentRow = 0;
+        }
+
         public List<PointLight> LightPoints { get; }
 
         private readonly List<UiLetterCell> _cells;

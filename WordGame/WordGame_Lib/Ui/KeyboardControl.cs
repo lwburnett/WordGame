@@ -32,12 +32,12 @@ namespace WordGame_Lib.Ui
 
         public void Update(GameTime iGameTime)
         {
-            _buttons.ForEach(b => b.Update(iGameTime));
+            _buttons.ForEach(iB => iB.Update(iGameTime));
         }
 
         public void Draw()
         {
-            _buttons.ForEach(b => b.Draw());
+            _buttons.ForEach(iB => iB.Draw());
         }
 
         public void OnGuessEntered(string iCurrentWord, List<Disposition> iDispositions)
@@ -49,7 +49,7 @@ namespace WordGame_Lib.Ui
                 var thisGuessChar = iCurrentWord[ii].ToString();
                 var thisDisposition = iDispositions[ii];
 
-                var matchingButton = _buttons.FirstOrDefault(b => b.GetText() == thisGuessChar);
+                var matchingButton = _buttons.FirstOrDefault(iB => iB.GetText() == thisGuessChar);
 
                 if (matchingButton != null)
                 {
@@ -70,6 +70,11 @@ namespace WordGame_Lib.Ui
                     Debug.Fail($"Couldn't find matching key for char {thisGuessChar}");
                 }
             }
+        }
+
+        public void Reset()
+        {
+            _buttons.ForEach(iB => iB.SetDisposition(Disposition.Undecided));
         }
 
         private readonly Rectangle _bounds;

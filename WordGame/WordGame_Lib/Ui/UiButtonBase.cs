@@ -45,17 +45,18 @@ namespace WordGame_Lib.Ui
                 if (!touchState.Any())
                 {
                     OnNoTouch(iGameTime);
-                    return;
-                }
-
-                var firstTouch = touchState[0];
-                if (IsOverlappingWithMouse(firstTouch.Position.ToPoint()))
-                {
-                    OnOverlappingTouch();
                 }
                 else
                 {
-                    OnNotOverlappingTouch();
+                    var firstTouch = touchState[0];
+                    if (IsOverlappingWithMouse(firstTouch.Position.ToPoint()))
+                    {
+                        OnOverlappingTouch();
+                    }
+                    else
+                    {
+                        OnNotOverlappingTouch();
+                    }
                 }
             }
 

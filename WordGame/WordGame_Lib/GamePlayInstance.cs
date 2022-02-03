@@ -8,12 +8,11 @@ namespace WordGame_Lib
 {
     public class GamePlayInstance : IUiNeonElement
     {
-        public GamePlayInstance(OrderedUniqueList<string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action<GameTime> iOnMainMenuCallback, Action<GameTime> iOnPlayAgainCallback)
+        public GamePlayInstance(OrderedUniqueList<string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action<GameTime> iOnMainMenuCallback)
         {
             _wordDatabase = iWordDatabase;
             _secretWordDatabase = iSecretWordDatabase;
             _onMainMenuCallback = iOnMainMenuCallback;
-            _onPlayAgainCallback = iOnPlayAgainCallback;
             _playSessionHasFinished = false;
             _rng = new Random();
             LightPoints = new List<PointLight>();
@@ -43,7 +42,7 @@ namespace WordGame_Lib
                 new Rectangle(playAgainXPos, playAgainYPos, playAgainWidth, playAgainHeight),
                 "PLAY AGAIN",
                 SettingsManager.GamePlaySettings.PlayAgainButtonColor,
-                _onPlayAgainCallback);
+                OnPlayAgain);
 
 
             var keyboardHeight = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GamePlaySettings.KeyboardHeightAsPercentage);
@@ -111,7 +110,6 @@ namespace WordGame_Lib
         private readonly OrderedUniqueList<string> _wordDatabase;
         private readonly OrderedUniqueList<string> _secretWordDatabase;
         private readonly Action<GameTime> _onMainMenuCallback;
-        private readonly Action<GameTime> _onPlayAgainCallback;
         private KeyboardControl _keyboard;
         private LetterGridControl _letterGrid;
         private UiFloatingText _notification;
@@ -215,6 +213,16 @@ namespace WordGame_Lib
                 iText, 
                 Color.White,
                 Color.Black);
+        }
+
+        private void OnPlayAgain(GameTime iGameTime)
+        {
+            _playSessionHasFinished = false;
+            _letterGrid.Reset();
+            _keyboard.Reset();
+
+            _notification = null;
+            _secretWord = _secretWordDatabase[_rng.Next(_secretWordDatabase.Count)];
         }
     }
 }

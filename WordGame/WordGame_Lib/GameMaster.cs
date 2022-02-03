@@ -187,7 +187,7 @@ namespace WordGame_Lib
 
         private void OnPlayGame(GameTime iGameTime)
         {
-            SetupScreenTransition(ScreenId.GamePlay, () => new GamePlayScreen(_wordDatabase, _secretWordDatabase, OnPlayGame, OnMainMenu, OnExitGame), iGameTime);
+            SetupScreenTransition(ScreenId.GamePlay, () => new GamePlayScreen(_wordDatabase, _secretWordDatabase, OnMainMenu, OnExitGame), iGameTime);
         }
 
         private void OnSettings(GameTime iGameTime)

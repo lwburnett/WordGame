@@ -107,6 +107,9 @@ namespace WordGame_Lib
                     var neonLightFlicker = true;
                     foreach (var line in lines)
                     {
+                        if (string.IsNullOrWhiteSpace(line))
+                            continue;
+
                         var pieces = line.Split(',').Select(iP => iP.Trim()).ToList();
 
                         if (pieces.Count != 2)

@@ -12,7 +12,8 @@ namespace WordGame_Lib.Ui
             base(iOnClickedCallback)
         {
             Bounds = iBounds;
-            
+            _text = iText;
+
             _disposition = Disposition.Undecided;
             _floatingText = new UiFloatingText(iBounds, iText, Color.White, Color.Black);
 
@@ -24,6 +25,11 @@ namespace WordGame_Lib.Ui
         public UiTextButton(Point iTopLeft, int iWidth, int iHeight, string iText, Action<GameTime> iOnClickedCallback) : 
             this(new Rectangle(iTopLeft.X, iTopLeft.Y, iWidth, iHeight), iText, iOnClickedCallback)
         {
+        }
+
+        public override void Update(GameTime iGameTime)
+        {
+            base.Update(iGameTime);
         }
 
         public override void Draw()
@@ -51,7 +57,8 @@ namespace WordGame_Lib.Ui
         }
 
         protected override Rectangle Bounds { get; }
-        
+
+        private readonly string _text;
         private readonly UiFloatingText _floatingText;
         private Disposition _disposition;
         private readonly Texture2D _texture;
@@ -65,9 +72,9 @@ namespace WordGame_Lib.Ui
                 switch (_disposition)
                 {
                     case Disposition.Undecided:
-                        return SettingsManager.UiKeyboardColors.UndecidedDefaultColor;
+                        return GameSettingsManager.Settings.AlternateKeyColorScheme ? SettingsManager.UiKeyboardColors.IncorrectDefaultColor : SettingsManager.UiKeyboardColors.UndecidedDefaultColor;
                     case Disposition.Incorrect:
-                        return SettingsManager.UiKeyboardColors.IncorrectDefaultColor;
+                        return GameSettingsManager.Settings.AlternateKeyColorScheme ? SettingsManager.UiKeyboardColors.UndecidedDefaultColor : SettingsManager.UiKeyboardColors.IncorrectDefaultColor;
                     case Disposition.Misplaced:
                         return SettingsManager.UiKeyboardColors.MisplacedDefaultColor;
                     case Disposition.Correct:
@@ -94,7 +101,7 @@ namespace WordGame_Lib.Ui
                         return SettingsManager.UiKeyboardColors.UndecidedHoverColor;
                 }
             }
-            else
+            else if (StateOfPress == PressState.Pressed)
             {
                 switch (_disposition)
                 {
@@ -110,6 +117,11 @@ namespace WordGame_Lib.Ui
                         Debug.Fail($"Unknown value of enum {nameof(Disposition)}: {_disposition}");
                         return SettingsManager.UiKeyboardColors.UndecidedPressedColor;
                 }
+            }
+            else
+            {
+                Debug.Fail($"Unknown value of enum {nameof(PressState)}: {StateOfPress}");
+                return SettingsManager.UiKeyboardColors.UndecidedDefaultColor;
             }
         }
     }

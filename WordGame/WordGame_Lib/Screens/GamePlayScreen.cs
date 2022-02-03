@@ -10,13 +10,13 @@ namespace WordGame_Lib.Screens
     {
         public GamePlayScreen(
             OrderedUniqueList<string> iWordDatabase, 
-            OrderedUniqueList<string> iSecretWordDatabase, 
-            Action<GameTime> iOnPlayAgainCallback, 
+            OrderedUniqueList<string> iSecretWordDatabase,
             Action<GameTime> iOnMainMenuCallback, 
             Action<GameTime> iOnExitCallback)
         {
-            _gamePlayInstance = new GamePlayInstance(iWordDatabase, iSecretWordDatabase, iOnMainMenuCallback, iOnPlayAgainCallback);
+            _gamePlayInstance = new GamePlayInstance(iWordDatabase, iSecretWordDatabase, iOnMainMenuCallback);
             _onExitCallback = iOnExitCallback;
+
         }
 
         public override void Update(GameTime iGameTime)
@@ -32,11 +32,11 @@ namespace WordGame_Lib.Screens
             var lightPoints = _gamePlayInstance.LightPoints;
             GraphicsHelper.CalculatePointLightShaderParameters(lightPoints, out var positions, out var colors, out var radii, out var intensity);
 
-            _backgroundEffect.Parameters["ScreenDimensions"].SetValue(new Vector2(GraphicsHelper.GamePlayArea.Width, GraphicsHelper.GamePlayArea.Height));
-            _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);
-            _backgroundEffect.Parameters["PointLightColor"].SetValue(colors);
-            _backgroundEffect.Parameters["PointLightRadius"].SetValue(radii);
-            _backgroundEffect.Parameters["PointLightIntensity"].SetValue(intensity);
+            _paramScreenDimensions.SetValue(new Vector2(GraphicsHelper.GamePlayArea.Width, GraphicsHelper.GamePlayArea.Height));
+            _paramPointLightPosition.SetValue(positions);
+            _paramPointLightColor.SetValue(colors);
+            _paramPointLightRadius.SetValue(radii);
+            _paramPointLightIntensity.SetValue(intensity);
             GraphicsHelper.DrawTexture(_backgroundTexture, GraphicsHelper.GamePlayArea, _backgroundEffect);
 
             _gamePlayInstance.Draw();
@@ -47,11 +47,24 @@ namespace WordGame_Lib.Screens
             _backgroundTexture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "Bricks1"));
             _backgroundEffect = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "BrickShader")).Clone();
 
+            _paramScreenDimensions = _backgroundEffect.Parameters["ScreenDimensions"];
+            _paramPointLightPosition = _backgroundEffect.Parameters["PointLightPosition"];
+            _paramPointLightColor = _backgroundEffect.Parameters["PointLightColor"];
+            _paramPointLightRadius = _backgroundEffect.Parameters["PointLightRadius"];
+            _paramPointLightIntensity = _backgroundEffect.Parameters["PointLightIntensity"];
+
             _gamePlayInstance.LoadLevel();
         }
 
         private Texture2D _backgroundTexture;
         private Effect _backgroundEffect;
+
+        private EffectParameter _paramScreenDimensions;
+        private EffectParameter _paramPointLightPosition;
+        private EffectParameter _paramPointLightColor;
+        private EffectParameter _paramPointLightRadius;
+        private EffectParameter _paramPointLightIntensity;
+
         private readonly Action<GameTime> _onExitCallback;
         private readonly GamePlayInstance _gamePlayInstance;
         //private IScreen _postSessionStatsScreen;
