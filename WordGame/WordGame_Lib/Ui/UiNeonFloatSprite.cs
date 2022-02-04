@@ -26,8 +26,8 @@ namespace WordGame_Lib.Ui
 
         public override void Draw()
         {
-            _shaderOuterColorParameter.SetValue(new Vector4(OuterColorAtFullIntensity.R / 255f, OuterColorAtFullIntensity.G / 255f, OuterColorAtFullIntensity.B / 255f, OuterColorAtFullIntensity.A / 255f));
-            _shaderInnerColorParameter.SetValue(new Vector4(InnerColorAtFullIntensity.R / 255f, InnerColorAtFullIntensity.G / 255f, InnerColorAtFullIntensity.B / 255f, InnerColorAtFullIntensity.A / 255f));
+            _shaderOuterColorParameter.SetValue(new Vector4(OuterColorToDraw.R / 255f, OuterColorToDraw.G / 255f, OuterColorToDraw.B / 255f, OuterColorToDraw.A / 255f));
+            _shaderInnerColorParameter.SetValue(new Vector4(InnerColorToDraw.R / 255f, InnerColorToDraw.G / 255f, InnerColorToDraw.B / 255f, InnerColorToDraw.A / 255f));
             GraphicsHelper.DrawTexture(_texture, Bounds, _shader);
         }
 
