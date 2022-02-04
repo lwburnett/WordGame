@@ -108,7 +108,7 @@ namespace WordGame_Lib.Ui
             _cursorLocation = 0;
             _currentRow = 0;
 
-            TurnOnRow(_currentRow, iGameTime);
+            TurnOnRow(iGameTime);
         }
 
         public void OnGuessEntered(List<Disposition> iDispositions, GameTime iGameTime)
@@ -122,7 +122,6 @@ namespace WordGame_Lib.Ui
             }
 
             _currentRow++;
-            TurnOnRow(_currentRow, iGameTime);
         }
 
         public bool IsFinished()
@@ -145,9 +144,9 @@ namespace WordGame_Lib.Ui
             }
         }
 
-        public void TurnOnRow(int iRow, GameTime iGameTime)
+        public void TurnOnRow(GameTime iGameTime)
         {
-            var startingIndex = iRow * CNumCols;
+            var startingIndex = _currentRow * CNumCols;
             for (var ii = startingIndex; ii < startingIndex + CNumCols; ii++)
             {
                 _cells[ii].SetDisposition(Disposition.Undecided);

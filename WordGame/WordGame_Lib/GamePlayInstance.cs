@@ -73,7 +73,7 @@ namespace WordGame_Lib
             if (_letterGrid.State == NeonLightState.Off)
             {
                 _letterGrid.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
-                _letterGrid.TurnOnRow(0, iGameTime);
+                _letterGrid.TurnOnRow(iGameTime);
                 _playAgainButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
                 _mainMenuButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
             }
@@ -237,6 +237,10 @@ namespace WordGame_Lib
                 SetNotification($"Incorrect. The word was {_secretWord}");
                 //_isSuccess = false;
                 _playSessionHasFinished = true;
+            }
+            else
+            {
+                _letterGrid.TurnOnRow(iGameTime);
             }
         }
 
