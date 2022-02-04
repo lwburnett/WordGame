@@ -148,14 +148,37 @@ namespace WordGame_Lib
                     if (!_screenTransitionPanStartTime.HasValue)
                         _screenTransitionPanStartTime = iGameTime.TotalGameTime;
 
-                    var timeDiff = iGameTime.TotalGameTime - _screenTransitionPanStartTime.Value;
-
-                    if (timeDiff <= TimeSpan.FromSeconds(1.0))
+                    if (_currentScreenId != ScreenId.StartupScreen)
                     {
-                        var lerpValue = (float)(timeDiff.TotalSeconds / TimeSpan.FromSeconds(1.0).TotalSeconds);
+                        var timeDiff = iGameTime.TotalGameTime - _screenTransitionPanStartTime.Value;
 
-                        _currentScreenRenderOffset = new Vector2(-GraphicsHelper.GamePlayArea.Width * lerpValue, 0);
-                        _newScreenRenderOffset = _currentScreenRenderOffset + new Vector2(GraphicsHelper.GamePlayArea.Width, 0);
+                        if (timeDiff <= TimeSpan.FromSeconds(1.0))
+                        {
+                            var panRight = ShouldPanRight();
+
+                            var lerpValue = (float)(timeDiff.TotalSeconds / TimeSpan.FromSeconds(1.0).TotalSeconds);
+
+                            if (panRight)
+                            {
+                                _currentScreenRenderOffset = new Vector2(-GraphicsHelper.GamePlayArea.Width * lerpValue, 0);
+                                _newScreenRenderOffset = _currentScreenRenderOffset + new Vector2(GraphicsHelper.GamePlayArea.Width, 0);
+                            }
+                            else
+                            {
+                                _currentScreenRenderOffset = new Vector2(GraphicsHelper.GamePlayArea.Width * lerpValue, 0);
+                                _newScreenRenderOffset = _currentScreenRenderOffset - new Vector2(GraphicsHelper.GamePlayArea.Width, 0);
+                            }
+                        }
+                        else
+                        {
+                            _currentScreenId = _screenToTransitionTo.Value;
+                            _currentScreenRenderOffset = null;
+                            _newScreenRenderOffset = null;
+                            _screenLoadTask = null;
+                            _screenToTransitionTo = null;
+                            _screenTransitionPanStartTime = null;
+                            _idToScreenDictionary[_currentScreenId].StartTransitionIn(iGameTime);
+                        }
                     }
                     else
                     {
@@ -193,6 +216,27 @@ namespace WordGame_Lib
             MainMenu,
             GamePlay,
             Settings
+        }
+
+        private bool ShouldPanRight()
+        {
+            if (!_screenToTransitionTo.HasValue)
+                return true;
+
+            if (_currentScreenId == ScreenId.MainMenu && _screenToTransitionTo.Value == ScreenId.GamePlay)
+                return true;
+
+            if (_currentScreenId == ScreenId.GamePlay && _screenToTransitionTo.Value == ScreenId.MainMenu)
+                return false;
+
+            if (_currentScreenId == ScreenId.MainMenu && _screenToTransitionTo.Value == ScreenId.Settings)
+                return false;
+
+            if (_currentScreenId == ScreenId.Settings && _screenToTransitionTo.Value == ScreenId.MainMenu)
+                return true;
+
+            Debug.Fail("Somehow got to a weird transition state.");
+            return true;
         }
 
         private void OnStartupScreen()
