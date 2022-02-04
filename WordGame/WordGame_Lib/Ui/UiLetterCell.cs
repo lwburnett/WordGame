@@ -12,13 +12,14 @@ namespace WordGame_Lib.Ui
             base(0)
         {
             Bounds = iBounds;
+            FullRadius = GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonSettings.LetterCell.RadiusAsPercentageOfWidth;
             _floatingText = new UiFloatingText(iBounds, string.Empty, Color.White, Color.Black);
 
             _texture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "LetterBoxOutline"));
             _shader = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "NeonSpriteShader")).Clone();
             _shaderInnerColorParameter = _shader.Parameters["InnerColor"];
             _shaderOuterColorParameter = _shader.Parameters["OuterColor"];
-            SetDisposition(Disposition.Undecided);
+            SetDisposition(Disposition.Incorrect);
         }
 
         public override void Draw()
@@ -49,13 +50,14 @@ namespace WordGame_Lib.Ui
 
             _currentIntensity = intensity;
 
-            _pointLight = new PointLight(outerColor, Bounds.Center.ToVector2(), GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonSettings.LetterCell.RadiusAsPercentageOfWidth, intensity);
+            _pointLight = new PointLight(outerColor, Bounds.Center.ToVector2(), FullRadius, intensity);
         }
 
         public override Rectangle Bounds { get; }
         public override List<PointLight> LightPoints => new List<PointLight> { _pointLight };
 
         protected override float FullIntensity => _currentIntensity;
+        protected override float FullRadius { get; }
         protected override Color InnerColorAtFullIntensity => _innerColor;
         protected override Color OuterColorAtFullIntensity => _outerColor;
 

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using WordGame_Lib.Ui;
 
 namespace WordGame_Lib.Screens
@@ -17,24 +15,6 @@ namespace WordGame_Lib.Screens
             _onSettingsCallback = iOnSettingsCallback;
             _onExitCallback = iOnExitCallback;
             _lightPoints = new List<PointLight>();
-        }
-
-        public override void Update(GameTime iGameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                _onExitCallback(iGameTime);
-
-            _titleWord1.Update(iGameTime);
-            _titleWord2.Update(iGameTime);
-            _playButton.Update(iGameTime);
-            _settingsButton.Update(iGameTime);
-            _exitButton.Update(iGameTime);
-
-            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity);
-            _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);
-            _backgroundEffect.Parameters["PointLightColor"].SetValue(colors);
-            _backgroundEffect.Parameters["PointLightRadius"].SetValue(radii);
-            _backgroundEffect.Parameters["PointLightIntensity"].SetValue(intensity);
         }
 
         public override void Draw()
@@ -50,11 +30,11 @@ namespace WordGame_Lib.Screens
         private readonly List<PointLight> _lightPoints;
         private Texture2D _backgroundTexture;
         private Effect _backgroundEffect;
-        private UiNeonFloatingText _titleWord1;
-        private UiNeonFloatingText _titleWord2;
-        private UiMenuNeonButton _playButton;
-        private UiMenuNeonButton _settingsButton;
-        private UiMenuNeonButton _exitButton;
+        private IUiNeonElement _titleWord1;
+        private IUiNeonElement _titleWord2;
+        private IUiNeonElement _playButton;
+        private IUiNeonElement _settingsButton;
+        private IUiNeonElement _exitButton;
         private readonly Action<GameTime> _onPlayCallback;
         private readonly Action<GameTime> _onSettingsCallback;
         private readonly Action<GameTime> _onExitCallback;
@@ -120,7 +100,69 @@ namespace WordGame_Lib.Screens
                 "EXIT",
                 SettingsManager.MainMenuSettings.ExitButtonColor,
                 OnExitClicked);
+        }
+        
 
+        protected override bool UpdateTransitionIn(GameTime iGameTime)
+        {
+            if (_titleWord1.State == NeonLightState.Off)
+            {
+                _titleWord1.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+                _titleWord2.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+                _playButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+                _settingsButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+                _exitButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+            }
+
+            UpdateUiElements(iGameTime);
+
+            return _titleWord1.State == NeonLightState.On &&
+                   _titleWord2.State == NeonLightState.On &&
+                   _playButton.State == NeonLightState.On &&
+                   _settingsButton.State == NeonLightState.On &&
+                   _exitButton.State == NeonLightState.On;
+        }
+
+        protected override void UpdateDefault(GameTime iGameTime)
+        {
+            UpdateUiElements(iGameTime);
+
+            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity);
+            _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);
+            _backgroundEffect.Parameters["PointLightColor"].SetValue(colors);
+            _backgroundEffect.Parameters["PointLightRadius"].SetValue(radii);
+            _backgroundEffect.Parameters["PointLightIntensity"].SetValue(intensity);
+        }
+
+        protected override bool UpdateTransitionOut(GameTime iGameTime)
+        {
+            if (_titleWord1.State == NeonLightState.On)
+            {
+                _titleWord1.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
+                _titleWord2.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
+                _playButton.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
+                _settingsButton.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
+                _exitButton.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
+            }
+
+            UpdateUiElements(iGameTime);
+
+            return _titleWord1.State == NeonLightState.Off &&
+                   _titleWord2.State == NeonLightState.Off &&
+                   _playButton.State == NeonLightState.Off &&
+                   _settingsButton.State == NeonLightState.Off &&
+                   _exitButton.State == NeonLightState.Off;
+        }
+
+        private void UpdateUiElements(GameTime iGameTime)
+        {
+            _titleWord1.Update(iGameTime);
+            _titleWord2.Update(iGameTime);
+            _playButton.Update(iGameTime);
+            _settingsButton.Update(iGameTime);
+            _exitButton.Update(iGameTime);
+
+            _lightPoints.Clear();
             _lightPoints.AddRange(_titleWord1.LightPoints);
             _lightPoints.AddRange(_titleWord2.LightPoints);
             _lightPoints.AddRange(_playButton.LightPoints);

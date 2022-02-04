@@ -1,13 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib.Ui
 {
-    public interface IUiNeonElement : IUiElement
+    public enum NeonLightState
     {
-        List<PointLight> LightPoints { get; }
+        Off,
+        FadeIn,
+        On,
+        FadeOut
+    }
 
-        // bool IsOn { get; }
-        // void TurnOn();
-        // void TurnOff();
+    public interface IUiNeonElement : IUiElement, ILightSource
+    {
+        NeonLightState State { get; }
+        void StartFadeIn(GameTime iGameTime, TimeSpan iDuration);
+        void StartFadeOut(GameTime iGameTime, TimeSpan iDuration);
     }
 }

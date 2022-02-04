@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
@@ -17,19 +18,30 @@ namespace WordGame_Lib.Ui
             var cellHeight = cellWidth;
 
             _cells = CreateCells(gridMargin, cellMargin, cellWidth, cellHeight);
+            TurnOnRow(0);
             LightPoints = new List<PointLight>();
+            State = NeonLightState.Off;
         }
 
         public void Update(GameTime iGameTime)
         {
-            _cells.ForEach(c => c.Update(iGameTime));
+            if (State == NeonLightState.FadeIn && _cells.All(iC => iC.State == NeonLightState.On))
+            {
+                State = NeonLightState.On;
+            }
+            else if (State == NeonLightState.FadeOut && _cells.All(iC => iC.State == NeonLightState.Off))
+            {
+                State = NeonLightState.Off;
+            }
+
+            _cells.ForEach(iC => iC.Update(iGameTime));
             LightPoints.Clear();
-            LightPoints.AddRange(_cells.SelectMany(c => c.LightPoints));
+            LightPoints.AddRange(_cells.SelectMany(iC => iC.LightPoints));
         }
 
         public void Draw()
         {
-            _cells.ForEach(c => c.Draw());
+            _cells.ForEach(iC => iC.Draw());
         }
 
         public void LetterPressed(string iKeyString)
@@ -66,13 +78,48 @@ namespace WordGame_Lib.Ui
         {
             _cells.ForEach(iC =>
             {
-                iC.SetDisposition(Disposition.Undecided);
+                iC.SetDisposition(Disposition.Incorrect);
                 iC.SetText(string.Empty);
             });
 
             _cursorLocation = 0;
             _currentRow = 0;
+
+            TurnOnRow(_currentRow);
         }
+
+        public void OnGuessEntered(List<Disposition> iDispositions)
+        {
+            for (var ii = 0; ii < 5; ii++)
+            {
+                var thisIndex = _currentRow * CNumCols + ii;
+                var thisCell = _cells[thisIndex];
+
+                thisCell.SetDisposition(iDispositions[ii]);
+            }
+
+            _currentRow++;
+            TurnOnRow(_currentRow);
+        }
+
+        public bool IsFinished()
+        {
+            return _currentRow >= CNumRows;
+        }
+
+        public void StartFadeIn(GameTime iGameTime, TimeSpan iDuration)
+        {
+            State = NeonLightState.FadeIn;
+            _cells.ForEach(iC => iC.StartFadeIn(iGameTime, iDuration));
+        }
+
+        public void StartFadeOut(GameTime iGameTime, TimeSpan iDuration)
+        {
+            State = NeonLightState.FadeOut;
+            _cells.ForEach(iC => iC.StartFadeOut(iGameTime, iDuration));
+        }
+
+        public NeonLightState State { get; private set; }
 
         public List<PointLight> LightPoints { get; }
 
@@ -101,22 +148,13 @@ namespace WordGame_Lib.Ui
             return cells;
         }
 
-        public void OnGuessEntered(List<Disposition> iDispositions)
+        private void TurnOnRow(int iRow)
         {
-            for (var ii = 0; ii < 5; ii++)
+            var startingIndex = iRow * CNumCols;
+            for (var ii = startingIndex; ii < startingIndex + CNumCols; ii++)
             {
-                var thisIndex = _currentRow * CNumCols + ii;
-                var thisCell = _cells[thisIndex];
-
-                thisCell.SetDisposition(iDispositions[ii]);
+                _cells[ii].SetDisposition(Disposition.Undecided);
             }
-
-            _currentRow++;
-        }
-
-        public bool IsFinished()
-        {
-            return _currentRow >= CNumRows;
         }
     }
 }

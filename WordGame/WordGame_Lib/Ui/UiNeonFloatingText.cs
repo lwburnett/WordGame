@@ -13,6 +13,7 @@ namespace WordGame_Lib.Ui
         {
             _text = iText;
             FullIntensity = 1.75f;
+            FullRadius = GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonSettings.Text.RadiusAsPercentageOfWidth;
 
             _textFont = GraphicsHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "NeonFont"));
 
@@ -53,6 +54,7 @@ namespace WordGame_Lib.Ui
         public override Rectangle Bounds { get; }
 
         protected sealed override float FullIntensity { get; }
+        protected sealed override float FullRadius { get; }
         protected override Color OuterColorAtFullIntensity { get; }
         protected override Color InnerColorAtFullIntensity { get; }
 
@@ -65,12 +67,11 @@ namespace WordGame_Lib.Ui
         {
             var minDist = GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonSettings.Text.MinDistOfPointLightsAsPercentage;
             var maxDist = GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonSettings.Text.MaxDistOfPointLightsAsPercentage;
-            var radius = GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonSettings.Text.RadiusAsPercentageOfWidth;
 
             var lights = new List<PointLight>();
             if (Bounds.Width <= minDist)
             {
-                lights.Add(new PointLight(OuterColorAtFullIntensity, Bounds.Center.ToVector2(), radius, FullIntensity));
+                lights.Add(new PointLight(OuterColorAtFullIntensity, Bounds.Center.ToVector2(), FullRadius, 0.0f));
             }
             else
             {
@@ -81,7 +82,7 @@ namespace WordGame_Lib.Ui
 
                 for (var ii = 0; ii < minNumInterPointsNeeded + 2; ii++)
                 {
-                    lights.Add(new PointLight(OuterColorAtFullIntensity, new Vector2(Bounds.X + (ii * spaceBetweenPoints), height), radius, FullIntensity));
+                    lights.Add(new PointLight(OuterColorAtFullIntensity, new Vector2(Bounds.X + (ii * spaceBetweenPoints), height), FullRadius, 0.0f));
                 }
             }
 

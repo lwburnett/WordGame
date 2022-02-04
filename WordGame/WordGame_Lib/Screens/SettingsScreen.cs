@@ -17,25 +17,6 @@ namespace WordGame_Lib.Screens
             _lightPoints = new List<PointLight>();
         }
 
-        public override void Update(GameTime iGameTime)
-        {
-            _header.Update(iGameTime);
-            _saveButton.Update(iGameTime);
-            _altColorLabel.Update(iGameTime);
-            _altColorToggle.Update(iGameTime);
-            _neonPulseLabel.Update(iGameTime);
-            _neonPulseToggle.Update(iGameTime);
-            _neonFlickerLabel.Update(iGameTime);
-            _neonFlickerToggle.Update(iGameTime);
-
-            _lightPoints.Clear();
-            _lightPoints.AddRange(_header.LightPoints);
-            _lightPoints.AddRange(_altColorToggle.LightPoints);
-            _lightPoints.AddRange(_saveButton.LightPoints);
-            _lightPoints.AddRange(_neonPulseToggle.LightPoints);
-            _lightPoints.AddRange(_neonFlickerToggle.LightPoints);
-        }
-
         public override void Draw()
         {
             GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity);
@@ -153,6 +134,51 @@ namespace WordGame_Lib.Screens
                 OnSave);
         }
 
+        protected override bool UpdateTransitionIn(GameTime iGameTime)
+        {
+            if (_header.State == NeonLightState.Off)
+            {
+                _header.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+                _altColorToggle.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+                _neonPulseToggle.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+                _neonFlickerToggle.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+                _saveButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+            }
+
+            UpdateUiElements(iGameTime);
+
+            return _header.State == NeonLightState.On &&
+                   _altColorToggle.State == NeonLightState.On &&
+                   _neonPulseToggle.State == NeonLightState.On &&
+                   _neonFlickerToggle.State == NeonLightState.On &&
+                   _saveButton.State == NeonLightState.On;
+        }
+
+        protected override void UpdateDefault(GameTime iGameTime)
+        {
+            UpdateUiElements(iGameTime);
+        }
+
+        protected override bool UpdateTransitionOut(GameTime iGameTime)
+        {
+            if (_header.State == NeonLightState.On)
+            {
+                _header.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
+                _altColorToggle.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
+                _neonPulseToggle.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
+                _neonFlickerToggle.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
+                _saveButton.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
+            }
+
+            UpdateUiElements(iGameTime);
+
+            return _header.State == NeonLightState.Off &&
+                   _altColorToggle.State == NeonLightState.Off &&
+                   _neonPulseToggle.State == NeonLightState.Off &&
+                   _neonFlickerToggle.State == NeonLightState.Off &&
+                   _saveButton.State == NeonLightState.Off;
+        }
+
         private Texture2D _backgroundTexture;
         private Effect _backgroundEffect;
         private readonly Rectangle _bounds;
@@ -168,6 +194,25 @@ namespace WordGame_Lib.Screens
         private IUiNeonElement _neonFlickerToggle;
         private IUiNeonElement _saveButton;
         private readonly List<PointLight> _lightPoints;
+
+        private void UpdateUiElements(GameTime iGameTime)
+        {
+            _header.Update(iGameTime);
+            _saveButton.Update(iGameTime);
+            _altColorLabel.Update(iGameTime);
+            _altColorToggle.Update(iGameTime);
+            _neonPulseLabel.Update(iGameTime);
+            _neonPulseToggle.Update(iGameTime);
+            _neonFlickerLabel.Update(iGameTime);
+            _neonFlickerToggle.Update(iGameTime);
+
+            _lightPoints.Clear();
+            _lightPoints.AddRange(_header.LightPoints);
+            _lightPoints.AddRange(_altColorToggle.LightPoints);
+            _lightPoints.AddRange(_saveButton.LightPoints);
+            _lightPoints.AddRange(_neonPulseToggle.LightPoints);
+            _lightPoints.AddRange(_neonFlickerToggle.LightPoints);
+        }
 
         private void OnSave(GameTime iGameTime)
         {

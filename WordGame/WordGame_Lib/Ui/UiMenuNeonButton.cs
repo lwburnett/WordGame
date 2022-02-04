@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace WordGame_Lib.Ui
 {
@@ -23,6 +22,17 @@ namespace WordGame_Lib.Ui
         public override void Draw()
         {
             _neonText.Draw();
+        }
+
+        public NeonLightState State => _neonText.State;
+        public void StartFadeIn(GameTime iGameTime, TimeSpan iDuration)
+        {
+            _neonText.StartFadeIn(iGameTime, iDuration);
+        }
+
+        public void StartFadeOut(GameTime iGameTime, TimeSpan iDuration)
+        {
+            _neonText.StartFadeOut(iGameTime, iDuration);
         }
 
         public List<PointLight> LightPoints => _neonText.LightPoints;

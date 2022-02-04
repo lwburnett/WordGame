@@ -34,6 +34,19 @@ namespace WordGame_Lib.Ui
             else
                 _offButton.Draw();
         }
+        public void StartFadeIn(GameTime iGameTime, TimeSpan iDuration)
+        {
+            _onButton.StartFadeIn(iGameTime, iDuration);
+            _offButton.StartFadeIn(iGameTime, iDuration);
+        }
+
+        public void StartFadeOut(GameTime iGameTime, TimeSpan iDuration)
+        {
+            _onButton.StartFadeOut(iGameTime, iDuration);
+            _offButton.StartFadeOut(iGameTime, iDuration);
+        }
+
+        public NeonLightState State => _currentValue ? _onButton.State : _offButton.State;
 
         public List<PointLight> LightPoints { get; }
 

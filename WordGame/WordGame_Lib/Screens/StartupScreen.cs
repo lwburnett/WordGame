@@ -13,10 +13,6 @@ namespace WordGame_Lib.Screens
             _colorData = new SafeData<List<Color>>(iVal => iVal?.Select(iC => iC).ToList());
         }
 
-        public override void Update(GameTime iGameTime)
-        {
-        }
-
         public override void Draw()
         {
             if (_texture == null)
@@ -44,6 +40,20 @@ namespace WordGame_Lib.Screens
             }
 
             _colorData.Value = colorData;
+        }
+
+        protected override bool UpdateTransitionIn(GameTime iGameTime)
+        {
+            return true;
+        }
+
+        protected override void UpdateDefault(GameTime iGameTime)
+        {
+        }
+
+        protected override bool UpdateTransitionOut(GameTime iGameTime)
+        {
+            return true;
         }
 
         private readonly SafeData<List<Color>> _colorData;

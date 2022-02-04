@@ -6,7 +6,7 @@ using WordGame_Lib.Ui;
 
 namespace WordGame_Lib
 {
-    public class GamePlayInstance : IUiNeonElement
+    public class GamePlayInstance : IUiElement, ILightSource
     {
         public GamePlayInstance(OrderedUniqueList<string> iWordDatabase, OrderedUniqueList<string> iSecretWordDatabase, Action<GameTime> iOnMainMenuCallback)
         {
@@ -68,26 +68,40 @@ namespace WordGame_Lib
 
         public List<PointLight> LightPoints { get; }
 
+        public bool UpdateTransitionIn(GameTime iGameTime)
+        {
+            if (_letterGrid.State == NeonLightState.Off)
+            {
+                _letterGrid.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
+                _playAgainButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
+                _mainMenuButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
+            }
+
+            UpdateUiElements(iGameTime);
+
+            return _letterGrid.State == NeonLightState.On &&
+                   _letterGrid.State == NeonLightState.On &&
+                   _letterGrid.State == NeonLightState.On;
+        }
+
         public void Update(GameTime iGameTime)
         {
-            _letterGrid.Update(iGameTime);
-            LightPoints.Clear();
-            LightPoints.AddRange(_letterGrid.LightPoints);
-
-            if (!_playSessionHasFinished)
+            UpdateUiElements(iGameTime);
+        }
+        public bool UpdateTransitionOut(GameTime iGameTime)
+        {
+            if (_letterGrid.State == NeonLightState.On)
             {
-                _keyboard.Update(iGameTime);
-            }
-            else
-            {
-                _mainMenuButton.Update(iGameTime);
-                _playAgainButton.Update(iGameTime);
-
-                LightPoints.AddRange(_mainMenuButton.LightPoints);
-                LightPoints.AddRange(_playAgainButton.LightPoints);
+                _letterGrid.StartFadeOut(iGameTime, TimeSpan.FromSeconds(0.5));
+                _playAgainButton.StartFadeOut(iGameTime, TimeSpan.FromSeconds(0.5));
+                _mainMenuButton.StartFadeOut(iGameTime, TimeSpan.FromSeconds(0.5));
             }
 
-            _notification?.Update(iGameTime);
+            UpdateUiElements(iGameTime);
+
+            return _letterGrid.State == NeonLightState.Off &&
+                   _letterGrid.State == NeonLightState.Off &&
+                   _letterGrid.State == NeonLightState.Off;
         }
 
         public void Draw()
@@ -121,6 +135,28 @@ namespace WordGame_Lib
         private IUiNeonElement _playAgainButton;
 
         private string _secretWord;
+
+        private void UpdateUiElements(GameTime iGameTime)
+        {
+            _letterGrid.Update(iGameTime);
+            LightPoints.Clear();
+            LightPoints.AddRange(_letterGrid.LightPoints);
+
+            if (!_playSessionHasFinished)
+            {
+                _keyboard.Update(iGameTime);
+            }
+            else
+            {
+                _mainMenuButton.Update(iGameTime);
+                _playAgainButton.Update(iGameTime);
+
+                LightPoints.AddRange(_mainMenuButton.LightPoints);
+                LightPoints.AddRange(_playAgainButton.LightPoints);
+            }
+
+            _notification?.Update(iGameTime);
+        }
 
         private void OnLetterPressed(string iKeyString)
         {

@@ -14,7 +14,7 @@ namespace WordGame_Lib.Ui
 
         public Color LightColor { get; }
         public Vector2 Position { get; }
-        public float Radius { get; }
+        public float Radius { get; set; }
         public float Intensity { get; set; }
     }
 }

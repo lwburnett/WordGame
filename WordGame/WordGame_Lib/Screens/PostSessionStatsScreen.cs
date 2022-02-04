@@ -14,15 +14,6 @@ namespace WordGame_Lib.Screens
             _onPlayAgainCallback = iOnPlayAgainCallback;
         }
 
-        public override void Update(GameTime iGameTime)
-        {
-            _header.Update(iGameTime);
-            _subHeader.Update(iGameTime);
-            //_definition.Update(iGameTime);
-            _mainMenuButton.Update(iGameTime);
-            _playAgainButton.Update(iGameTime);
-        }
-
         public override void Draw()
         {
             _header.Draw();
@@ -91,6 +82,25 @@ namespace WordGame_Lib.Screens
                 new Rectangle(playAgainX, playAgainY, playAgainWidth, playAgainHeight),
                 "Play Again",
                 _onPlayAgainCallback);
+        }
+
+        protected override bool UpdateTransitionIn(GameTime iGameTime)
+        {
+            return true;
+        }
+
+        protected override void UpdateDefault(GameTime iGameTime)
+        {
+            _header.Update(iGameTime);
+            _subHeader.Update(iGameTime);
+            //_definition.Update(iGameTime);
+            _mainMenuButton.Update(iGameTime);
+            _playAgainButton.Update(iGameTime);
+        }
+
+        protected override bool UpdateTransitionOut(GameTime iGameTime)
+        {
+            return true;
         }
 
         private readonly Rectangle _bounds;

@@ -19,14 +19,6 @@ namespace WordGame_Lib.Screens
 
         }
 
-        public override void Update(GameTime iGameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                _onExitCallback(iGameTime);
-
-            _gamePlayInstance.Update(iGameTime);
-        }
-
         public override void Draw()
         {
             var lightPoints = _gamePlayInstance.LightPoints;
@@ -54,6 +46,21 @@ namespace WordGame_Lib.Screens
             _paramPointLightIntensity = _backgroundEffect.Parameters["PointLightIntensity"];
 
             _gamePlayInstance.LoadLevel();
+        }
+
+        protected override bool UpdateTransitionIn(GameTime iGameTime)
+        {
+            return _gamePlayInstance.UpdateTransitionIn(iGameTime);
+        }
+
+        protected override void UpdateDefault(GameTime iGameTime)
+        {
+            _gamePlayInstance.Update(iGameTime);
+        }
+
+        protected override bool UpdateTransitionOut(GameTime iGameTime)
+        {
+            return _gamePlayInstance.UpdateTransitionOut(iGameTime); ;
         }
 
         private Texture2D _backgroundTexture;
