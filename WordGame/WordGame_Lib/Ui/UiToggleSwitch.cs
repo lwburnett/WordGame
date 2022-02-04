@@ -27,12 +27,12 @@ namespace WordGame_Lib.Ui
                 _offButton.Update(iGameTime);
         }
 
-        public void Draw()
+        public void Draw(Vector2? iOffset = null)
         {
             if (_currentValue)
-                _onButton.Draw();
+                _onButton.Draw(iOffset);
             else
-                _offButton.Draw();
+                _offButton.Draw(iOffset);
         }
         public void StartFadeIn(GameTime iGameTime, TimeSpan iDuration)
         {

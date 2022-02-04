@@ -26,13 +26,13 @@ namespace WordGame_Lib.Ui
         {
         }
 
-        public override void Draw()
+        public override void Draw(Vector2? iOffset = null)
         {
             //var color = new Vector4(GetColor().ToVector3() / 255f, 1.0f);
             _shaderColorParameter.SetValue(GetColor().ToVector4());
-            GraphicsHelper.DrawTexture(_texture, Bounds, _shader);
+            GraphicsHelper.DrawTexture(_texture, Bounds, _shader, iOffset);
 
-            _floatingText.Draw();
+            _floatingText.Draw(iOffset);
         }
 
         public string GetText()

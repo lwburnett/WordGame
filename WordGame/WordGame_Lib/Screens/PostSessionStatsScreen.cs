@@ -14,13 +14,13 @@ namespace WordGame_Lib.Screens
             _onPlayAgainCallback = iOnPlayAgainCallback;
         }
 
-        public override void Draw()
+        public override void Draw(Vector2? iOffset = null)
         {
-            _header.Draw();
-            _subHeader.Draw();
-            //_definition.Draw();
-            _mainMenuButton.Draw();
-            _playAgainButton.Draw();
+            _header.Draw(iOffset);
+            _subHeader.Draw(iOffset);
+            //_definition.Draw(iOffset);
+            _mainMenuButton.Draw(iOffset);
+            _playAgainButton.Draw(iOffset);
         }
 
         protected override void DoLoad()

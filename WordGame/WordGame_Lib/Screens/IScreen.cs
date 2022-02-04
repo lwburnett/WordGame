@@ -9,7 +9,7 @@ namespace WordGame_Lib.Screens
 
         void Update(GameTime iGameTime);
 
-        void Draw();
+        void Draw(Vector2? iOffset = null);
 
         void StartTransitionOut(GameTime iGameTime);
 

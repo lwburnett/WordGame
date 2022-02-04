@@ -37,14 +37,14 @@ namespace WordGame_Lib.Ui
             LightPoints = CalculateLightPoints();
         }
 
-        public override void Draw()
+        public override void Draw(Vector2? iOffset = null)
         {
             const float scalar = 1.25f;
-            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(-scalar * _scaling, -scalar * _scaling), OuterColorToDraw, _scaling);
-            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(scalar * _scaling, -scalar * _scaling), OuterColorToDraw, _scaling);
-            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(-scalar * _scaling, scalar * _scaling), OuterColorToDraw, _scaling);
-            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(scalar * _scaling, scalar * _scaling), OuterColorToDraw, _scaling);
-            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y), InnerColorToDraw, _scaling);
+            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(-scalar * _scaling, -scalar * _scaling), OuterColorToDraw, _scaling, 0f, iOffset);
+            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(scalar * _scaling, -scalar * _scaling), OuterColorToDraw, _scaling, 0f, iOffset);
+            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(-scalar * _scaling, scalar * _scaling), OuterColorToDraw, _scaling, 0f, iOffset);
+            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y) + new Vector2(scalar * _scaling, scalar * _scaling), OuterColorToDraw, _scaling, 0f, iOffset);
+            GraphicsHelper.DrawString(_textFont, _text, new Vector2(Bounds.X, Bounds.Y), InnerColorToDraw, _scaling, 0f, iOffset);
 
             //DrawPointLightsDebug();
         }

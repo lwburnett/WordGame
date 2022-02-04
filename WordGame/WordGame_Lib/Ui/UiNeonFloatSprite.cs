@@ -24,11 +24,11 @@ namespace WordGame_Lib.Ui
             LightPoints = new List<PointLight> { pointLight };
         }
 
-        public override void Draw()
+        public override void Draw(Vector2? iOffset = null)
         {
             _shaderOuterColorParameter.SetValue(new Vector4(OuterColorToDraw.R / 255f, OuterColorToDraw.G / 255f, OuterColorToDraw.B / 255f, OuterColorToDraw.A / 255f));
             _shaderInnerColorParameter.SetValue(new Vector4(InnerColorToDraw.R / 255f, InnerColorToDraw.G / 255f, InnerColorToDraw.B / 255f, InnerColorToDraw.A / 255f));
-            GraphicsHelper.DrawTexture(_texture, Bounds, _shader);
+            GraphicsHelper.DrawTexture(_texture, Bounds, _shader, iOffset);
         }
 
         public override List<PointLight> LightPoints { get; }

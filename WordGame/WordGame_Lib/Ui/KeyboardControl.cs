@@ -35,9 +35,9 @@ namespace WordGame_Lib.Ui
             _buttons.ForEach(iB => iB.Update(iGameTime));
         }
 
-        public void Draw()
+        public void Draw(Vector2? iOffset = null)
         {
-            _buttons.ForEach(iB => iB.Draw());
+            _buttons.ForEach(iB => iB.Draw(iOffset));
         }
 
         public void OnGuessEntered(string iCurrentWord, List<Disposition> iDispositions)

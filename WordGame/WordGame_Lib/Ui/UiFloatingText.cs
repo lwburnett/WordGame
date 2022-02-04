@@ -24,7 +24,7 @@ namespace WordGame_Lib.Ui
         {
         }
 
-        public void Draw()
+        public void Draw(Vector2? iOffset = null)
         {
             if (string.IsNullOrWhiteSpace(_text))
                 return;
@@ -33,10 +33,10 @@ namespace WordGame_Lib.Ui
             if (_textBorderColor.HasValue)
             {
                 var borderWidth = GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.TextBorderWidthAsPercentage;
-                GraphicsHelper.DrawStringWithBorder(_textFont, _text, pos, borderWidth, _textColor, _textBorderColor.Value, _scaling);
+                GraphicsHelper.DrawStringWithBorder(_textFont, _text, pos, borderWidth, _textColor, _textBorderColor.Value, _scaling, 0f, iOffset);
             }
             else
-                GraphicsHelper.DrawString(_textFont, _text, pos, _textColor, _scaling);
+                GraphicsHelper.DrawString(_textFont, _text, pos, _textColor, _scaling, 0f, iOffset);
         }
 
         public string GetText() => _text;

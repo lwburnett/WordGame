@@ -44,7 +44,7 @@ namespace WordGame_Lib.Screens
             }
         }
 
-        public abstract void Draw();
+        public abstract void Draw(Vector2? iOffset = null);
 
         public virtual void StartTransitionOut(GameTime iGameTime)
         {

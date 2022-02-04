@@ -25,6 +25,9 @@ namespace WordGame_Lib
 
         private Task _screenLoadTask;
         private ScreenId? _screenToTransitionTo;
+        private TimeSpan? _screenTransitionPanStartTime;
+        private Vector2? _currentScreenRenderOffset;
+        private Vector2? _newScreenRenderOffset;
 
         public GameMaster(float? iAspectRatioOverride = null)
         {
@@ -132,12 +135,38 @@ namespace WordGame_Lib
             _idToScreenDictionary[_currentScreenId].Update(iGameTime);
             if (_screenToTransitionTo.HasValue)
             {
+                // if (_screenLoadTask.IsCompleted && !_idToScreenDictionary[_currentScreenId].IsVisible)
+                // {
+                //     _currentScreenId = _screenToTransitionTo.Value;
+                //     _screenLoadTask = null;
+                //     _screenToTransitionTo = null;
+                //     _idToScreenDictionary[_currentScreenId].StartTransitionIn(iGameTime);
+                // }
+
                 if (_screenLoadTask.IsCompleted && !_idToScreenDictionary[_currentScreenId].IsVisible)
                 {
-                    _currentScreenId = _screenToTransitionTo.Value;
-                    _screenLoadTask = null;
-                    _screenToTransitionTo = null;
-                    _idToScreenDictionary[_currentScreenId].StartTransitionIn(iGameTime);
+                    if (!_screenTransitionPanStartTime.HasValue)
+                        _screenTransitionPanStartTime = iGameTime.TotalGameTime;
+
+                    var timeDiff = iGameTime.TotalGameTime - _screenTransitionPanStartTime.Value;
+
+                    if (timeDiff <= TimeSpan.FromSeconds(1.0))
+                    {
+                        var lerpValue = (float)(timeDiff.TotalSeconds / TimeSpan.FromSeconds(1.0).TotalSeconds);
+
+                        _currentScreenRenderOffset = new Vector2(-GraphicsHelper.GamePlayArea.Width * lerpValue, 0);
+                        _newScreenRenderOffset = _currentScreenRenderOffset + new Vector2(GraphicsHelper.GamePlayArea.Width, 0);
+                    }
+                    else
+                    {
+                        _currentScreenId = _screenToTransitionTo.Value;
+                        _currentScreenRenderOffset = null;
+                        _newScreenRenderOffset = null;
+                        _screenLoadTask = null;
+                        _screenToTransitionTo = null;
+                        _screenTransitionPanStartTime = null;
+                        _idToScreenDictionary[_currentScreenId].StartTransitionIn(iGameTime);
+                    }
                 }
             }
 
@@ -147,8 +176,12 @@ namespace WordGame_Lib
         protected override void Draw(GameTime iGameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            
-            _idToScreenDictionary[_currentScreenId].Draw();
+
+            if (_screenToTransitionTo.HasValue && _screenLoadTask != null && _screenLoadTask.IsCompleted && _newScreenRenderOffset.HasValue)
+                _idToScreenDictionary[_screenToTransitionTo.Value].Draw(_newScreenRenderOffset.Value);
+
+            _idToScreenDictionary[_currentScreenId].Draw(_currentScreenRenderOffset);
+
             GraphicsHelper.Flush();
 
             base.Draw(iGameTime);

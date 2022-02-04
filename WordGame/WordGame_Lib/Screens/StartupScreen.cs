@@ -13,7 +13,7 @@ namespace WordGame_Lib.Screens
             _colorData = new SafeData<List<Color>>(iVal => iVal?.Select(iC => iC).ToList());
         }
 
-        public override void Draw()
+        public override void Draw(Vector2? iOffset = null)
         {
             if (_texture == null)
             {
@@ -23,7 +23,7 @@ namespace WordGame_Lib.Screens
                 _texture = GraphicsHelper.CreateTexture(colorData, GraphicsHelper.GamePlayArea.Width, GraphicsHelper.GamePlayArea.Height);
             }
 
-            GraphicsHelper.DrawTexture(_texture, new Vector2(0,0));
+            GraphicsHelper.DrawTexture(_texture, new Vector2(0,0), null, iOffset);
         }
 
 

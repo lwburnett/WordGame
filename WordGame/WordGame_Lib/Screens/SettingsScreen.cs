@@ -17,9 +17,9 @@ namespace WordGame_Lib.Screens
             _lightPoints = new List<PointLight>();
         }
 
-        public override void Draw()
+        public override void Draw(Vector2? iOffset = null)
         {
-            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity);
+            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity, iOffset);
 
             _backgroundEffect.Parameters["ScreenDimensions"].SetValue(new Vector2(GraphicsHelper.GamePlayArea.Width, GraphicsHelper.GamePlayArea.Height));
             _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);
@@ -27,16 +27,16 @@ namespace WordGame_Lib.Screens
             _backgroundEffect.Parameters["PointLightRadius"].SetValue(radii);
             _backgroundEffect.Parameters["PointLightIntensity"].SetValue(intensity);
             
-            GraphicsHelper.DrawTexture(_backgroundTexture, GraphicsHelper.GamePlayArea, _backgroundEffect);
+            GraphicsHelper.DrawTexture(_backgroundTexture, GraphicsHelper.GamePlayArea, _backgroundEffect, iOffset);
 
-            _header.Draw();
-            _saveButton.Draw();
-            _altColorLabel.Draw();
-            _altColorToggle.Draw();
-            _neonPulseLabel.Draw();
-            _neonPulseToggle.Draw();
-            _neonFlickerLabel.Draw();
-            _neonFlickerToggle.Draw();
+            _header.Draw(iOffset);
+            _saveButton.Draw(iOffset);
+            _altColorLabel.Draw(iOffset);
+            _altColorToggle.Draw(iOffset);
+            _neonPulseLabel.Draw(iOffset);
+            _neonPulseToggle.Draw(iOffset);
+            _neonFlickerLabel.Draw(iOffset);
+            _neonFlickerToggle.Draw(iOffset);
         }
 
         protected override void DoLoad()

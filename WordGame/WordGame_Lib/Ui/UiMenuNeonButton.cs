@@ -19,9 +19,9 @@ namespace WordGame_Lib.Ui
             _neonText.Update(iGameTime);
         }
 
-        public override void Draw()
+        public override void Draw(Vector2? iOffset = null)
         {
-            _neonText.Draw();
+            _neonText.Draw(iOffset);
         }
 
         public NeonLightState State => _neonText.State;

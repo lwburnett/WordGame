@@ -127,7 +127,7 @@ namespace WordGame_Lib.Ui
             }
         }
 
-        public abstract void Draw();
+        public abstract void Draw(Vector2? iOffset = null);
 
         public void StartFadeIn(GameTime iGameTime, TimeSpan iDuration)
         {

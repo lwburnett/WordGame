@@ -19,9 +19,9 @@ namespace WordGame_Lib.Ui
             _neonSprite.Update(iGameTime);
         }
 
-        public override void Draw()
+        public override void Draw(Vector2? iOffset = null)
         {
-            _neonSprite.Draw();
+            _neonSprite.Draw(iOffset);
         }
         public void StartFadeIn(GameTime iGameTime, TimeSpan iDuration)
         {

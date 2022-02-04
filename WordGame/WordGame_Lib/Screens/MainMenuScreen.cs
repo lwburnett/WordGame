@@ -17,14 +17,15 @@ namespace WordGame_Lib.Screens
             _lightPoints = new List<PointLight>();
         }
 
-        public override void Draw()
+        public override void Draw(Vector2? iOffset = null)
         {
-            GraphicsHelper.DrawTexture(_backgroundTexture, GraphicsHelper.GamePlayArea, _backgroundEffect);
-            _titleWord1.Draw();
-            _titleWord2.Draw();
-            _playButton.Draw();
-            _settingsButton.Draw();
-            _exitButton.Draw();
+            _thisTickOffset = iOffset;
+            GraphicsHelper.DrawTexture(_backgroundTexture, GraphicsHelper.GamePlayArea, _backgroundEffect, iOffset);
+            _titleWord1.Draw(iOffset);
+            _titleWord2.Draw(iOffset);
+            _playButton.Draw(iOffset);
+            _settingsButton.Draw(iOffset);
+            _exitButton.Draw(iOffset);
         }
 
         private readonly List<PointLight> _lightPoints;
@@ -38,6 +39,7 @@ namespace WordGame_Lib.Screens
         private readonly Action<GameTime> _onPlayCallback;
         private readonly Action<GameTime> _onSettingsCallback;
         private readonly Action<GameTime> _onExitCallback;
+        private Vector2? _thisTickOffset;
 
         protected override void DoLoad()
         {
@@ -127,7 +129,7 @@ namespace WordGame_Lib.Screens
         {
             UpdateUiElements(iGameTime);
 
-            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity);
+            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity, _thisTickOffset);
             _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);
             _backgroundEffect.Parameters["PointLightColor"].SetValue(colors);
             _backgroundEffect.Parameters["PointLightRadius"].SetValue(radii);
@@ -169,7 +171,7 @@ namespace WordGame_Lib.Screens
             _lightPoints.AddRange(_settingsButton.LightPoints);
             _lightPoints.AddRange(_exitButton.LightPoints);
 
-            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity);
+            GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity, _thisTickOffset);
 
             _backgroundEffect.Parameters["ScreenDimensions"].SetValue(new Vector2(GraphicsHelper.GamePlayArea.Width, GraphicsHelper.GamePlayArea.Height));
             _backgroundEffect.Parameters["PointLightPosition"].SetValue(positions);

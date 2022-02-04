@@ -2,7 +2,6 @@
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace WordGame_Lib.Screens
 {
@@ -19,19 +18,19 @@ namespace WordGame_Lib.Screens
 
         }
 
-        public override void Draw()
+        public override void Draw(Vector2? iOffset = null)
         {
             var lightPoints = _gamePlayInstance.LightPoints;
-            GraphicsHelper.CalculatePointLightShaderParameters(lightPoints, out var positions, out var colors, out var radii, out var intensity);
+            GraphicsHelper.CalculatePointLightShaderParameters(lightPoints, out var positions, out var colors, out var radii, out var intensity, iOffset);
 
             _paramScreenDimensions.SetValue(new Vector2(GraphicsHelper.GamePlayArea.Width, GraphicsHelper.GamePlayArea.Height));
             _paramPointLightPosition.SetValue(positions);
             _paramPointLightColor.SetValue(colors);
             _paramPointLightRadius.SetValue(radii);
             _paramPointLightIntensity.SetValue(intensity);
-            GraphicsHelper.DrawTexture(_backgroundTexture, GraphicsHelper.GamePlayArea, _backgroundEffect);
+            GraphicsHelper.DrawTexture(_backgroundTexture, GraphicsHelper.GamePlayArea, _backgroundEffect, iOffset);
 
-            _gamePlayInstance.Draw();
+            _gamePlayInstance.Draw(iOffset);
         }
 
         protected override void DoLoad()

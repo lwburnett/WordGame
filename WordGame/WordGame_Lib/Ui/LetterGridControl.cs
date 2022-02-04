@@ -62,9 +62,9 @@ namespace WordGame_Lib.Ui
             LightPoints.AddRange(_cells.SelectMany(iC => iC.LightPoints));
         }
 
-        public void Draw()
+        public void Draw(Vector2? iOffset = null)
         {
-            _cells.ForEach(iC => iC.Draw());
+            _cells.ForEach(iC => iC.Draw(iOffset));
         }
 
         public void LetterPressed(string iKeyString)

@@ -105,20 +105,20 @@ namespace WordGame_Lib
                    _letterGrid.State == NeonLightState.Off;
         }
 
-        public void Draw()
+        public void Draw(Vector2? iOffset = null)
         {
             if (!_playSessionHasFinished)
             {
-                _keyboard.Draw();
+                _keyboard.Draw(iOffset);
             }
             else
             {
-                _mainMenuButton.Draw();
-                _playAgainButton.Draw();
+                _mainMenuButton.Draw(iOffset);
+                _playAgainButton.Draw(iOffset);
             }
 
-            _letterGrid.Draw();
-            _notification?.Draw();
+            _letterGrid.Draw(iOffset);
+            _notification?.Draw(iOffset);
         }
 
         private readonly Random _rng;

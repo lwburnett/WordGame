@@ -31,48 +31,50 @@ namespace WordGame_Lib
             return sContentManager.Load<T>(iContentName);
         }
 
-        public static void DrawTexture(Texture2D iTexture, Vector2 iPosition, Effect iEffect = null)
+        public static void DrawTexture(Texture2D iTexture, Vector2 iPosition, Effect iEffect = null, Vector2? iOffset = null)
         {
             Debug.Assert(sSpriteBatch != null);
-            ThisIterationDrawPlans.Add(new DrawPlan(() => sSpriteBatch.Draw(iTexture, iPosition, Color.White), iEffect));
+            ThisIterationDrawPlans.Add(new DrawPlan(() => sSpriteBatch.Draw(iTexture, iPosition + (iOffset ?? Vector2.Zero), Color.White), iEffect));
         }
 
-        public static void DrawTexture(Texture2D iTexture, Rectangle iTargetBounds, Effect iEffect = null)
+        public static void DrawTexture(Texture2D iTexture, Rectangle iTargetBounds, Effect iEffect = null, Vector2? iOffset = null)
         {
             Debug.Assert(sSpriteBatch != null);
+            var bounds = new Rectangle(iTargetBounds.Location + (iOffset?.ToPoint() ?? Point.Zero), iTargetBounds.Size);
             ThisIterationDrawPlans.Add(
                 new DrawPlan(() => sSpriteBatch.Draw(
                         iTexture,
-                        iTargetBounds,
+                        bounds,
                         iTexture.Bounds,
                         Color.White), 
                     iEffect));
         }
 
-        public static void DrawString(SpriteFont iFont, string iText, Vector2 iPosition, Color iColor, float iScaling = 1.0f, float iSpacing = 0.0f)
+        public static void DrawString(SpriteFont iFont, string iText, Vector2 iPosition, Color iColor, float iScaling = 1.0f, float iSpacing = 0.0f, Vector2? iOffset = null)
         {
             Debug.Assert(sSpriteBatch != null);
             ThisIterationDrawPlans.Add(new DrawPlan(
                 () =>
                 {
                     iFont.Spacing = iSpacing;
-                    sSpriteBatch.DrawString(iFont, iText, iPosition, iColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
+                    sSpriteBatch.DrawString(iFont, iText, iPosition + (iOffset ?? Vector2.Zero), iColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
                 },
                 null));
         }
 
-        public static void DrawStringWithBorder(SpriteFont iFont, string iText, Vector2 iPosition, float iOffset, Color iInnerColor, Color iOuterColor, float iScaling = 1.0f, float iSpacing = 0.0f)
+        public static void DrawStringWithBorder(SpriteFont iFont, string iText, Vector2 iPosition, float iBorderOffset, Color iInnerColor, Color iOuterColor, float iScaling = 1.0f, float iSpacing = 0.0f, Vector2? iOffset = null)
         {
             Debug.Assert(sSpriteBatch != null);
             ThisIterationDrawPlans.Add(new DrawPlan(
                 () =>
                 {
+                    var position = iPosition + (iOffset ?? Vector2.One);
                     iFont.Spacing = iSpacing;
-                    sSpriteBatch.DrawString(iFont, iText, iPosition + new Vector2(-iOffset, -iOffset), iOuterColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
-                    sSpriteBatch.DrawString(iFont, iText, iPosition + new Vector2(-iOffset, iOffset), iOuterColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
-                    sSpriteBatch.DrawString(iFont, iText, iPosition + new Vector2(iOffset, -iOffset), iOuterColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
-                    sSpriteBatch.DrawString(iFont, iText, iPosition + new Vector2(iOffset, iOffset), iOuterColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
-                    sSpriteBatch.DrawString(iFont, iText, iPosition, iInnerColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
+                    sSpriteBatch.DrawString(iFont, iText, position + new Vector2(-iBorderOffset, -iBorderOffset), iOuterColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
+                    sSpriteBatch.DrawString(iFont, iText, position + new Vector2(-iBorderOffset, iBorderOffset), iOuterColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
+                    sSpriteBatch.DrawString(iFont, iText, position + new Vector2(iBorderOffset, -iBorderOffset), iOuterColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
+                    sSpriteBatch.DrawString(iFont, iText, position + new Vector2(iBorderOffset, iBorderOffset), iOuterColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
+                    sSpriteBatch.DrawString(iFont, iText, position, iInnerColor, 0.0f, Vector2.Zero, iScaling, SpriteEffects.None, 0.0f);
                 },
                 null));
         }
@@ -146,7 +148,7 @@ namespace WordGame_Lib
         }
         
         // ReSharper disable InconsistentNaming
-        public static void CalculatePointLightShaderParameters(IReadOnlyList<PointLight> iAllPoints, out Vector2[] oPositions, out Vector4[] oColors, out float[] oRadii, out float[] oIntensity)
+        public static void CalculatePointLightShaderParameters(IReadOnlyList<PointLight> iAllPoints, out Vector2[] oPositions, out Vector4[] oColors, out float[] oRadii, out float[] oIntensity, Vector2? iOffset = null)
         {
             // This number needs to match the MAXLIGHT numbers in BrickShader.fx
             const int maxLights = 50;
@@ -156,13 +158,14 @@ namespace WordGame_Lib
             oRadii = new float[maxLights];
             oIntensity = new float[maxLights];
 
+            var offset = iOffset ?? Vector2.Zero;
             for (var ii = 0; ii < maxLights; ii++)
             {
                 if (ii < iAllPoints.Count && iAllPoints[ii].Intensity >= 1.0f)
                 {
                     var pointLightData = iAllPoints[ii];
                     // I think the Y coordinate of shader math has 0 at the bottom of the screen and counts positive going up
-                    oPositions[ii] = new Vector2(pointLightData.Position.X, pointLightData.Position.Y);
+                    oPositions[ii] = new Vector2(pointLightData.Position.X, pointLightData.Position.Y) + offset;
                     oColors[ii] = new Vector4(pointLightData.LightColor.R / 255f, pointLightData.LightColor.G / 255f, pointLightData.LightColor.B / 255f, pointLightData.LightColor.A / 255f);
                     oRadii[ii] = pointLightData.Radius;
                     oIntensity[ii] = pointLightData.Intensity;

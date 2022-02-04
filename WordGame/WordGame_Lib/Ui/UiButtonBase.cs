@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
@@ -74,7 +73,7 @@ namespace WordGame_Lib.Ui
             }
         }
 
-        public abstract void Draw();
+        public abstract void Draw(Vector2? iOffset = null);
 
         protected abstract Rectangle Bounds { get; }
 

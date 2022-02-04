@@ -5,6 +5,6 @@ namespace WordGame_Lib.Ui
     public interface IUiElement
     {
         void Update(GameTime iGameTime);
-        void Draw();
+        void Draw(Vector2? iOffset = null);
     }
 }
