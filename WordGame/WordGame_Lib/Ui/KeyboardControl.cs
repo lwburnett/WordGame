@@ -8,7 +8,7 @@ namespace WordGame_Lib.Ui
 {
     public class KeyboardControl : IUiElement
     {
-        public KeyboardControl(Rectangle iBounds, Action<string> iOnLetterClickedCallback, Action iOnDeleteAction, Action iOnEnterCallback)
+        public KeyboardControl(Rectangle iBounds, Action<string> iOnLetterClickedCallback, Action iOnDeleteAction, Action<GameTime> iOnEnterCallback)
         {
             _bounds = iBounds;
             _onLetterClickedCallback = iOnLetterClickedCallback;
@@ -82,7 +82,7 @@ namespace WordGame_Lib.Ui
         private readonly List<UiTextButton> _buttons;
         private readonly Action<string> _onLetterClickedCallback;
         private readonly Action _onDeleteAction;
-        private readonly Action _onEnterCallback;
+        private readonly Action<GameTime> _onEnterCallback;
 
         private List<UiTextButton> CreateTopRow(float iKeyboardMargin, float iKeyMargin, float iKeyWidth, float iKeyHeight)
         {
@@ -98,7 +98,7 @@ namespace WordGame_Lib.Ui
                     (int)iKeyWidth,
                     (int)iKeyHeight,
                     thisKeyString,
-                    iGt => OnKeyPressed(thisKeyString));
+                    iGt => OnKeyPressed(thisKeyString, iGt));
 
                 buttons.Add(thisButton);
             }
@@ -120,7 +120,7 @@ namespace WordGame_Lib.Ui
                     (int)iKeyWidth,
                     (int)iKeyHeight,
                     thisKeyString,
-                    iGt => OnKeyPressed(thisKeyString));
+                    iGt => OnKeyPressed(thisKeyString, iGt));
 
                 buttons.Add(thisButton);
             }
@@ -139,7 +139,7 @@ namespace WordGame_Lib.Ui
                 (int)specialButtonWidths,
                 (int)iKeyHeight,
                 keyStrings[0],
-                iGt => OnKeyPressed(keyStrings[0])));
+                iGt => OnKeyPressed(keyStrings[0], iGt)));
 
             for (var ii = 1; ii < keyStrings.Count - 1; ii++)
             {
@@ -150,7 +150,7 @@ namespace WordGame_Lib.Ui
                     (int)iKeyWidth,
                     (int)iKeyHeight,
                     thisKeyString,
-                    iGt => OnKeyPressed(thisKeyString));
+                    iGt => OnKeyPressed(thisKeyString, iGt));
 
                 buttons.Add(thisButton);
             }
@@ -160,17 +160,17 @@ namespace WordGame_Lib.Ui
                 (int)specialButtonWidths,
                 (int)iKeyHeight,
                 keyStrings[8],
-                iGt => OnKeyPressed(keyStrings[8])));
+                iGt => OnKeyPressed(keyStrings[8], iGt)));
 
             return buttons;
         }
 
-        private void OnKeyPressed(string iKeyString)
+        private void OnKeyPressed(string iKeyString, GameTime iGameTime)
         {
             if (iKeyString == "DEL")
                 _onDeleteAction();
             else if (iKeyString == "EN")
-                _onEnterCallback();
+                _onEnterCallback(iGameTime);
             else
                 _onLetterClickedCallback(iKeyString);
         }

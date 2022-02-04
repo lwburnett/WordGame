@@ -18,20 +18,43 @@ namespace WordGame_Lib.Ui
             var cellHeight = cellWidth;
 
             _cells = CreateCells(gridMargin, cellMargin, cellWidth, cellHeight);
-            TurnOnRow(0);
             LightPoints = new List<PointLight>();
             State = NeonLightState.Off;
         }
 
         public void Update(GameTime iGameTime)
         {
-            if (State == NeonLightState.FadeIn && _cells.All(iC => iC.State == NeonLightState.On))
+            if (State == NeonLightState.FadeIn)
             {
-                State = NeonLightState.On;
+                var upperIndexBound = _currentRow * CNumCols;
+                var allOn = true;
+                for (var ii = 0; ii < upperIndexBound; ii++)
+                {
+                    if (_cells[ii].State != NeonLightState.On)
+                    {
+                        allOn = false;
+                        break;
+                    }
+                }
+
+                if (allOn)
+                    State = NeonLightState.On;
             }
-            else if (State == NeonLightState.FadeOut && _cells.All(iC => iC.State == NeonLightState.Off))
+            else if (State == NeonLightState.FadeOut)
             {
-                State = NeonLightState.Off;
+                var upperIndexBound = _currentRow * CNumCols;
+                var allOff = true;
+                for (var ii = 0; ii < upperIndexBound; ii++)
+                {
+                    if (_cells[ii].State != NeonLightState.Off)
+                    {
+                        allOff = false;
+                        break;
+                    }
+                }
+
+                if (allOff)
+                    State = NeonLightState.Off;
             }
 
             _cells.ForEach(iC => iC.Update(iGameTime));
@@ -74,7 +97,7 @@ namespace WordGame_Lib.Ui
             return word;
         }
 
-        public void Reset()
+        public void Reset(GameTime iGameTime)
         {
             _cells.ForEach(iC =>
             {
@@ -85,10 +108,10 @@ namespace WordGame_Lib.Ui
             _cursorLocation = 0;
             _currentRow = 0;
 
-            TurnOnRow(_currentRow);
+            TurnOnRow(_currentRow, iGameTime);
         }
 
-        public void OnGuessEntered(List<Disposition> iDispositions)
+        public void OnGuessEntered(List<Disposition> iDispositions, GameTime iGameTime)
         {
             for (var ii = 0; ii < 5; ii++)
             {
@@ -99,7 +122,7 @@ namespace WordGame_Lib.Ui
             }
 
             _currentRow++;
-            TurnOnRow(_currentRow);
+            TurnOnRow(_currentRow, iGameTime);
         }
 
         public bool IsFinished()
@@ -109,14 +132,27 @@ namespace WordGame_Lib.Ui
 
         public void StartFadeIn(GameTime iGameTime, TimeSpan iDuration)
         {
-            State = NeonLightState.FadeIn;
-            _cells.ForEach(iC => iC.StartFadeIn(iGameTime, iDuration));
+            State = NeonLightState.On;
         }
 
         public void StartFadeOut(GameTime iGameTime, TimeSpan iDuration)
         {
             State = NeonLightState.FadeOut;
-            _cells.ForEach(iC => iC.StartFadeOut(iGameTime, iDuration));
+            foreach (var cell in _cells)
+            {
+                if (cell.State == NeonLightState.On)
+                    cell.StartFadeOut(iGameTime, iDuration);
+            }
+        }
+
+        public void TurnOnRow(int iRow, GameTime iGameTime)
+        {
+            var startingIndex = iRow * CNumCols;
+            for (var ii = startingIndex; ii < startingIndex + CNumCols; ii++)
+            {
+                _cells[ii].SetDisposition(Disposition.Undecided);
+                _cells[ii].StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+            }
         }
 
         public NeonLightState State { get; private set; }
@@ -146,15 +182,6 @@ namespace WordGame_Lib.Ui
             }
 
             return cells;
-        }
-
-        private void TurnOnRow(int iRow)
-        {
-            var startingIndex = iRow * CNumCols;
-            for (var ii = startingIndex; ii < startingIndex + CNumCols; ii++)
-            {
-                _cells[ii].SetDisposition(Disposition.Undecided);
-            }
         }
     }
 }

@@ -73,6 +73,7 @@ namespace WordGame_Lib
             if (_letterGrid.State == NeonLightState.Off)
             {
                 _letterGrid.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
+                _letterGrid.TurnOnRow(0, iGameTime);
                 _playAgainButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
                 _mainMenuButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
             }
@@ -171,7 +172,7 @@ namespace WordGame_Lib
             _letterGrid.Delete();
         }
 
-        private void OnEnter()
+        private void OnEnter(GameTime iGameTime)
         {
             _notification = null;
             var currentWord = _letterGrid.GetCurrentWord();
@@ -222,7 +223,7 @@ namespace WordGame_Lib
             }
 
             //_numGuesses++;
-            _letterGrid.OnGuessEntered(dispositionList.ToList());
+            _letterGrid.OnGuessEntered(dispositionList.ToList(), iGameTime);
             _keyboard.OnGuessEntered(currentWord, dispositionList.ToList());
 
             if (currentWord == _secretWord)
@@ -254,7 +255,7 @@ namespace WordGame_Lib
         private void OnPlayAgain(GameTime iGameTime)
         {
             _playSessionHasFinished = false;
-            _letterGrid.Reset();
+            _letterGrid.Reset(iGameTime);
             _keyboard.Reset();
 
             _notification = null;
