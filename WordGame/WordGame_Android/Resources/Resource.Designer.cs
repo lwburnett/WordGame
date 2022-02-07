@@ -44,7 +44,10 @@ namespace WordGame_Android
 		{
 			
 			// aapt resource value: 0x7F010000
-			public const int Icon = 2130771968;
+			public const int IconAndroidBackground = 2130771968;
+			
+			// aapt resource value: 0x7F010001
+			public const int IconAndroidForeground = 2130771969;
 			
 			static Drawable()
 			{
@@ -56,11 +59,27 @@ namespace WordGame_Android
 			}
 		}
 		
-		public partial class String
+		public partial class Mipmap
 		{
 			
 			// aapt resource value: 0x7F020000
-			public const int app_name = 2130837504;
+			public const int ic_launcher = 2130837504;
+			
+			static Mipmap()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Mipmap()
+			{
+			}
+		}
+		
+		public partial class String
+		{
+			
+			// aapt resource value: 0x7F030000
+			public const int app_name = 2130903040;
 			
 			static String()
 			{
