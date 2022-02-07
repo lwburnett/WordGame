@@ -61,6 +61,8 @@ namespace WordGame_Lib
             public static float PlayAgainButtonHeightAsPercentage = .065f;
             public static float PlayAgainButtonWidthAsPercentage = .7f;
             public static Color PlayAgainButtonColor = new Color(77, 77, 255);
+
+            public const double PostGuessDispositionRevealFrequencySeconds = .4;
         }
 
         public static class KeyboardSettings

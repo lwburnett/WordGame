@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Principal;
 using Microsoft.Xna.Framework;
 using WordGame_Lib.Ui;
 
@@ -174,7 +173,7 @@ namespace WordGame_Lib
 
             var timeDiff = iGameTime.TotalGameTime - _guessInfo.Time;
 
-            if (timeDiff > TimeSpan.FromSeconds(.2 * _guessInfo.Counter))
+            if (timeDiff > TimeSpan.FromSeconds(SettingsManager.GamePlaySettings.PostGuessDispositionRevealFrequencySeconds * _guessInfo.Counter))
             {
                 var thisDisposition = _guessInfo.Dispositions[_guessInfo.Counter];
                 var thisLetter = _guessInfo.Word[_guessInfo.Counter];
