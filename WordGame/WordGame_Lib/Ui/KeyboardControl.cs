@@ -14,6 +14,7 @@ namespace WordGame_Lib.Ui
             _onLetterClickedCallback = iOnLetterClickedCallback;
             _onDeleteAction = iOnDeleteAction;
             _onEnterCallback = iOnEnterCallback;
+            _isAcceptingInput = true;
 
             var keyboardMargin = SettingsManager.KeyboardSettings.KeyboardMarginAsPercentage * _bounds.Width;
             var keyMargin = SettingsManager.KeyboardSettings.KeyMarginAsPercentage * _bounds.Width;
@@ -32,7 +33,8 @@ namespace WordGame_Lib.Ui
 
         public void Update(GameTime iGameTime)
         {
-            _buttons.ForEach(iB => iB.Update(iGameTime));
+            if (_isAcceptingInput)
+                _buttons.ForEach(iB => iB.Update(iGameTime));
         }
 
         public void Draw(Vector2? iOffset = null)
@@ -40,35 +42,27 @@ namespace WordGame_Lib.Ui
             _buttons.ForEach(iB => iB.Draw(iOffset));
         }
 
-        public void OnGuessEntered(string iCurrentWord, List<Disposition> iDispositions)
+        public void SetDispositionForKey(char iKeyChar, Disposition iDisposition)
         {
-            Debug.Assert(iCurrentWord.Length == iDispositions.Count);
+            var matchingButton = _buttons.FirstOrDefault(iB => iB.GetText() == iKeyChar.ToString());
 
-            for (var ii = 0; ii < iCurrentWord.Length; ii++)
+            if (matchingButton != null)
             {
-                var thisGuessChar = iCurrentWord[ii].ToString();
-                var thisDisposition = iDispositions[ii];
-
-                var matchingButton = _buttons.FirstOrDefault(iB => iB.GetText() == thisGuessChar);
-
-                if (matchingButton != null)
+                var currentDisposition = matchingButton.GetDisposition();
+                if (currentDisposition == Disposition.Undecided ||
+                    currentDisposition == Disposition.Incorrect)
                 {
-                    var currentDisposition = matchingButton.GetDisposition();
-                    if (currentDisposition == Disposition.Undecided ||
-                        currentDisposition == Disposition.Incorrect)
-                    {
-                        matchingButton.SetDisposition(thisDisposition);
-                    }
-                    else if (currentDisposition == Disposition.Misplaced)
-                    {
-                        if (thisDisposition == Disposition.Correct)
-                            matchingButton.SetDisposition(thisDisposition);
-                    }
+                    matchingButton.SetDisposition(iDisposition);
                 }
-                else
+                else if (currentDisposition == Disposition.Misplaced)
                 {
-                    Debug.Fail($"Couldn't find matching key for char {thisGuessChar}");
+                    if (iDisposition == Disposition.Correct)
+                        matchingButton.SetDisposition(iDisposition);
                 }
+            }
+            else
+            {
+                Debug.Fail($"Couldn't find matching key for char {iKeyChar}");
             }
         }
 
@@ -77,12 +71,23 @@ namespace WordGame_Lib.Ui
             _buttons.ForEach(iB => iB.SetDisposition(Disposition.Undecided));
         }
 
+        public void TurnOnInput()
+        {
+            _isAcceptingInput = true;
+        }
+
+        public void TurnOffInput()
+        {
+            _isAcceptingInput = false;
+        }
+
         private readonly Rectangle _bounds;
 
         private readonly List<UiTextButton> _buttons;
         private readonly Action<string> _onLetterClickedCallback;
         private readonly Action _onDeleteAction;
         private readonly Action<GameTime> _onEnterCallback;
+        private bool _isAcceptingInput;
 
         private List<UiTextButton> CreateTopRow(float iKeyboardMargin, float iKeyMargin, float iKeyWidth, float iKeyHeight)
         {

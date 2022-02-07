@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 using Microsoft.Xna.Framework;
 using WordGame_Lib.Ui;
 
@@ -72,7 +73,7 @@ namespace WordGame_Lib
             if (_letterGrid.State == NeonLightState.Off)
             {
                 _letterGrid.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
-                _letterGrid.TurnOnRow(iGameTime);
+                _letterGrid.TurnOnRow(iGameTime, false);
                 _playAgainButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
                 _mainMenuButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
             }
@@ -169,27 +170,40 @@ namespace WordGame_Lib
             if (_guessInfo == null)
                 return;
 
-            //_numGuesses++;
-            _letterGrid.OnGuessEntered(_guessInfo.Dispositions, iGameTime);
-            _keyboard.OnGuessEntered(_guessInfo.Word, _guessInfo.Dispositions);
+            _keyboard.TurnOffInput();
+
+            var timeDiff = iGameTime.TotalGameTime - _guessInfo.Time;
+
+            if (timeDiff > TimeSpan.FromSeconds(.2 * _guessInfo.Counter))
+            {
+                var thisDisposition = _guessInfo.Dispositions[_guessInfo.Counter];
+                var thisLetter = _guessInfo.Word[_guessInfo.Counter];
+
+                _letterGrid.SetDispositionForNextCell(_guessInfo.Counter, thisDisposition);
+                _keyboard.SetDispositionForKey(thisLetter, thisDisposition);
+
+                _guessInfo.Counter++;
+            }
+
+            if (_guessInfo.Counter < 5) 
+                return;
 
             if (_guessInfo.Word == _secretWord)
             {
                 SetNotification($"Correct!! The word was {_secretWord}");
-                //_isSuccess = true;
                 _playSessionHasFinished = true;
             }
             else if (_letterGrid.IsFinished())
             {
                 SetNotification($"Incorrect. The word was {_secretWord}");
-                //_isSuccess = false;
                 _playSessionHasFinished = true;
             }
             else
             {
-                _letterGrid.TurnOnRow(iGameTime);
+                _letterGrid.TurnOnRow(iGameTime, true);
             }
 
+            _keyboard.TurnOnInput();
             _guessInfo = null;
         }
 
@@ -288,11 +302,13 @@ namespace WordGame_Lib
                 Word = iWord;
                 Time = iTime;
                 Dispositions = iDispositions;
+                Counter = 0;
             }
 
             public string Word { get; }
             public TimeSpan Time { get; }
             public List<Disposition> Dispositions { get; }
+            public int Counter { get; set; }
         }
     }
 }

@@ -108,20 +108,14 @@ namespace WordGame_Lib.Ui
             _cursorLocation = 0;
             _currentRow = 0;
 
-            TurnOnRow(iGameTime);
+            TurnOnRow(iGameTime, false);
         }
 
-        public void OnGuessEntered(List<Disposition> iDispositions, GameTime iGameTime)
+        public void SetDispositionForNextCell(int iColumn, Disposition iDisposition)
         {
-            for (var ii = 0; ii < 5; ii++)
-            {
-                var thisIndex = _currentRow * CNumCols + ii;
-                var thisCell = _cells[thisIndex];
+            var thisIndex = _currentRow * CNumCols + iColumn;
 
-                thisCell.SetDisposition(iDispositions[ii]);
-            }
-
-            _currentRow++;
+            _cells[thisIndex].SetDisposition(iDisposition);
         }
 
         public bool IsFinished()
@@ -144,8 +138,11 @@ namespace WordGame_Lib.Ui
             }
         }
 
-        public void TurnOnRow(GameTime iGameTime)
+        public void TurnOnRow(GameTime iGameTime, bool iMoveCursorToNextRow)
         {
+            if (iMoveCursorToNextRow)
+                _currentRow++;
+
             var startingIndex = _currentRow * CNumCols;
             for (var ii = startingIndex; ii < startingIndex + CNumCols; ii++)
             {
