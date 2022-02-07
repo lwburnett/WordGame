@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using WordGame_Lib.Ui;
 
@@ -88,7 +87,10 @@ namespace WordGame_Lib
         public void Update(GameTime iGameTime)
         {
             UpdateUiElements(iGameTime);
+
+            UpdateAfterGuess(iGameTime);
         }
+
         public bool UpdateTransitionOut(GameTime iGameTime)
         {
             if (_letterGrid.State == NeonLightState.On)
@@ -128,6 +130,9 @@ namespace WordGame_Lib
         private KeyboardControl _keyboard;
         private LetterGridControl _letterGrid;
         private UiFloatingText _notification;
+
+        private GuessInfo _guessInfo;
+
         //private int _numGuesses;
         //private bool _isSuccess;
 
@@ -157,6 +162,35 @@ namespace WordGame_Lib
             }
 
             _notification?.Update(iGameTime);
+        }
+
+        private void UpdateAfterGuess(GameTime iGameTime)
+        {
+            if (_guessInfo == null)
+                return;
+
+            //_numGuesses++;
+            _letterGrid.OnGuessEntered(_guessInfo.Dispositions, iGameTime);
+            _keyboard.OnGuessEntered(_guessInfo.Word, _guessInfo.Dispositions);
+
+            if (_guessInfo.Word == _secretWord)
+            {
+                SetNotification($"Correct!! The word was {_secretWord}");
+                //_isSuccess = true;
+                _playSessionHasFinished = true;
+            }
+            else if (_letterGrid.IsFinished())
+            {
+                SetNotification($"Incorrect. The word was {_secretWord}");
+                //_isSuccess = false;
+                _playSessionHasFinished = true;
+            }
+            else
+            {
+                _letterGrid.TurnOnRow(iGameTime);
+            }
+
+            _guessInfo = null;
         }
 
         private void OnLetterPressed(string iKeyString)
@@ -222,26 +256,7 @@ namespace WordGame_Lib
                 }
             }
 
-            //_numGuesses++;
-            _letterGrid.OnGuessEntered(dispositionList.ToList(), iGameTime);
-            _keyboard.OnGuessEntered(currentWord, dispositionList.ToList());
-
-            if (currentWord == _secretWord)
-            {
-                SetNotification($"Correct!! The word was {_secretWord}");
-                //_isSuccess = true;
-                _playSessionHasFinished = true;
-            }
-            else if (_letterGrid.IsFinished())
-            {
-                SetNotification($"Incorrect. The word was {_secretWord}");
-                //_isSuccess = false;
-                _playSessionHasFinished = true;
-            }
-            else
-            {
-                _letterGrid.TurnOnRow(iGameTime);
-            }
+            _guessInfo = new GuessInfo(currentWord, iGameTime.TotalGameTime, dispositionList);
         }
 
         private void SetNotification(string iText)
@@ -264,6 +279,20 @@ namespace WordGame_Lib
 
             _notification = null;
             _secretWord = _secretWordDatabase[_rng.Next(_secretWordDatabase.Count)];
+        }
+
+        private class GuessInfo
+        {
+            public GuessInfo(string iWord, TimeSpan iTime, List<Disposition> iDispositions)
+            {
+                Word = iWord;
+                Time = iTime;
+                Dispositions = iDispositions;
+            }
+
+            public string Word { get; }
+            public TimeSpan Time { get; }
+            public List<Disposition> Dispositions { get; }
         }
     }
 }
