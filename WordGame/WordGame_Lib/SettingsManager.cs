@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace WordGame_Lib
 {
@@ -121,6 +122,7 @@ namespace WordGame_Lib
             public const float PulsePeriodSec = 4.0f;
             public const float PulseIntensityAmplitude = .05f;
             public static Color NeonLightOffColor = new Color(30, 30, 30);
+            public static TimeSpan VisualTransitionDuration = TimeSpan.FromSeconds(.5);
 
             public static class Text
             {

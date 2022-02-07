@@ -138,11 +138,11 @@ namespace WordGame_Lib.Screens
         {
             if (_header.State == NeonLightState.Off)
             {
-                _header.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
-                _altColorToggle.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
-                _neonPulseToggle.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
-                _neonFlickerToggle.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
-                _saveButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+                _header.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _altColorToggle.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _neonPulseToggle.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _neonFlickerToggle.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _saveButton.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
             }
 
             UpdateUiElements(iGameTime);
@@ -163,11 +163,11 @@ namespace WordGame_Lib.Screens
         {
             if (_header.State == NeonLightState.On)
             {
-                _header.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
-                _altColorToggle.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
-                _neonPulseToggle.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
-                _neonFlickerToggle.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
-                _saveButton.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
+                _header.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _altColorToggle.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _neonPulseToggle.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _neonFlickerToggle.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _saveButton.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
             }
 
             UpdateUiElements(iGameTime);

@@ -109,11 +109,11 @@ namespace WordGame_Lib.Screens
         {
             if (_titleWord1.State == NeonLightState.Off)
             {
-                _titleWord1.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
-                _titleWord2.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
-                _playButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
-                _settingsButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
-                _exitButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+                _titleWord1.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _titleWord2.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _playButton.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _settingsButton.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _exitButton.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
             }
 
             UpdateUiElements(iGameTime);
@@ -140,11 +140,11 @@ namespace WordGame_Lib.Screens
         {
             if (_titleWord1.State == NeonLightState.On)
             {
-                _titleWord1.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
-                _titleWord2.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
-                _playButton.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
-                _settingsButton.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
-                _exitButton.StartFadeOut(iGameTime, TimeSpan.FromSeconds(.5));
+                _titleWord1.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _titleWord2.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _playButton.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _settingsButton.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _exitButton.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
             }
 
             UpdateUiElements(iGameTime);

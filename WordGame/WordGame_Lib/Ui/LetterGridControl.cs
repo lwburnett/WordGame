@@ -147,7 +147,7 @@ namespace WordGame_Lib.Ui
             for (var ii = startingIndex; ii < startingIndex + CNumCols; ii++)
             {
                 _cells[ii].SetDisposition(Disposition.Undecided);
-                _cells[ii].StartFadeIn(iGameTime, TimeSpan.FromSeconds(.5));
+                _cells[ii].StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
             }
         }
 

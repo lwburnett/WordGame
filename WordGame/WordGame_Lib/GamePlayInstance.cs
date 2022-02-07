@@ -71,10 +71,10 @@ namespace WordGame_Lib
         {
             if (_letterGrid.State == NeonLightState.Off)
             {
-                _letterGrid.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
+                _letterGrid.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _letterGrid.TurnOnRow(iGameTime, false);
-                _playAgainButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
-                _mainMenuButton.StartFadeIn(iGameTime, TimeSpan.FromSeconds(0.5));
+                _playAgainButton.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _mainMenuButton.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
             }
 
             UpdateUiElements(iGameTime);
@@ -95,9 +95,9 @@ namespace WordGame_Lib
         {
             if (_letterGrid.State == NeonLightState.On)
             {
-                _letterGrid.StartFadeOut(iGameTime, TimeSpan.FromSeconds(0.5));
-                _playAgainButton.StartFadeOut(iGameTime, TimeSpan.FromSeconds(0.5));
-                _mainMenuButton.StartFadeOut(iGameTime, TimeSpan.FromSeconds(0.5));
+                _letterGrid.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _playAgainButton.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _mainMenuButton.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
             }
 
             UpdateUiElements(iGameTime);
