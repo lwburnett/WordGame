@@ -100,12 +100,16 @@ namespace WordGame_Lib.Ui
         private void OnPressed()
         {
             _isPressed = true;
+            PlatformUtilsHelper.VibrateDevice(SettingsManager.Sound.VibrationDuration);
         }
 
         private void OnReleased(GameTime iGameTime)
         {
             if (_isPressed && _isOverlapped)
+            {
+                PlatformUtilsHelper.VibrateDevice(SettingsManager.Sound.VibrationDuration);
                 _onClickedCallback(iGameTime);
+            }
 
             _isPressed = false;
         }
@@ -129,7 +133,10 @@ namespace WordGame_Lib.Ui
         private void OnNoTouch(GameTime iGameTime)
         {
             if (_isPressed && _isOverlapped)
+            {
+                PlatformUtilsHelper.VibrateDevice(SettingsManager.Sound.VibrationDuration);
                 _onClickedCallback(iGameTime);
+            }
 
             Reset();
         }

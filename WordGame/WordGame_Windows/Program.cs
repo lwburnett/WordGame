@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using WordGame_Lib;
 
 namespace WordGame_Windows
@@ -11,6 +9,9 @@ namespace WordGame_Windows
         static void Main()
         {
             PlatformUtilsHelper.SetIsMouseInput(true);
+
+            // Registering a blank function for vibration
+            PlatformUtilsHelper.RegisterVibrateDeviceCallback(iD => { });
 
             FileManager.RegisterBaseDirectory(AppDomain.CurrentDomain.BaseDirectory);
 

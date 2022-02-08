@@ -1,9 +1,11 @@
+using System;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using Microsoft.Xna.Framework;
 using WordGame_Lib;
+using Xamarin.Essentials;
 
 namespace WordGame_Android
 {
@@ -20,11 +22,16 @@ namespace WordGame_Android
         private GameMaster _game;
         private View _view;
 
-        protected override void OnCreate(Bundle bundle)
+        protected override void OnCreate(Bundle iBundle)
         {
-            base.OnCreate(bundle);
+            base.OnCreate(iBundle);
+
+            // This is needed on android according to https://docs.microsoft.com/en-us/xamarin/essentials/get-started?tabs=windows%2Candroid
+            Platform.Init(this, iBundle);
 
             PlatformUtilsHelper.SetIsMouseInput(false);
+
+            PlatformUtilsHelper.RegisterVibrateDeviceCallback(VibrateDevice);
 
             FileManager.RegisterBaseDirectory(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal));
 
@@ -33,6 +40,11 @@ namespace WordGame_Android
 
             SetContentView(_view);
             _game.Run();
+        }
+
+        private static void VibrateDevice(TimeSpan iDuration)
+        {
+            Vibration.Vibrate(iDuration);
         }
     }
 }

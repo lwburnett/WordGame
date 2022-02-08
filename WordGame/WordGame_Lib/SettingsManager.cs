@@ -145,5 +145,10 @@ namespace WordGame_Lib
                 public const float RadiusAsPercentageOfWidth = .22f;
             }
         }
+
+        public static class Sound
+        {
+            public static TimeSpan VibrationDuration = TimeSpan.FromMilliseconds(10);
+        }
     }
 }
