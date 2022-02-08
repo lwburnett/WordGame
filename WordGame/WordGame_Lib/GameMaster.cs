@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using WordGame_Lib.Screens;
 
 namespace WordGame_Lib
@@ -93,6 +94,10 @@ namespace WordGame_Lib
             GameSettingsManager.ReadSettingFromDiskAsync();
 
             OnStartupScreen();
+
+            var song = Content.Load<Song>(Path.Combine("Audio", "BackgroundSong"));
+            MediaPlayer.Play(song);
+            MediaPlayer.IsRepeating = true;
         }
 
         private OrderedUniqueList<string> LoadDatabaseFromTxtFile(string iFileName)
