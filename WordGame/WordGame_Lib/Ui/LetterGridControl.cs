@@ -116,6 +116,9 @@ namespace WordGame_Lib.Ui
             var thisIndex = _currentRow * CNumCols + iColumn;
 
             _cells[thisIndex].SetDisposition(iDisposition);
+
+            if ((thisIndex + 1) % CNumCols == 0)
+                _currentRow++;
         }
 
         public bool IsFinished()
@@ -140,8 +143,8 @@ namespace WordGame_Lib.Ui
 
         public void TurnOnRow(GameTime iGameTime, bool iMoveCursorToNextRow)
         {
-            if (iMoveCursorToNextRow)
-                _currentRow++;
+            if (_currentRow >= CNumRows)
+                return;
 
             var startingIndex = _currentRow * CNumCols;
             for (var ii = startingIndex; ii < startingIndex + CNumCols; ii++)
