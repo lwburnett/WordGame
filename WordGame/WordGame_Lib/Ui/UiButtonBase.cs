@@ -100,15 +100,17 @@ namespace WordGame_Lib.Ui
         private void OnPressed()
         {
             _isPressed = true;
-            PlatformUtilsHelper.VibrateDevice(SettingsManager.Sound.VibrationDuration);
+            if (GameSettingsManager.Settings.Vibration)
+                PlatformUtilsHelper.VibrateDevice(SettingsManager.Sound.VibrationDuration);
         }
 
         private void OnReleased(GameTime iGameTime)
         {
             if (_isPressed && _isOverlapped)
             {
-                PlatformUtilsHelper.VibrateDevice(SettingsManager.Sound.VibrationDuration);
                 _onClickedCallback(iGameTime);
+                if (GameSettingsManager.Settings.Vibration)
+                    PlatformUtilsHelper.VibrateDevice(SettingsManager.Sound.VibrationDuration);
             }
 
             _isPressed = false;
@@ -134,8 +136,9 @@ namespace WordGame_Lib.Ui
         {
             if (_isPressed && _isOverlapped)
             {
-                PlatformUtilsHelper.VibrateDevice(SettingsManager.Sound.VibrationDuration);
                 _onClickedCallback(iGameTime);
+                if (GameSettingsManager.Settings.Vibration)
+                    PlatformUtilsHelper.VibrateDevice(SettingsManager.Sound.VibrationDuration);
             }
 
             Reset();

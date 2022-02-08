@@ -105,6 +105,7 @@ namespace WordGame_Lib
                     var alternateKeyColorScheme = false;
                     var neonLightPulse = true;
                     var neonLightFlicker = true;
+                    var vibration = true;
                     foreach (var line in lines)
                     {
                         if (string.IsNullOrWhiteSpace(line))
@@ -133,13 +134,17 @@ namespace WordGame_Lib
                                 var success3 = bool.TryParse(pieces[1], out neonLightFlicker);
                                 Debug.Assert(success3, $"Failed to read value of line: {line}");
                                 break;
+                            case nameof(GameSettings.Vibration):
+                                var success4 = bool.TryParse(pieces[1], out vibration);
+                                Debug.Assert(success4, $"Failed to read value of line: {line}");
+                                break;
                             default:
                                 Debug.Fail($"Unknown settings key {pieces[0]}");
                                 break;
                         }
                     }
 
-                    Settings = new GameSettings(alternateKeyColorScheme, neonLightPulse, neonLightFlicker);
+                    Settings = new GameSettings(alternateKeyColorScheme, neonLightPulse, neonLightFlicker, vibration);
                 }
                 else
                 {
@@ -163,7 +168,8 @@ namespace WordGame_Lib
                 {
                     $"{nameof(settings.AlternateKeyColorScheme)}, {settings.AlternateKeyColorScheme}",
                     $"{nameof(settings.NeonLightPulse)}, {settings.NeonLightPulse}",
-                    $"{nameof(settings.NeonLightFlicker)}, {settings.NeonLightFlicker}"
+                    $"{nameof(settings.NeonLightFlicker)}, {settings.NeonLightFlicker}",
+                    $"{nameof(settings.Vibration)}, {settings.Vibration}"
                 };
 
                 lock (FileReadWriteLock)
@@ -185,32 +191,6 @@ namespace WordGame_Lib
             {
                 Debug.Fail(ex.Message);
             }
-        }
-    }
-
-    public class GameSettings
-    {
-        public GameSettings()
-        {
-            AlternateKeyColorScheme = false;
-            NeonLightPulse = true;
-            NeonLightFlicker = true;
-        }
-
-        public GameSettings(bool iAlternateKeyColorScheme, bool iNeonLightPulse, bool iNeonLightFlicker)
-        {
-            AlternateKeyColorScheme = iAlternateKeyColorScheme;
-            NeonLightPulse = iNeonLightPulse;
-            NeonLightFlicker = iNeonLightFlicker;
-        }
-
-        public bool AlternateKeyColorScheme { get; }
-        public bool NeonLightPulse { get; }
-        public bool NeonLightFlicker { get; }
-
-        public GameSettings DeepCopy()
-        {
-            return new GameSettings(AlternateKeyColorScheme, NeonLightPulse, NeonLightFlicker);
         }
     }
 }

@@ -37,6 +37,8 @@ namespace WordGame_Lib.Screens
             _neonPulseToggle.Draw(iOffset);
             _neonFlickerLabel.Draw(iOffset);
             _neonFlickerToggle.Draw(iOffset);
+            _vibrationLabel.Draw(iOffset);
+            _vibrationToggle.Draw(iOffset);
         }
 
         protected override void DoLoad()
@@ -123,6 +125,25 @@ namespace WordGame_Lib.Screens
                 _settings.NeonLightFlicker,
                 OnToggleNeonLightFlicker);
 
+            var vibrationLabelY = neonFlickerLabelY + neonFlickerLabelHeight + medMarginY;
+            var vibrationLabelX = settingsEditBounds.X;
+            var vibrationLabelWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.LabelColumnWidthAsPercent);
+            var vibrationLabelHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
+            _vibrationLabel = new UiFloatingText(
+                new Rectangle(vibrationLabelX, vibrationLabelY, vibrationLabelWidth, vibrationLabelHeight),
+                "Button Vibration",
+                Color.White,
+                Color.Black);
+
+            var vibrationToggleY = vibrationLabelY;
+            var vibrationToggleX = vibrationLabelX + vibrationLabelWidth + medMarginX;
+            var vibrationToggleWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.SettingColumnWidthAsPercent / 1.5f);
+            var vibrationToggleHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
+            _vibrationToggle = new UiToggleSwitch(
+                new Rectangle(vibrationToggleX, vibrationToggleY, vibrationToggleWidth, vibrationToggleHeight),
+                _settings.Vibration,
+                OnToggleVibration);
+
             var saveWidth = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.SettingsScreenSettings.SaveButtonWidthAsPercentage);
             var saveY = settingsEditBounds.Y + settingsEditBounds.Height + medMarginY;
             var saveX = (GraphicsHelper.GamePlayArea.Width - saveWidth) / 2;
@@ -142,6 +163,7 @@ namespace WordGame_Lib.Screens
                 _altColorToggle.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _neonPulseToggle.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _neonFlickerToggle.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _vibrationToggle.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _saveButton.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
             }
 
@@ -151,6 +173,7 @@ namespace WordGame_Lib.Screens
                    _altColorToggle.State == NeonLightState.On &&
                    _neonPulseToggle.State == NeonLightState.On &&
                    _neonFlickerToggle.State == NeonLightState.On &&
+                   _vibrationToggle.State == NeonLightState.On &&
                    _saveButton.State == NeonLightState.On;
         }
 
@@ -167,6 +190,7 @@ namespace WordGame_Lib.Screens
                 _altColorToggle.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _neonPulseToggle.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _neonFlickerToggle.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _vibrationToggle.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _saveButton.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
             }
 
@@ -176,6 +200,7 @@ namespace WordGame_Lib.Screens
                    _altColorToggle.State == NeonLightState.Off &&
                    _neonPulseToggle.State == NeonLightState.Off &&
                    _neonFlickerToggle.State == NeonLightState.Off &&
+                   _vibrationToggle.State == NeonLightState.Off &&
                    _saveButton.State == NeonLightState.Off;
         }
 
@@ -192,6 +217,8 @@ namespace WordGame_Lib.Screens
         private IUiNeonElement _neonPulseToggle;
         private IUiElement _neonFlickerLabel;
         private IUiNeonElement _neonFlickerToggle;
+        private IUiElement _vibrationLabel;
+        private IUiNeonElement _vibrationToggle;
         private IUiNeonElement _saveButton;
         private readonly List<PointLight> _lightPoints;
 
@@ -205,6 +232,8 @@ namespace WordGame_Lib.Screens
             _neonPulseToggle.Update(iGameTime);
             _neonFlickerLabel.Update(iGameTime);
             _neonFlickerToggle.Update(iGameTime);
+            _vibrationLabel.Update(iGameTime);
+            _vibrationToggle.Update(iGameTime);
 
             _lightPoints.Clear();
             _lightPoints.AddRange(_header.LightPoints);
@@ -212,6 +241,7 @@ namespace WordGame_Lib.Screens
             _lightPoints.AddRange(_saveButton.LightPoints);
             _lightPoints.AddRange(_neonPulseToggle.LightPoints);
             _lightPoints.AddRange(_neonFlickerToggle.LightPoints);
+            _lightPoints.AddRange(_vibrationToggle.LightPoints);
         }
 
         private void OnSave(GameTime iGameTime)
@@ -223,17 +253,22 @@ namespace WordGame_Lib.Screens
 
         private void OnToggleAlternateColorScheme(bool iNewValue)
         {
-            _settings = new GameSettings(iNewValue, _settings.NeonLightPulse, _settings.NeonLightFlicker);
+            _settings = new GameSettings(iNewValue, _settings.NeonLightPulse, _settings.NeonLightFlicker, _settings.Vibration);
         }
 
         private void OnToggleNeonLightPulse(bool iNewValue)
         {
-            _settings = new GameSettings(_settings.AlternateKeyColorScheme, iNewValue, _settings.NeonLightFlicker);
+            _settings = new GameSettings(_settings.AlternateKeyColorScheme, iNewValue, _settings.NeonLightFlicker, _settings.Vibration);
         }
 
         private void OnToggleNeonLightFlicker(bool iNewValue)
         {
-            _settings = new GameSettings(_settings.AlternateKeyColorScheme, _settings.NeonLightPulse, iNewValue);
+            _settings = new GameSettings(_settings.AlternateKeyColorScheme, _settings.NeonLightPulse, iNewValue, _settings.Vibration);
+        }
+
+        private void OnToggleVibration(bool iNewValue)
+        {
+            _settings = new GameSettings(_settings.AlternateKeyColorScheme, _settings.NeonLightPulse, _settings.NeonLightFlicker, iNewValue);
         }
     }
 }
