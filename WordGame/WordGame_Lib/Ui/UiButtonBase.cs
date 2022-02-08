@@ -146,6 +146,9 @@ namespace WordGame_Lib.Ui
 
         private void OnOverlappingTouch()
         {
+            if (GameSettingsManager.Settings.Vibration && !_isOverlapped && !_isPressed)
+                PlatformUtilsHelper.VibrateDevice(SettingsManager.Sound.VibrationDuration);
+
             _isOverlapped = true;
             _isPressed = true;
         }

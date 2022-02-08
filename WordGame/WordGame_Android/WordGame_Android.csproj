@@ -109,6 +109,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
     <Content Include="Content\Audio\BackgroundSong.mp3" />
+    <Content Include="Content\Audio\ElectricFlicker1.mp3" />
+    <Content Include="Content\Audio\ElectricFlicker2.mp3" />
+    <Content Include="Content\Audio\ElectricFlicker3.mp3" />
+    <Content Include="Content\Audio\ElectricFlicker4.mp3" />
     <Content Include="Content\Shaders\BrickShader.fx" />
     <Content Include="Content\Shaders\NeonSpriteShader.fx" />
     <Content Include="Content\Textures\Bricks1.png" />

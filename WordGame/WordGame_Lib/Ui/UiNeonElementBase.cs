@@ -1,12 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace WordGame_Lib.Ui
 {
     public abstract class UiNeonElementBase : IUiNeonElement
     {
+        static UiNeonElementBase()
+        {
+            sFlickerSfx = new List<SoundEffect>
+            {
+                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker1")),
+                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker2")),
+                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker3")),
+                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker4")),
+            };
+        }
+
         protected UiNeonElementBase(double? iPulseOffsetLerpValue)
         {
             var pulseLerpValue = iPulseOffsetLerpValue ?? new Random().NextDouble();
@@ -78,6 +91,9 @@ namespace WordGame_Lib.Ui
                         InnerColorToDraw = ColorLerp(InnerColorAtFullIntensity, SettingsManager.NeonSettings.NeonLightOffColor, .05f);
 
                         LightPoints.ForEach(iLp => iLp.Intensity *= 1 - .05f);
+
+                        var randomInt = _rng.Next(4);
+                        AudioHelper.PlaySoundEffect(sFlickerSfx[randomInt], SettingsManager.Sound.FlickerVolume);
                     }
                 }
             }
@@ -162,6 +178,8 @@ namespace WordGame_Lib.Ui
         
         private TimeSpan? _transitionStartTime;
         private TimeSpan? _transitionDuration;
+
+        private static List<SoundEffect> sFlickerSfx;
 
         private static TimeSpan sTimeOfLastFlickerCheck = TimeSpan.MinValue;
         private static bool sIsFlickeringThisTick;

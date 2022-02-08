@@ -148,7 +148,8 @@ namespace WordGame_Lib
 
         public static class Sound
         {
-            public static TimeSpan VibrationDuration = TimeSpan.FromMilliseconds(10);
+            public static TimeSpan VibrationDuration = TimeSpan.FromMilliseconds(5);
+            public const float FlickerVolume = .2f;
         }
     }
 }

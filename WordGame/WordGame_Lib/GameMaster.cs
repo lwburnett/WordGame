@@ -96,8 +96,7 @@ namespace WordGame_Lib
             OnStartupScreen();
 
             var song = Content.Load<Song>(Path.Combine("Audio", "BackgroundSong"));
-            MediaPlayer.Play(song);
-            MediaPlayer.IsRepeating = true;
+            AudioHelper.PlaySong(song);
         }
 
         private OrderedUniqueList<string> LoadDatabaseFromTxtFile(string iFileName)
