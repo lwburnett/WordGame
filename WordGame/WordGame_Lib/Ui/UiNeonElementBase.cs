@@ -76,6 +76,9 @@ namespace WordGame_Lib.Ui
                         {
                             sIsFlickeringThisTick = true;
                             doFlicker = true;
+
+                            var randomInt = _rng.Next(4);
+                            AudioHelper.PlaySoundEffect(sFlickerSfx[randomInt], SettingsManager.Sound.FlickerVolume);
                         }
                         else
                         {
@@ -91,9 +94,6 @@ namespace WordGame_Lib.Ui
                         InnerColorToDraw = ColorLerp(InnerColorAtFullIntensity, SettingsManager.NeonSettings.NeonLightOffColor, .05f);
 
                         LightPoints.ForEach(iLp => iLp.Intensity *= 1 - .05f);
-
-                        var randomInt = _rng.Next(4);
-                        AudioHelper.PlaySoundEffect(sFlickerSfx[randomInt], SettingsManager.Sound.FlickerVolume);
                     }
                 }
             }
