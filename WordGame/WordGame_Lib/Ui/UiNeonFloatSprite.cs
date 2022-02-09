@@ -16,8 +16,8 @@ namespace WordGame_Lib.Ui
             OuterColorAtFullIntensity = iOuterColor;
             InnerColorAtFullIntensity = new Color(255f, 255f, 255f, 255f);
 
-            _texture = GraphicsHelper.LoadContent<Texture2D>(iTextureName);
-            _shader = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "NeonSpriteShader")).Clone();
+            _texture = AssetHelper.LoadContent<Texture2D>(iTextureName);
+            _shader = AssetHelper.LoadContent<Effect>(Path.Combine("Shaders", "NeonSpriteShader")).Clone();
             _shaderOuterColorParameter = _shader.Parameters["OuterColor"];
             _shaderInnerColorParameter = _shader.Parameters["InnerColor"];
             var pointLight = new PointLight(iOuterColor, iBounds.Center.ToVector2(), FullRadius, 0.0f);

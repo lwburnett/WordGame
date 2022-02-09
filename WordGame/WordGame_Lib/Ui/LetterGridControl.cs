@@ -22,10 +22,10 @@ namespace WordGame_Lib.Ui
             _rng = new Random();
             _flickerSfx = new List<SoundEffect>
             {
-                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker1")),
-                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker2")),
-                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker3")),
-                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker4")),
+                AssetHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker1")),
+                AssetHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker2")),
+                AssetHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker3")),
+                AssetHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker4")),
             };
 
             _cells = CreateCells(gridMargin, cellMargin, cellWidth, cellHeight);

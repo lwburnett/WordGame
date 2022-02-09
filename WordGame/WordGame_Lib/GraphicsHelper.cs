@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using WordGame_Lib.Ui;
 
@@ -12,7 +11,7 @@ namespace WordGame_Lib
     {
         static GraphicsHelper()
         {
-            ThisIterationDrawPlans = new List<DrawPlan>();
+            sThisIterationDrawPlans = new List<DrawPlan>();
         }
 
         public static Texture2D CreateTexture(Color[] iColorData, int iWidth, int iHeight)
@@ -24,24 +23,17 @@ namespace WordGame_Lib
             return texture;
         }
 
-        public static T LoadContent<T>(string iContentName)
-        {
-            Debug.Assert(sContentManager != null);
-
-            return sContentManager.Load<T>(iContentName);
-        }
-
         public static void DrawTexture(Texture2D iTexture, Vector2 iPosition, Effect iEffect = null, Vector2? iOffset = null)
         {
             Debug.Assert(sSpriteBatch != null);
-            ThisIterationDrawPlans.Add(new DrawPlan(() => sSpriteBatch.Draw(iTexture, iPosition + (iOffset ?? Vector2.Zero), Color.White), iEffect));
+            sThisIterationDrawPlans.Add(new DrawPlan(() => sSpriteBatch.Draw(iTexture, iPosition + (iOffset ?? Vector2.Zero), Color.White), iEffect));
         }
 
         public static void DrawTexture(Texture2D iTexture, Rectangle iTargetBounds, Effect iEffect = null, Vector2? iOffset = null)
         {
             Debug.Assert(sSpriteBatch != null);
             var bounds = new Rectangle(iTargetBounds.Location + (iOffset?.ToPoint() ?? Point.Zero), iTargetBounds.Size);
-            ThisIterationDrawPlans.Add(
+            sThisIterationDrawPlans.Add(
                 new DrawPlan(() => sSpriteBatch.Draw(
                         iTexture,
                         bounds,
@@ -53,7 +45,7 @@ namespace WordGame_Lib
         public static void DrawString(SpriteFont iFont, string iText, Vector2 iPosition, Color iColor, float iScaling = 1.0f, float iSpacing = 0.0f, Vector2? iOffset = null)
         {
             Debug.Assert(sSpriteBatch != null);
-            ThisIterationDrawPlans.Add(new DrawPlan(
+            sThisIterationDrawPlans.Add(new DrawPlan(
                 () =>
                 {
                     iFont.Spacing = iSpacing;
@@ -65,7 +57,7 @@ namespace WordGame_Lib
         public static void DrawStringWithBorder(SpriteFont iFont, string iText, Vector2 iPosition, float iBorderOffset, Color iInnerColor, Color iOuterColor, float iScaling = 1.0f, float iSpacing = 0.0f, Vector2? iOffset = null)
         {
             Debug.Assert(sSpriteBatch != null);
-            ThisIterationDrawPlans.Add(new DrawPlan(
+            sThisIterationDrawPlans.Add(new DrawPlan(
                 () =>
                 {
                     var position = iPosition + (iOffset ?? Vector2.One);
@@ -82,7 +74,7 @@ namespace WordGame_Lib
         public static void Flush()
         {
             var inSpriteBatch = false;
-            foreach (var drawPlan in ThisIterationDrawPlans)
+            foreach (var drawPlan in sThisIterationDrawPlans)
             {
                 if (drawPlan.DrawEffect == null)
                 {
@@ -109,7 +101,7 @@ namespace WordGame_Lib
             if (inSpriteBatch)
                 sSpriteBatch.End();
 
-            ThisIterationDrawPlans.Clear();
+            sThisIterationDrawPlans.Clear();
         }
 
         public static Rectangle GamePlayArea
@@ -134,13 +126,7 @@ namespace WordGame_Lib
             Debug.Assert(sSpriteBatch == null);
             sSpriteBatch = iSpriteBatch;
         }
-
-        public static void RegisterContentManager(ContentManager iContentManager)
-        {
-            Debug.Assert(sContentManager == null);
-            sContentManager = iContentManager;
-        }
-
+        
         public static void RegisterGamePlayArea(Rectangle iGamePlayArea)
         {
             Debug.Assert(!sGamePlayArea.HasValue);
@@ -183,9 +169,8 @@ namespace WordGame_Lib
 
         private static GraphicsDevice sGraphicsDevice;
         private static SpriteBatch sSpriteBatch;
-        private static ContentManager sContentManager;
 
-        private static readonly List<DrawPlan> ThisIterationDrawPlans;
+        private static readonly List<DrawPlan> sThisIterationDrawPlans;
 
         private class DrawPlan
         {

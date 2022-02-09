@@ -14,7 +14,7 @@ namespace WordGame_Lib.Ui
             _textColor = iTextColor;
             _textBorderColor = iTexBorderColor;
 
-            _textFont = GraphicsHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "PrototypeFont"));
+            _textFont = AssetHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "PrototypeFont"));
             _scaling = iScaling;
 
             SetText(iText);

@@ -15,7 +15,7 @@ namespace WordGame_Lib.Ui
             FullIntensity = 1.75f;
             FullRadius = GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonSettings.Text.RadiusAsPercentageOfWidth;
 
-            _textFont = GraphicsHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "NeonFont"));
+            _textFont = AssetHelper.LoadContent<SpriteFont>(Path.Combine("Fonts", "NeonFont"));
 
             const float factor = 1.75f;
             InnerColorAtFullIntensity = new Color(iTextColor.R * factor, iTextColor.G * factor, iTextColor.B * factor, iTextColor.A);

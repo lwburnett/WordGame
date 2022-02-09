@@ -80,7 +80,7 @@ namespace WordGame_Lib
             var topLeftGamePlayAreaY = 0;
             var gamePlayArea = new Rectangle(topLeftGamePlayAreaX, topLeftGamePlayAreaY, chosenWidth, chosenHeight);
 
-            GraphicsHelper.RegisterContentManager(Content);
+            AssetHelper.RegisterContentManager(Content);
             GraphicsHelper.RegisterGraphicsDevice(GraphicsDevice);
             GraphicsHelper.RegisterSpriteBatch(_spriteBatch);
             GraphicsHelper.RegisterGamePlayArea(gamePlayArea);
@@ -268,7 +268,7 @@ namespace WordGame_Lib
 
         private void OnPlayGame(GameTime iGameTime)
         {
-            SetupScreenTransition(ScreenId.GamePlay, () => new GamePlayScreen(_wordDatabase, _secretWordDatabase, OnMainMenu, OnExitGame), iGameTime);
+            SetupScreenTransition(ScreenId.GamePlay, () => new GamePlayScreen(_wordDatabase, _secretWordDatabase, OnMainMenu), iGameTime);
         }
 
         private void OnSettings(GameTime iGameTime)

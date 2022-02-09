@@ -43,8 +43,8 @@ namespace WordGame_Lib.Screens
 
         protected override void DoLoad()
         {
-            _backgroundTexture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "Bricks1"));
-            _backgroundEffect = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "BrickShader")).Clone();
+            _backgroundTexture = AssetHelper.LoadContent<Texture2D>(Path.Combine("Textures", "Bricks1"));
+            _backgroundEffect = AssetHelper.LoadContent<Effect>(Path.Combine("Shaders", "BrickShader")).Clone();
 
             var gamePlayAreaWidth = GraphicsHelper.GamePlayArea.Width;
             var gamePlayAreaHeight = GraphicsHelper.GamePlayArea.Height;

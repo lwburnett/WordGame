@@ -15,8 +15,8 @@ namespace WordGame_Lib.Ui
             FullRadius = GraphicsHelper.GamePlayArea.Width * SettingsManager.NeonSettings.LetterCell.RadiusAsPercentageOfWidth;
             _floatingText = new UiFloatingText(iBounds, string.Empty, Color.White, Color.Black);
 
-            _texture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "LetterBoxOutline"));
-            _shader = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "NeonSpriteShader")).Clone();
+            _texture = AssetHelper.LoadContent<Texture2D>(Path.Combine("Textures", "LetterBoxOutline"));
+            _shader = AssetHelper.LoadContent<Effect>(Path.Combine("Shaders", "NeonSpriteShader")).Clone();
             _shaderInnerColorParameter = _shader.Parameters["InnerColor"];
             _shaderOuterColorParameter = _shader.Parameters["OuterColor"];
             SetDisposition(Disposition.Incorrect);

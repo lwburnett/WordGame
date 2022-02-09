@@ -16,8 +16,8 @@ namespace WordGame_Lib.Ui
             _disposition = Disposition.Undecided;
             _floatingText = new UiFloatingText(iBounds, iText, Color.White, Color.Black);
 
-            _texture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "KeyboardKey"));
-            _shader = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "KeyboardKeyShader")).Clone();
+            _texture = AssetHelper.LoadContent<Texture2D>(Path.Combine("Textures", "KeyboardKey"));
+            _shader = AssetHelper.LoadContent<Effect>(Path.Combine("Shaders", "KeyboardKeyShader")).Clone();
             _shaderColorParameter = _shader.Parameters["IntendedColor"];
         }
 

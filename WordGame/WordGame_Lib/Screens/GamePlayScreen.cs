@@ -10,11 +10,9 @@ namespace WordGame_Lib.Screens
         public GamePlayScreen(
             OrderedUniqueList<string> iWordDatabase, 
             OrderedUniqueList<string> iSecretWordDatabase,
-            Action<GameTime> iOnMainMenuCallback, 
-            Action<GameTime> iOnExitCallback)
+            Action<GameTime> iOnMainMenuCallback)
         {
             _gamePlayInstance = new GamePlayInstance(iWordDatabase, iSecretWordDatabase, iOnMainMenuCallback);
-            _onExitCallback = iOnExitCallback;
 
         }
 
@@ -35,8 +33,8 @@ namespace WordGame_Lib.Screens
 
         protected override void DoLoad()
         {
-            _backgroundTexture = GraphicsHelper.LoadContent<Texture2D>(Path.Combine("Textures", "Bricks1"));
-            _backgroundEffect = GraphicsHelper.LoadContent<Effect>(Path.Combine("Shaders", "BrickShader")).Clone();
+            _backgroundTexture = AssetHelper.LoadContent<Texture2D>(Path.Combine("Textures", "Bricks1"));
+            _backgroundEffect = AssetHelper.LoadContent<Effect>(Path.Combine("Shaders", "BrickShader")).Clone();
 
             _paramScreenDimensions = _backgroundEffect.Parameters["ScreenDimensions"];
             _paramPointLightPosition = _backgroundEffect.Parameters["PointLightPosition"];
@@ -59,7 +57,7 @@ namespace WordGame_Lib.Screens
 
         protected override bool UpdateTransitionOut(GameTime iGameTime)
         {
-            return _gamePlayInstance.UpdateTransitionOut(iGameTime); ;
+            return _gamePlayInstance.UpdateTransitionOut(iGameTime);
         }
 
         private Texture2D _backgroundTexture;
@@ -70,8 +68,7 @@ namespace WordGame_Lib.Screens
         private EffectParameter _paramPointLightColor;
         private EffectParameter _paramPointLightRadius;
         private EffectParameter _paramPointLightIntensity;
-
-        private readonly Action<GameTime> _onExitCallback;
+        
         private readonly GamePlayInstance _gamePlayInstance;
         //private IScreen _postSessionStatsScreen;
     }
