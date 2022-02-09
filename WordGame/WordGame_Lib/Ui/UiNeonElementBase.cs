@@ -179,15 +179,15 @@ namespace WordGame_Lib.Ui
         private TimeSpan? _transitionStartTime;
         private TimeSpan? _transitionDuration;
 
-        private static List<SoundEffect> sFlickerSfx;
+        private static readonly List<SoundEffect> sFlickerSfx;
 
         private static TimeSpan sTimeOfLastFlickerCheck = TimeSpan.MinValue;
         private static bool sIsFlickeringThisTick;
 
         private static float ProbabilityOfFlicker(TimeSpan iTimeOfLastFlicker, TimeSpan iCurrentTime)
         {
-            const float t1 = 5f;
-            const float t2 = 10f;
+            const float t1 = SettingsManager.NeonSettings.MinimumSecondsBetweenFlicker;
+            const float t2 = SettingsManager.NeonSettings.MaximumSecondsBetweenFlicker;
 
             var secondsSinceLastFlicker = (float)(iCurrentTime.TotalSeconds - iTimeOfLastFlicker.TotalSeconds);
 

@@ -121,6 +121,11 @@ namespace WordGame_Lib
         {
             public const float PulsePeriodSec = 4.0f;
             public const float PulseIntensityAmplitude = .05f;
+
+            public const float MinimumSecondsBetweenFlicker = 15f;
+            public const float MaximumSecondsBetweenFlicker = 30f;
+
+
             public static Color NeonLightOffColor = new Color(30, 30, 30);
             public static TimeSpan VisualTransitionDuration = TimeSpan.FromSeconds(.5);
 
