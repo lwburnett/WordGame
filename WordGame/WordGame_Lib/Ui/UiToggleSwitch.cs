@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace WordGame_Lib.Ui
 {
@@ -14,6 +15,15 @@ namespace WordGame_Lib.Ui
 
             _onButton = new UiNeonSpriteButton(iBounds, Path.Combine("Textures", "CheckMark"), SettingsManager.MainMenuSettings.StartButtonColor, iGt => OnToggle(false));
             _offButton = new UiNeonSpriteButton(iBounds, Path.Combine("Textures", "ExMark"), SettingsManager.MainMenuSettings.ExitButtonColor, iGt => OnToggle(true));
+
+            _rng = new Random();
+            _flickerSfx = new List<SoundEffect>
+            {
+                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker1")),
+                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker2")),
+                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker3")),
+                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker4")),
+            };
 
             LightPoints = new List<PointLight>();
             LightPoints.AddRange(_currentValue ? _onButton.LightPoints : _offButton.LightPoints);
@@ -55,6 +65,8 @@ namespace WordGame_Lib.Ui
 
         private readonly IUiNeonElement _onButton;
         private readonly IUiNeonElement _offButton;
+        private readonly Random _rng;
+        private readonly List<SoundEffect> _flickerSfx;
 
         private void OnToggle(bool iNewValue)
         {
@@ -62,6 +74,8 @@ namespace WordGame_Lib.Ui
             LightPoints.Clear();
             LightPoints.AddRange(_currentValue ? _onButton.LightPoints : _offButton.LightPoints);
             _onToggleCallback(iNewValue);
+            
+            AudioHelper.PlaySoundEffect(_flickerSfx[_rng.Next(4)], SettingsManager.Sound.FlickerVolume);
         }
     }
 }
