@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace WordGame_Lib.Ui
 {
@@ -16,6 +18,15 @@ namespace WordGame_Lib.Ui
             var cellMargin = SettingsManager.GridSettings.CellMarginAsPercentage * iBounds.Width;
             var cellWidth = (iBounds.Width - (2.0f * gridMargin) - (10.0f * cellMargin)) / 5.0f;
             var cellHeight = cellWidth;
+
+            _rng = new Random();
+            _flickerSfx = new List<SoundEffect>
+            {
+                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker1")),
+                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker2")),
+                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker3")),
+                GraphicsHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "ElectricFlicker4")),
+            };
 
             _cells = CreateCells(gridMargin, cellMargin, cellWidth, cellHeight);
             LightPoints = new List<PointLight>();
@@ -119,6 +130,8 @@ namespace WordGame_Lib.Ui
 
             if ((thisIndex + 1) % CNumCols == 0)
                 _currentRow++;
+
+            AudioHelper.PlaySoundEffect(_flickerSfx[_rng.Next(4)], SettingsManager.Sound.FlickerVolume);
         }
 
         public bool IsFinished()
@@ -163,6 +176,8 @@ namespace WordGame_Lib.Ui
         private int _currentRow;
         private const int CNumRows = 6;
         private const int CNumCols = 5;
+        private readonly List<SoundEffect> _flickerSfx;
+        private readonly Random _rng;
 
         private List<UiLetterCell> CreateCells(float iGridMargin, float iCellMargin, float iCellWidth, float iCellHeight)
         {
