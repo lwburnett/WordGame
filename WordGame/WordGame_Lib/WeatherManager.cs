@@ -17,6 +17,7 @@ namespace WordGame_Lib
             _nextSoundEffectPlay = TimeSpan.MinValue;
             _weatherSound = AssetHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "Storm"));
             _drops = new List<RainDrop>();
+            _fallDirection = new Vector2(0, GraphicsHelper.GamePlayArea.Height * SettingsManager.Storm.RainDropSpeedAsPercentage);
         }
 
         public void Update(GameTime iGameTime)
@@ -26,8 +27,8 @@ namespace WordGame_Lib
             if (iGameTime.TotalGameTime > _nextDropSpawn)
             {
                 var spawnX = (float)(playArea.X + _rng.NextDouble() * playArea.Width);
-                var spawnY = playArea.Y - 50f;
-                _drops.Add(new RainDrop(new Vector2(spawnX, spawnY), sFallDirection));
+                var spawnY = playArea.Y - playArea.Height * SettingsManager.Storm.RainDropHeightAsPercentage;
+                _drops.Add(new RainDrop(new Vector2(spawnX, spawnY), _fallDirection));
 
                 const double nextDropSpawnMinTimeMs = 50;
                 const double nextDropSpawnMaxTimeMs = 150;
@@ -63,7 +64,7 @@ namespace WordGame_Lib
         }
 
         private readonly Random _rng;
-        private static readonly Vector2 sFallDirection = new Vector2(0, 4000f);
+        private readonly Vector2 _fallDirection;
         private TimeSpan _nextDropSpawn;
         private TimeSpan _nextSoundEffectPlay;
 
@@ -74,17 +75,17 @@ namespace WordGame_Lib
         {
             static RainDrop()
             {
-                const int width = 2;
-                const int height = 50;
-
+                var width = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.Storm.RainDropWidthAsPercentage);
+                var height = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.Storm.RainDropHeightAsPercentage);
 
                 var colorData = new Color[width * height];
                 for (var ii = 0; ii < width * height; ii++)
                 {
-                    colorData[ii] = new Color(94, 182, 249);
+                    colorData[ii] = SettingsManager.Storm.RainDropColor;
                 }
 
                 sTexture = GraphicsHelper.CreateTexture(colorData, width, height);
+                sBrushColor = Color.White * SettingsManager.Storm.RainDropAlpha;
             }
 
             public RainDrop(Vector2 iSpawnPoint, Vector2 iFallVector)
@@ -104,12 +105,13 @@ namespace WordGame_Lib
 
             public void Draw()
             {
-                GraphicsHelper.DrawTexture(sTexture, _position, iBrushColor: Color.White * 0.15f);
+                GraphicsHelper.DrawTexture(sTexture, _position, iBrushColor: sBrushColor);
             }
 
             public Rectangle Bounds => new Rectangle(_position.ToPoint(), new Point(sTexture.Width, sTexture.Height));
 
             private static readonly Texture2D sTexture;
+            private static readonly Color sBrushColor;
             private Vector2 _position;
             private readonly Vector2 _fallVector;
         }

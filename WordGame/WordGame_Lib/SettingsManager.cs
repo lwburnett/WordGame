@@ -156,5 +156,14 @@ namespace WordGame_Lib
             public static TimeSpan VibrationDuration = TimeSpan.FromMilliseconds(5);
             public const float FlickerVolume = .5f;
         }
+
+        public static class Storm
+        {
+            public const float RainDropHeightAsPercentage = .05f;
+            public const float RainDropWidthAsPercentage = .0035f;
+            public const float RainDropSpeedAsPercentage = 2.0f;
+            public static Color RainDropColor = new Color(94, 182, 249);
+            public const float RainDropAlpha = .15f;
+        }
     }
 }
