@@ -23,6 +23,7 @@ namespace WordGame_Lib
         private OrderedUniqueList<string> _wordDatabase;
         private OrderedUniqueList<string> _secretWordDatabase;
         private readonly float? _aspectRatioOverride;
+        private WeatherManager _weather;
 
         private Task _screenLoadTask;
         private ScreenId? _screenToTransitionTo;
@@ -97,6 +98,8 @@ namespace WordGame_Lib
 
             var song = Content.Load<Song>(Path.Combine("Audio", "BackgroundSong"));
             AudioHelper.PlaySong(song);
+
+            _weather = new WeatherManager();
         }
 
         private OrderedUniqueList<string> LoadDatabaseFromTxtFile(string iFileName)
@@ -197,6 +200,8 @@ namespace WordGame_Lib
                 }
             }
 
+            _weather.Update(iGameTime);
+
             base.Update(iGameTime);
         }
 
@@ -208,6 +213,8 @@ namespace WordGame_Lib
                 _idToScreenDictionary[_screenToTransitionTo.Value].Draw(_newScreenRenderOffset.Value);
 
             _idToScreenDictionary[_currentScreenId].Draw(_currentScreenRenderOffset);
+
+            _weather.Draw();
 
             GraphicsHelper.Flush();
 

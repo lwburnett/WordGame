@@ -23,13 +23,13 @@ namespace WordGame_Lib
             return texture;
         }
 
-        public static void DrawTexture(Texture2D iTexture, Vector2 iPosition, Effect iEffect = null, Vector2? iOffset = null)
+        public static void DrawTexture(Texture2D iTexture, Vector2 iPosition, Effect iEffect = null, Vector2? iOffset = null, Color? iBrushColor = null)
         {
             Debug.Assert(sSpriteBatch != null);
-            sThisIterationDrawPlans.Add(new DrawPlan(() => sSpriteBatch.Draw(iTexture, iPosition + (iOffset ?? Vector2.Zero), Color.White), iEffect));
+            sThisIterationDrawPlans.Add(new DrawPlan(() => sSpriteBatch.Draw(iTexture, iPosition + (iOffset ?? Vector2.Zero), iBrushColor ?? Color.White), iEffect));
         }
 
-        public static void DrawTexture(Texture2D iTexture, Rectangle iTargetBounds, Effect iEffect = null, Vector2? iOffset = null)
+        public static void DrawTexture(Texture2D iTexture, Rectangle iTargetBounds, Effect iEffect = null, Vector2? iOffset = null, Color? iBrushColor = null)
         {
             Debug.Assert(sSpriteBatch != null);
             var bounds = new Rectangle(iTargetBounds.Location + (iOffset?.ToPoint() ?? Point.Zero), iTargetBounds.Size);
@@ -38,7 +38,7 @@ namespace WordGame_Lib
                         iTexture,
                         bounds,
                         iTexture.Bounds,
-                        Color.White), 
+                        iBrushColor ?? Color.White), 
                     iEffect));
         }
 
