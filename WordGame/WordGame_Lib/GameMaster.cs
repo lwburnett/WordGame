@@ -200,7 +200,8 @@ namespace WordGame_Lib
                 }
             }
 
-            _weather.Update(iGameTime);
+            if (GameSettingsManager.Settings.RainVisual)
+                _weather.Update(iGameTime);
 
             base.Update(iGameTime);
         }
@@ -214,7 +215,8 @@ namespace WordGame_Lib
 
             _idToScreenDictionary[_currentScreenId].Draw(_currentScreenRenderOffset);
 
-            _weather.Draw();
+            if (GameSettingsManager.Settings.RainVisual)
+                _weather.Draw();
 
             GraphicsHelper.Flush();
 
