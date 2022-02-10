@@ -109,7 +109,7 @@ namespace WordGame_Lib
         public static class SettingsScreenSettings
         {
             public const float HeaderHeightAsPercentage = .1f;
-            public const float SettingsListHeightAsPercentage = .6f;
+            public const float SettingsListHeightAsPercentage = .65f;
             public const float SaveButtonWidthAsPercentage = .75f;
             public const float SaveButtonHeightAsPercentage = .1f;
             public const float LabelColumnWidthAsPercent = .75f;

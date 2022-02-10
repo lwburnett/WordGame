@@ -39,6 +39,12 @@ namespace WordGame_Lib.Screens
             _neonFlickerToggle.Draw(iOffset);
             _vibrationLabel.Draw(iOffset);
             _vibrationToggle.Draw(iOffset);
+            _rainVisualLabel.Draw(iOffset);
+            _rainVisualToggle.Draw(iOffset);
+            _stormVolumeLabel.Draw(iOffset);
+            _stormVolumePicker.Draw(iOffset);
+            _musicVolumeLabel.Draw(iOffset);
+            _musicVolumePicker.Draw(iOffset);
         }
 
         protected override void DoLoad()
@@ -144,6 +150,67 @@ namespace WordGame_Lib.Screens
                 _settings.Vibration,
                 OnToggleVibration);
 
+            var rainVisualLabelY = vibrationLabelY + vibrationLabelHeight + medMarginY;
+            var rainVisualLabelX = settingsEditBounds.X;
+            var rainVisualLabelWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.LabelColumnWidthAsPercent);
+            var rainVisualLabelHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
+            _rainVisualLabel = new UiFloatingText(
+                new Rectangle(rainVisualLabelX, rainVisualLabelY, rainVisualLabelWidth, rainVisualLabelHeight),
+                "Rain Visual",
+                Color.White,
+                Color.Black);
+
+            var rainVisualToggleY = rainVisualLabelY;
+            var rainVisualToggleX = rainVisualLabelX + rainVisualLabelWidth + medMarginX;
+            var rainVisualToggleWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.SettingColumnWidthAsPercent / 1.5f);
+            var rainVisualToggleHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
+            _rainVisualToggle = new UiToggleSwitch(
+                new Rectangle(rainVisualToggleX, rainVisualToggleY, rainVisualToggleWidth, rainVisualToggleHeight),
+                _settings.RainVisual,
+                OnToggleRainVisual);
+            
+            var stormVolumeLabelY = rainVisualToggleY + rainVisualToggleHeight + medMarginY;
+            var stormVolumeLabelX = settingsEditBounds.X;
+            var stormVolumeLabelWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.LabelColumnWidthAsPercent);
+            var stormVolumeLabelHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
+            _stormVolumeLabel = new UiFloatingText(
+                new Rectangle(stormVolumeLabelX, stormVolumeLabelY, stormVolumeLabelWidth, stormVolumeLabelHeight),
+                "Storm Volume",
+                Color.White,
+                Color.Black);
+
+            var stormVolumePickerY = stormVolumeLabelY;
+            var stormVolumePickerWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.SettingColumnWidthAsPercent);
+            var stormVolumePickerX = stormVolumeLabelX + stormVolumeLabelWidth + medMarginX - (stormVolumePickerWidth - rainVisualToggleWidth) / 2;
+            var stormVolumePickerHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
+            _stormVolumePicker = new UiValuePicker(
+                new Rectangle(stormVolumePickerX, stormVolumePickerY, stormVolumePickerWidth, stormVolumePickerHeight),
+                _settings.StormVolume,
+                OnChangeStormVolume,
+                0,
+                9);
+
+            var musicVolumeLabelY = stormVolumePickerY + stormVolumePickerHeight + medMarginY;
+            var musicVolumeLabelX = settingsEditBounds.X;
+            var musicVolumeLabelWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.LabelColumnWidthAsPercent);
+            var musicVolumeLabelHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
+            _musicVolumeLabel = new UiFloatingText(
+                new Rectangle(musicVolumeLabelX, musicVolumeLabelY, musicVolumeLabelWidth, musicVolumeLabelHeight),
+                "Music Volume",
+                Color.White,
+                Color.Black);
+
+            var musicVolumePickerY = musicVolumeLabelY;
+            var musicVolumePickerWidth = (int)(settingsEditBounds.Width * SettingsManager.SettingsScreenSettings.SettingColumnWidthAsPercent);
+            var musicVolumePickerX = musicVolumeLabelX + musicVolumeLabelWidth + medMarginX - (musicVolumePickerWidth - rainVisualToggleWidth) / 2;
+            var musicVolumePickerHeight = (int)(settingsEditBounds.Height * SettingsManager.SettingsScreenSettings.IndividualSettingRowHeightAsPercent / 1.5f);
+            _musicVolumePicker = new UiValuePicker(
+                new Rectangle(musicVolumePickerX, musicVolumePickerY, musicVolumePickerWidth, musicVolumePickerHeight),
+                _settings.MusicVolume,
+                OnChangeMusicVolume,
+                0,
+                9);
+
             var saveWidth = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.SettingsScreenSettings.SaveButtonWidthAsPercentage);
             var saveY = settingsEditBounds.Y + settingsEditBounds.Height + medMarginY;
             var saveX = (GraphicsHelper.GamePlayArea.Width - saveWidth) / 2;
@@ -164,6 +231,9 @@ namespace WordGame_Lib.Screens
                 _neonPulseToggle.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _neonFlickerToggle.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _vibrationToggle.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _rainVisualToggle.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _stormVolumePicker.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _musicVolumePicker.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _saveButton.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
             }
 
@@ -174,6 +244,9 @@ namespace WordGame_Lib.Screens
                    _neonPulseToggle.State == NeonLightState.On &&
                    _neonFlickerToggle.State == NeonLightState.On &&
                    _vibrationToggle.State == NeonLightState.On &&
+                   _rainVisualToggle.State == NeonLightState.On &&
+                   _stormVolumePicker.State == NeonLightState.On &&
+                   _musicVolumePicker.State == NeonLightState.On &&
                    _saveButton.State == NeonLightState.On;
         }
 
@@ -191,6 +264,9 @@ namespace WordGame_Lib.Screens
                 _neonPulseToggle.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _neonFlickerToggle.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _vibrationToggle.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _rainVisualToggle.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _stormVolumePicker.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _musicVolumePicker.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _saveButton.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
             }
 
@@ -201,6 +277,9 @@ namespace WordGame_Lib.Screens
                    _neonPulseToggle.State == NeonLightState.Off &&
                    _neonFlickerToggle.State == NeonLightState.Off &&
                    _vibrationToggle.State == NeonLightState.Off &&
+                   _rainVisualToggle.State == NeonLightState.Off &&
+                   _stormVolumePicker.State == NeonLightState.Off &&
+                   _musicVolumePicker.State == NeonLightState.Off &&
                    _saveButton.State == NeonLightState.Off;
         }
 
@@ -219,6 +298,13 @@ namespace WordGame_Lib.Screens
         private IUiNeonElement _neonFlickerToggle;
         private IUiElement _vibrationLabel;
         private IUiNeonElement _vibrationToggle;
+        private IUiElement _rainVisualLabel;
+        private IUiNeonElement _rainVisualToggle;
+        private IUiElement _stormVolumeLabel;
+        private IUiNeonElement _stormVolumePicker;
+        private IUiElement _musicVolumeLabel;
+        private IUiNeonElement _musicVolumePicker;
+
         private IUiNeonElement _saveButton;
         private readonly List<PointLight> _lightPoints;
 
@@ -234,6 +320,12 @@ namespace WordGame_Lib.Screens
             _neonFlickerToggle.Update(iGameTime);
             _vibrationLabel.Update(iGameTime);
             _vibrationToggle.Update(iGameTime);
+            _rainVisualLabel.Update(iGameTime);
+            _rainVisualToggle.Update(iGameTime);
+            _stormVolumeLabel.Update(iGameTime);
+            _stormVolumePicker.Update(iGameTime);
+            _musicVolumeLabel.Update(iGameTime);
+            _musicVolumePicker.Update(iGameTime);
 
             _lightPoints.Clear();
             _lightPoints.AddRange(_header.LightPoints);
@@ -242,6 +334,9 @@ namespace WordGame_Lib.Screens
             _lightPoints.AddRange(_neonPulseToggle.LightPoints);
             _lightPoints.AddRange(_neonFlickerToggle.LightPoints);
             _lightPoints.AddRange(_vibrationToggle.LightPoints);
+            _lightPoints.AddRange(_rainVisualToggle.LightPoints);
+            _lightPoints.AddRange(_stormVolumePicker.LightPoints);
+            _lightPoints.AddRange(_musicVolumePicker.LightPoints);
         }
 
         private void OnSave(GameTime iGameTime)
@@ -253,22 +348,37 @@ namespace WordGame_Lib.Screens
 
         private void OnToggleAlternateColorScheme(bool iNewValue)
         {
-            _settings = new GameSettings(iNewValue, _settings.NeonLightPulse, _settings.NeonLightFlicker, _settings.Vibration);
+            _settings = new GameSettings(iNewValue, _settings.NeonLightPulse, _settings.NeonLightFlicker, _settings.Vibration, _settings.RainVisual, _settings.StormVolume, _settings.MusicVolume);
         }
 
         private void OnToggleNeonLightPulse(bool iNewValue)
         {
-            _settings = new GameSettings(_settings.AlternateKeyColorScheme, iNewValue, _settings.NeonLightFlicker, _settings.Vibration);
+            _settings = new GameSettings(_settings.AlternateKeyColorScheme, iNewValue, _settings.NeonLightFlicker, _settings.Vibration, _settings.RainVisual, _settings.StormVolume, _settings.MusicVolume);
         }
 
         private void OnToggleNeonLightFlicker(bool iNewValue)
         {
-            _settings = new GameSettings(_settings.AlternateKeyColorScheme, _settings.NeonLightPulse, iNewValue, _settings.Vibration);
+            _settings = new GameSettings(_settings.AlternateKeyColorScheme, _settings.NeonLightPulse, iNewValue, _settings.Vibration, _settings.RainVisual, _settings.StormVolume, _settings.MusicVolume);
         }
 
         private void OnToggleVibration(bool iNewValue)
         {
-            _settings = new GameSettings(_settings.AlternateKeyColorScheme, _settings.NeonLightPulse, _settings.NeonLightFlicker, iNewValue);
+            _settings = new GameSettings(_settings.AlternateKeyColorScheme, _settings.NeonLightPulse, _settings.NeonLightFlicker, iNewValue, _settings.RainVisual, _settings.StormVolume, _settings.MusicVolume);
+        }
+
+        private void OnToggleRainVisual(bool iNewValue)
+        {
+            _settings = new GameSettings(_settings.AlternateKeyColorScheme, _settings.NeonLightPulse, _settings.NeonLightFlicker, _settings.Vibration, iNewValue, _settings.StormVolume, _settings.MusicVolume);
+        }
+
+        private void OnChangeStormVolume(int iNewValue)
+        {
+            _settings = new GameSettings(_settings.AlternateKeyColorScheme, _settings.NeonLightPulse, _settings.NeonLightFlicker, _settings.Vibration, _settings.RainVisual, iNewValue, _settings.MusicVolume);
+        }
+
+        private void OnChangeMusicVolume(int iNewValue)
+        {
+            _settings = new GameSettings(_settings.AlternateKeyColorScheme, _settings.NeonLightPulse, _settings.NeonLightFlicker, _settings.Vibration, _settings.RainVisual, _settings.StormVolume, iNewValue);
         }
     }
 }

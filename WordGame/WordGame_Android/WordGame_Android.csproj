@@ -116,6 +116,8 @@
     <Content Include="Content\Audio\Storm.mp3" />
     <Content Include="Content\Shaders\BrickShader.fx" />
     <Content Include="Content\Shaders\NeonSpriteShader.fx" />
+    <Content Include="Content\Textures\ArrowLeft.png" />
+    <Content Include="Content\Textures\ArrowRight.png" />
     <Content Include="Content\Textures\Bricks1.png" />
     <Content Include="Content\Textures\CheckMark.png" />
     <Content Include="Content\Textures\ExMark.png" />

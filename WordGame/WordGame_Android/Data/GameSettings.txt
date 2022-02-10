@@ -2,3 +2,6 @@ AlternateKeyColorScheme, False
 NeonLightPulse, True
 NeonLightFlicker, True
 Vibration, True
+RainVisual, True
+StormVolume, 5
+MusicVolume, 5

@@ -13,8 +13,8 @@ namespace WordGame_Lib
         static GameSettingsManager()
         {
             sHasRegisteredFilePath = false;
-            PropertyReadWriteLock = new object();
-            FileReadWriteLock = new object();
+            sPropertyReadWriteLock = new object();
+            sFileReadWriteLock = new object();
             sHaveLoadedFromDisk = false;
             sGameSettings = new GameSettings();
         }
@@ -23,14 +23,14 @@ namespace WordGame_Lib
         {
             get
             {
-                lock (PropertyReadWriteLock)
+                lock (sPropertyReadWriteLock)
                 {
                     return sGameSettings.DeepCopy();
                 }
             }
             private set
             {
-                lock (PropertyReadWriteLock)
+                lock (sPropertyReadWriteLock)
                 {
                     sGameSettings = value;
                 }
@@ -42,7 +42,7 @@ namespace WordGame_Lib
             Debug.Assert(!sHasRegisteredFilePath, "Already registered a file path!");
             Debug.Assert(!string.IsNullOrWhiteSpace(iFilePath), "Invalid file path given.");
 
-            lock (FileReadWriteLock)
+            lock (sFileReadWriteLock)
             {
                 sSettingsFilePath = iFilePath;
             }
@@ -76,8 +76,8 @@ namespace WordGame_Lib
         private static string sSettingsFilePath;
         private static bool sHasRegisteredFilePath;
 
-        private static readonly object PropertyReadWriteLock;
-        private static readonly object FileReadWriteLock;
+        private static readonly object sPropertyReadWriteLock;
+        private static readonly object sFileReadWriteLock;
         private static bool sHaveLoadedFromDisk;
         private static GameSettings sGameSettings;
 
@@ -86,7 +86,7 @@ namespace WordGame_Lib
             try
             {
                 var lines = new List<string>();
-                lock (FileReadWriteLock)
+                lock (sFileReadWriteLock)
                 {
                     if (FileManager.TryOpenStreamReadSafe(sSettingsFilePath, out var stream))
                     {
@@ -106,6 +106,9 @@ namespace WordGame_Lib
                     var neonLightPulse = true;
                     var neonLightFlicker = true;
                     var vibration = true;
+                    var rainVisual = true;
+                    var stormVolume = 5;
+                    var musicVolume = 5;
                     foreach (var line in lines)
                     {
                         if (string.IsNullOrWhiteSpace(line))
@@ -138,13 +141,25 @@ namespace WordGame_Lib
                                 var success4 = bool.TryParse(pieces[1], out vibration);
                                 Debug.Assert(success4, $"Failed to read value of line: {line}");
                                 break;
+                            case nameof(GameSettings.RainVisual):
+                                var success5 = bool.TryParse(pieces[1], out rainVisual);
+                                Debug.Assert(success5, $"Failed to read value of line: {line}");
+                                break;
+                            case nameof(GameSettings.StormVolume):
+                                var success6 = int.TryParse(pieces[1], out stormVolume);
+                                Debug.Assert(success6, $"Failed to read value of line: {line}");
+                                break;
+                            case nameof(GameSettings.MusicVolume):
+                                var success7 = int.TryParse(pieces[1], out musicVolume);
+                                Debug.Assert(success7, $"Failed to read value of line: {line}");
+                                break;
                             default:
                                 Debug.Fail($"Unknown settings key {pieces[0]}");
                                 break;
                         }
                     }
 
-                    Settings = new GameSettings(alternateKeyColorScheme, neonLightPulse, neonLightFlicker, vibration);
+                    Settings = new GameSettings(alternateKeyColorScheme, neonLightPulse, neonLightFlicker, vibration, rainVisual, stormVolume, musicVolume);
                 }
                 else
                 {
@@ -169,10 +184,13 @@ namespace WordGame_Lib
                     $"{nameof(settings.AlternateKeyColorScheme)}, {settings.AlternateKeyColorScheme}",
                     $"{nameof(settings.NeonLightPulse)}, {settings.NeonLightPulse}",
                     $"{nameof(settings.NeonLightFlicker)}, {settings.NeonLightFlicker}",
-                    $"{nameof(settings.Vibration)}, {settings.Vibration}"
+                    $"{nameof(settings.Vibration)}, {settings.Vibration}",
+                    $"{nameof(settings.RainVisual)}, {settings.RainVisual}",
+                    $"{nameof(settings.StormVolume)}, {settings.StormVolume}",
+                    $"{nameof(settings.MusicVolume)}, {settings.MusicVolume}"
                 };
 
-                lock (FileReadWriteLock)
+                lock (sFileReadWriteLock)
                 {
                     if (FileManager.TryOpenStreamWriteSafe(sSettingsFilePath, out var stream))
                     {
