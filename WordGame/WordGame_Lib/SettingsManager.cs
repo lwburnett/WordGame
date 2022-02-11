@@ -155,6 +155,9 @@ namespace WordGame_Lib
         {
             public static TimeSpan VibrationDuration = TimeSpan.FromMilliseconds(5);
             public const float FlickerVolume = .5f;
+
+            public const int SoundVolumeMin = 0;
+            public const int SoundVolumeMax = 9;
         }
 
         public static class Storm

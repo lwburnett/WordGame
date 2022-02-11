@@ -187,8 +187,8 @@ namespace WordGame_Lib.Screens
                 new Rectangle(stormVolumePickerX, stormVolumePickerY, stormVolumePickerWidth, stormVolumePickerHeight),
                 _settings.StormVolume,
                 OnChangeStormVolume,
-                0,
-                9);
+                SettingsManager.Sound.SoundVolumeMin,
+                SettingsManager.Sound.SoundVolumeMax);
 
             var musicVolumeLabelY = stormVolumePickerY + stormVolumePickerHeight + medMarginY;
             var musicVolumeLabelX = settingsEditBounds.X;
@@ -208,8 +208,8 @@ namespace WordGame_Lib.Screens
                 new Rectangle(musicVolumePickerX, musicVolumePickerY, musicVolumePickerWidth, musicVolumePickerHeight),
                 _settings.MusicVolume,
                 OnChangeMusicVolume,
-                0,
-                9);
+                SettingsManager.Sound.SoundVolumeMin,
+                SettingsManager.Sound.SoundVolumeMax);
 
             var saveWidth = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.SettingsScreenSettings.SaveButtonWidthAsPercentage);
             var saveY = settingsEditBounds.Y + settingsEditBounds.Height + medMarginY;
@@ -373,11 +373,13 @@ namespace WordGame_Lib.Screens
 
         private void OnChangeStormVolume(int iNewValue)
         {
+            AudioHelper.SetStormVolume(iNewValue);
             _settings = new GameSettings(_settings.AlternateKeyColorScheme, _settings.NeonLightPulse, _settings.NeonLightFlicker, _settings.Vibration, _settings.RainVisual, iNewValue, _settings.MusicVolume);
         }
 
         private void OnChangeMusicVolume(int iNewValue)
         {
+            AudioHelper.SetMusicVolume(iNewValue);
             _settings = new GameSettings(_settings.AlternateKeyColorScheme, _settings.NeonLightPulse, _settings.NeonLightFlicker, _settings.Vibration, _settings.RainVisual, _settings.StormVolume, iNewValue);
         }
     }

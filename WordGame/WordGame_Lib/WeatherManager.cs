@@ -14,8 +14,8 @@ namespace WordGame_Lib
         {
             _rng = new Random();
             _nextDropSpawn = TimeSpan.MinValue;
-            _nextSoundEffectPlay = TimeSpan.MinValue;
-            _weatherSound = AssetHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "Storm"));
+            var weatherSound = AssetHelper.LoadContent<SoundEffect>(Path.Combine("Audio", "Storm"));
+            AudioHelper.PlayPerpetualStormSoundEffect(weatherSound);
             _drops = new List<RainDrop>();
             _fallDirection = new Vector2(0, GraphicsHelper.GamePlayArea.Height * SettingsManager.Storm.RainDropSpeedAsPercentage);
         }
@@ -50,12 +50,6 @@ namespace WordGame_Lib
                     _drops.RemoveAt(ii);
                 }
             }
-
-            if (iGameTime.TotalGameTime > _nextSoundEffectPlay)
-            {
-                AudioHelper.PlaySoundEffect(_weatherSound);
-                _nextSoundEffectPlay = iGameTime.TotalGameTime + _weatherSound.Duration;
-            }
         }
 
         public void Draw()
@@ -66,9 +60,7 @@ namespace WordGame_Lib
         private readonly Random _rng;
         private readonly Vector2 _fallDirection;
         private TimeSpan _nextDropSpawn;
-        private TimeSpan _nextSoundEffectPlay;
-
-        private readonly SoundEffect _weatherSound;
+        
         private readonly List<RainDrop> _drops;
 
         private class RainDrop
