@@ -166,7 +166,7 @@ namespace WordGame_Lib
             public const float RainDropWidthAsPercentage = .0035f;
             public const float RainDropSpeedAsPercentage = 2.0f;
             public static Color RainDropColor = new Color(94, 182, 249);
-            public const float RainDropAlpha = .15f;
+            public const float RainDropAlpha = .2f;
         }
     }
 }
