@@ -154,7 +154,7 @@ namespace WordGame_Lib
         public static class Sound
         {
             public static TimeSpan VibrationDuration = TimeSpan.FromMilliseconds(5);
-            public const float FlickerVolume = .5f;
+            public const float FlickerVolume = .6f;
 
             public const int SoundVolumeMin = 0;
             public const int SoundVolumeMax = 9;
