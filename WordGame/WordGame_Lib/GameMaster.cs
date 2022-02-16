@@ -228,7 +228,8 @@ namespace WordGame_Lib
             StartupScreen,
             MainMenu,
             GamePlay,
-            Settings
+            Settings,
+            Credits
         }
 
         private bool ShouldPanRight()
@@ -246,6 +247,12 @@ namespace WordGame_Lib
                 return false;
 
             if (_currentScreenId == ScreenId.Settings && _screenToTransitionTo.Value == ScreenId.MainMenu)
+                return true;
+
+            if (_currentScreenId == ScreenId.MainMenu && _screenToTransitionTo.Value == ScreenId.Credits)
+                return false;
+
+            if (_currentScreenId == ScreenId.Credits && _screenToTransitionTo.Value == ScreenId.MainMenu)
                 return true;
 
             Debug.Fail("Somehow got to a weird transition state.");
@@ -272,7 +279,7 @@ namespace WordGame_Lib
 
         private void OnMainMenu(GameTime iGameTime)
         {
-            SetupScreenTransition(ScreenId.MainMenu, () => new MainMenuScreen(OnPlayGame, OnSettings, OnExitGame), iGameTime);
+            SetupScreenTransition(ScreenId.MainMenu, () => new MainMenuScreen(OnPlayGame, OnSettings, OnCredits), iGameTime);
         }
 
         private void OnPlayGame(GameTime iGameTime)
@@ -285,9 +292,9 @@ namespace WordGame_Lib
             SetupScreenTransition(ScreenId.Settings, () => new SettingsScreen(OnMainMenu), iGameTime);
         }
 
-        private void OnExitGame(GameTime iGameTime)
+        private void OnCredits(GameTime iGameTime)
         {
-            Exit();
+            SetupScreenTransition(ScreenId.Credits, () => new CreditsScreen(OnMainMenu), iGameTime);
         }
     }
 }

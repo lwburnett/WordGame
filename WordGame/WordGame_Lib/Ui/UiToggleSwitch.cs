@@ -14,7 +14,7 @@ namespace WordGame_Lib.Ui
             _onToggleCallback = iOnToggleCallback;
 
             _onButton = new UiNeonSpriteButton(iBounds, Path.Combine("Textures", "CheckMark"), SettingsManager.MainMenuSettings.StartButtonColor, iGt => OnToggle(false));
-            _offButton = new UiNeonSpriteButton(iBounds, Path.Combine("Textures", "ExMark"), SettingsManager.MainMenuSettings.ExitButtonColor, iGt => OnToggle(true));
+            _offButton = new UiNeonSpriteButton(iBounds, Path.Combine("Textures", "ExMark"), SettingsManager.MainMenuSettings.CreditsButtonColor, iGt => OnToggle(true));
 
             _rng = new Random();
             _flickerSfx = new List<SoundEffect>

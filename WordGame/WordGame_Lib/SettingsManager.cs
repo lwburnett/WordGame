@@ -19,7 +19,7 @@ namespace WordGame_Lib
             public static Color TitleTextColor = new Color(244, 231, 34);
             public static Color StartButtonColor = new Color(68, 214, 44);
             public static Color SettingsButtonColor = new Color(77, 77, 255);
-            public static Color ExitButtonColor = new Color(210, 39, 48);
+            public static Color CreditsButtonColor = new Color(210, 39, 48);
 
             public const float TitleWord1XAsPercentage = .1f;
             public const float TitleWord1YAsPercentage = .1f;
@@ -41,10 +41,10 @@ namespace WordGame_Lib
             public const float SettingsButtonHeightAsPercentage = .06f;
             public const float SettingsButtonWidthAsPercentage = .55f;
 
-            public const float ExitButtonXAsPercentage = .55f;
-            public const float ExitButtonYAsPercentage = .85f;
-            public const float ExitButtonHeightAsPercentage = .06f;
-            public const float ExitButtonWidthAsPercentage = .4f;
+            public const float CreditsButtonXAsPercentage = .55f;
+            public const float CreditsButtonYAsPercentage = .85f;
+            public const float CreditsButtonHeightAsPercentage = .06f;
+            public const float CreditsButtonWidthAsPercentage = .4f;
         }
 
         public static class GamePlaySettings
@@ -167,6 +167,14 @@ namespace WordGame_Lib
             public const float RainDropSpeedAsPercentage = 2.0f;
             public static Color RainDropColor = new Color(94, 182, 249);
             public const float RainDropAlpha = .2f;
+        }
+
+        public static class CreditsScreenSettings
+        {
+            public const float HeaderHeightAsPercentage = .1f;
+            public const float CreditLineHeightAsPercentage = .1f;
+            public const float MainMenuButtonWidthAsPercentage = .75f;
+            public const float MainMenuButtonHeightAsPercentage = .1f;
         }
     }
 }

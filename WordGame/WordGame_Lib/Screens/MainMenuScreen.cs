@@ -9,11 +9,11 @@ namespace WordGame_Lib.Screens
 {
     public class MainMenuScreen : ScreenBase
     {
-        public MainMenuScreen(Action<GameTime> iOnPlayCallback, Action<GameTime> iOnSettingsCallback, Action<GameTime> iOnExitCallback)
+        public MainMenuScreen(Action<GameTime> iOnPlayCallback, Action<GameTime> iOnSettingsCallback, Action<GameTime> iOnCreditsCallback)
         {
             _onPlayCallback = iOnPlayCallback;
             _onSettingsCallback = iOnSettingsCallback;
-            _onExitCallback = iOnExitCallback;
+            _onCreditsCallback = iOnCreditsCallback;
             _lightPoints = new List<PointLight>();
         }
 
@@ -25,7 +25,7 @@ namespace WordGame_Lib.Screens
             _titleWord2.Draw(iOffset);
             _playButton.Draw(iOffset);
             _settingsButton.Draw(iOffset);
-            _exitButton.Draw(iOffset);
+            _creditsButton.Draw(iOffset);
         }
 
         private readonly List<PointLight> _lightPoints;
@@ -35,10 +35,10 @@ namespace WordGame_Lib.Screens
         private IUiNeonElement _titleWord2;
         private IUiNeonElement _playButton;
         private IUiNeonElement _settingsButton;
-        private IUiNeonElement _exitButton;
+        private IUiNeonElement _creditsButton;
         private readonly Action<GameTime> _onPlayCallback;
         private readonly Action<GameTime> _onSettingsCallback;
-        private readonly Action<GameTime> _onExitCallback;
+        private readonly Action<GameTime> _onCreditsCallback;
         private Vector2? _thisTickOffset;
 
         protected override void DoLoad()
@@ -69,10 +69,10 @@ namespace WordGame_Lib.Screens
             var settingsButtonHeight = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.SettingsButtonHeightAsPercentage);
             var settingsButtonWidth = (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.SettingsButtonWidthAsPercentage);
 
-            var exitButtonTopLeftX = GraphicsHelper.GamePlayArea.X + (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.ExitButtonXAsPercentage);
-            var exitButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.ExitButtonYAsPercentage);
-            var exitButtonHeight = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.ExitButtonHeightAsPercentage);
-            var exitButtonWidth = (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.ExitButtonWidthAsPercentage);
+            var creditsButtonTopLeftX = GraphicsHelper.GamePlayArea.X + (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.CreditsButtonXAsPercentage);
+            var creditsButtonTopLeftY = GraphicsHelper.GamePlayArea.Y + (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.CreditsButtonYAsPercentage);
+            var creditsButtonHeight = (int)(gamePlayAreaHeight * SettingsManager.MainMenuSettings.CreditsButtonHeightAsPercentage);
+            var creditsButtonWidth = (int)(gamePlayAreaWidth * SettingsManager.MainMenuSettings.CreditsButtonWidthAsPercentage);
 
             var pulseOffsetInterpolationValue = new Random().NextDouble();
             _titleWord1 = new UiNeonFloatingText(
@@ -97,11 +97,11 @@ namespace WordGame_Lib.Screens
                 "SETTINGS",
                 SettingsManager.MainMenuSettings.SettingsButtonColor,
                 OnSettingsClicked);
-            _exitButton = new UiMenuNeonButton(
-                new Rectangle(exitButtonTopLeftX, exitButtonTopLeftY, exitButtonWidth, exitButtonHeight),
-                "EXIT",
-                SettingsManager.MainMenuSettings.ExitButtonColor,
-                OnExitClicked);
+            _creditsButton = new UiMenuNeonButton(
+                new Rectangle(creditsButtonTopLeftX, creditsButtonTopLeftY, creditsButtonWidth, creditsButtonHeight),
+                "CREDITS",
+                SettingsManager.MainMenuSettings.CreditsButtonColor,
+                OnCreditsClicked);
         }
         
 
@@ -113,7 +113,7 @@ namespace WordGame_Lib.Screens
                 _titleWord2.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _playButton.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _settingsButton.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
-                _exitButton.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _creditsButton.StartFadeIn(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
             }
 
             UpdateUiElements(iGameTime);
@@ -122,7 +122,7 @@ namespace WordGame_Lib.Screens
                    _titleWord2.State == NeonLightState.On &&
                    _playButton.State == NeonLightState.On &&
                    _settingsButton.State == NeonLightState.On &&
-                   _exitButton.State == NeonLightState.On;
+                   _creditsButton.State == NeonLightState.On;
         }
 
         protected override void UpdateDefault(GameTime iGameTime)
@@ -144,7 +144,7 @@ namespace WordGame_Lib.Screens
                 _titleWord2.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _playButton.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
                 _settingsButton.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
-                _exitButton.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
+                _creditsButton.StartFadeOut(iGameTime, SettingsManager.NeonSettings.VisualTransitionDuration);
             }
 
             UpdateUiElements(iGameTime);
@@ -153,7 +153,7 @@ namespace WordGame_Lib.Screens
                    _titleWord2.State == NeonLightState.Off &&
                    _playButton.State == NeonLightState.Off &&
                    _settingsButton.State == NeonLightState.Off &&
-                   _exitButton.State == NeonLightState.Off;
+                   _creditsButton.State == NeonLightState.Off;
         }
 
         private void UpdateUiElements(GameTime iGameTime)
@@ -162,14 +162,14 @@ namespace WordGame_Lib.Screens
             _titleWord2.Update(iGameTime);
             _playButton.Update(iGameTime);
             _settingsButton.Update(iGameTime);
-            _exitButton.Update(iGameTime);
+            _creditsButton.Update(iGameTime);
 
             _lightPoints.Clear();
             _lightPoints.AddRange(_titleWord1.LightPoints);
             _lightPoints.AddRange(_titleWord2.LightPoints);
             _lightPoints.AddRange(_playButton.LightPoints);
             _lightPoints.AddRange(_settingsButton.LightPoints);
-            _lightPoints.AddRange(_exitButton.LightPoints);
+            _lightPoints.AddRange(_creditsButton.LightPoints);
 
             GraphicsHelper.CalculatePointLightShaderParameters(_lightPoints, out var positions, out var colors, out var radii, out var intensity, _thisTickOffset);
 
@@ -190,9 +190,9 @@ namespace WordGame_Lib.Screens
             _onSettingsCallback(iGameTime);
         }
 
-        private void OnExitClicked(GameTime iGameTime)
+        private void OnCreditsClicked(GameTime iGameTime)
         {
-            _onExitCallback(iGameTime);
+            _onCreditsCallback(iGameTime);
         }
     }
 }
