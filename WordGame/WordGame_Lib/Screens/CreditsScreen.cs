@@ -39,7 +39,6 @@ namespace WordGame_Lib.Screens
             _backgroundEffect = AssetHelper.LoadContent<Effect>(Path.Combine("Shaders", "BrickShader")).Clone();
 
             var bigMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GeneralVisualSettings.BigMarginAsPercentage);
-            var medMarginY = (int)(GraphicsHelper.GamePlayArea.Height * SettingsManager.GeneralVisualSettings.MediumMarginAsPercentage);
 
             var bigMarginX = (int)(GraphicsHelper.GamePlayArea.Width * SettingsManager.GeneralVisualSettings.BigMarginAsPercentage);
 
@@ -55,13 +54,53 @@ namespace WordGame_Lib.Screens
             var creditWidth = _bounds.Width - 2 * bigMarginX;
             var creditHeight = (int)(_bounds.Height * SettingsManager.CreditsScreenSettings.CreditLineHeightAsPercentage);
 
-            var line1LabelY = _bounds.Y + headerYLocation + headerHeight + medMarginY;
+            var line1LabelY = _bounds.Y + headerYLocation + headerHeight + bigMarginY;
             var line1LabelX = headerXLocation;
             var line1LabelWidth = creditWidth;
             var line1LabelHeight = creditHeight;
             var line1 = new UiFloatingText(
                 new Rectangle(line1LabelX, line1LabelY, line1LabelWidth, line1LabelHeight),
                 "Created by Luke Burnett",
+                Color.White,
+                Color.Black);
+
+            var line2LabelY = line1LabelY + line1LabelHeight;
+            var line2LabelX = headerXLocation;
+            var line2LabelWidth = creditWidth;
+            var line2LabelHeight = creditHeight;
+            var line2 = new UiFloatingText(
+                new Rectangle(line2LabelX, line2LabelY, line2LabelWidth, line2LabelHeight),
+                "Play tested by Sarah Lizarraga and Nolan Perry-Arnold",
+                Color.White,
+                Color.Black);
+
+            var line3LabelY = line2LabelY + line2LabelHeight;
+            var line3LabelX = headerXLocation;
+            var line3LabelWidth = creditWidth;
+            var line3LabelHeight = creditHeight;
+            var line3 = new UiFloatingText(
+                new Rectangle(line3LabelX, line3LabelY, line3LabelWidth, line3LabelHeight),
+                "Brick wall background by Bernard Hermant at unsplash.com",
+                Color.White,
+                Color.Black);
+
+            var line4LabelY = line3LabelY + line3LabelHeight;
+            var line4LabelX = headerXLocation;
+            var line4LabelWidth = creditWidth;
+            var line4LabelHeight = creditHeight;
+            var line4 = new UiFloatingText(
+                new Rectangle(line4LabelX, line4LabelY, line4LabelWidth, line4LabelHeight),
+                "\"Hello Denver\" text font by Good Apples at 1001fonts.com",
+                Color.White,
+                Color.Black);
+
+            var line5LabelY = line4LabelY + line4LabelHeight;
+            var line5LabelX = headerXLocation;
+            var line5LabelWidth = creditWidth;
+            var line5LabelHeight = creditHeight;
+            var line5 = new UiFloatingText(
+                new Rectangle(line5LabelX, line5LabelY, line5LabelWidth, line5LabelHeight),
+                "Music and Sound Effects by Fesliyan Studios",
                 Color.White,
                 Color.Black);
 
@@ -77,7 +116,11 @@ namespace WordGame_Lib.Screens
 
             _textLines = new List<IUiElement>
             {
-                line1
+                line1,
+                line2,
+                line3,
+                line4,
+                line5
             };
 
             _lightPoints.AddRange(_header.LightPoints);
